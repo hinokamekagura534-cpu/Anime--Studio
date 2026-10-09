@@ -2,7 +2,7 @@
 <html lang="ckb">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ستۆدیۆی ژێرنووس</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Cairo:wght@400;700&family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -229,6 +229,85 @@ input[type=range],#tl,#clock,#transport,#estart,#eend,#projName.ltr{direction:lt
 .dlg label{color:var(--tx2);font-size:12px}.dlg .act{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}.dlg progress{width:100%}
 #saveInd{color:var(--tx2);font-size:11px;min-width:70px}
 </style>
+
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#111827">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Anime Studio">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+
+
+<style id="anime-studio-mobile-tune">
+/* Native-feeling mobile layout */
+* { -webkit-tap-highlight-color: transparent; }
+button, .nb, .tabs button, .ib { touch-action: manipulation; }
+img, video, canvas { max-width: 100%; }
+@media (max-width: 700px) {
+  html, body {
+    width: 100%; height: 100%; height: 100dvh;
+    overflow: hidden; overscroll-behavior: none;
+  }
+  body { padding-bottom: env(safe-area-inset-bottom); }
+  #app {
+    height: 100%; height: 100dvh;
+    min-height: 0;
+    grid-template-rows: 44px minmax(0, 1fr) 4px minmax(160px, 29dvh);
+  }
+  #top { gap: 5px; padding: 0 7px; overflow-x: auto; white-space: nowrap; }
+  #top .logo { font-size: 12px; flex-shrink: 0; }
+  #top button { padding: 6px 8px; font-size: 12px; flex-shrink: 0; }
+  #main {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(130px, 42%) minmax(0, 1fr);
+    overflow: hidden;
+  }
+  #previewCol { min-height: 130px; overflow: hidden; }
+  #stageWrap { padding: 5px; min-height: 0; }
+  #stage { max-width: 100%; max-height: 100%; }
+  #side {
+    display: flex !important;
+    min-width: 0; min-height: 0;
+    border-left: 0; border-top: 1px solid var(--line);
+    overflow: hidden;
+  }
+  #side .tabs { flex-shrink: 0; overflow-x: auto; }
+  #side .tabs button { padding: 8px 5px; font-size: 11px; white-space: nowrap; }
+  #left, #splitter, #vsplit, #hsplit { display: none !important; }
+  #editor {
+    min-height: 0; overflow-y: auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 7px; padding: 8px;
+    align-items: stretch;
+  }
+  #editor > * { min-width: 0; }
+  #etext { width: 100%; min-height: 42px; height: 46px; }
+  #editor input, #editor select, #editor button, #editor textarea {
+    max-width: 100%; font-size: 12px;
+  }
+  #btools { gap: 6px; flex-wrap: wrap; }
+  #btools .ib { width: 34px; height: 34px; }
+  .lib { padding: 14px 10px 28px; gap: 14px; }
+  .studio { gap: 10px; padding: 14px; }
+  .studio h1 { font-size: 21px; }
+  .studio .pri { margin-inline-start: 0; }
+  .page { overscroll-behavior: contain; }
+  #pProj { overflow: auto; }
+  #toast { bottom: calc(12px + env(safe-area-inset-bottom)); width: max-content; max-width: 90vw; }
+}
+@media (max-width: 390px) {
+  #app { grid-template-rows: 42px minmax(0, 1fr) 3px minmax(150px, 31dvh); }
+  #top .logo { font-size: 11px; }
+  #editor { gap: 5px; padding: 6px; }
+  #side .tabs button { font-size: 10px; padding: 7px 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+</style>
+
 </head>
 <body>
 <div id="shell">
@@ -269,7 +348,7 @@ input[type=range],#tl,#clock,#transport,#estart,#eend,#projName.ltr{direction:lt
       <div id="stageWrap"><div id="stage">
         <video id="vid" playsinline></video>
         <div id="empty"><strong>هیچ ڤیدیۆیەک دانەنراوە</strong><span>ڤیدیۆیەک بهێنە بۆ بینینی ژێرنووس لەسەری</span></div>
-        <div id="overlay"><span></span></div></div></div>
+        <div id="overlay"><span></span></div><img id="videoLogo" alt="Video logo overlay" hidden draggable="false"></div></div>
       <div id="pvBar"><span></span><span id="clock">00:00:00,000 / 00:00:00,000</span><div class="r"><button id="btnRatio" class="chipb">Original</button><button id="btnFit" class="ib" data-ic="fit" title="Fit"></button></div></div>
       <input type="range" id="seek" min="0" max="1000" value="0" hidden><input type="range" id="ss" min="30" max="100" value="100" hidden>
     </section>
@@ -279,6 +358,19 @@ input[type=range],#tl,#clock,#transport,#estart,#eend,#projName.ltr{direction:lt
         <div id="propEmpty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Select to Edit</span></div>
         <div class="pane on" id="paneEdit">
           <div class="grp"><h4>دەقی ژێرنووس</h4><textarea id="etext" dir="auto"></textarea></div>
+          <div class="grp" id="logoEditorGrp">
+            <h4>لۆگۆ لەسەر ڤیدیۆ</h4>
+            <input type="file" id="logoFile" accept="image/*" hidden>
+            <div class="btnrow">
+              <button type="button" id="logoChoose">+ زیادکردنی لۆگۆ</button>
+              <button type="button" id="logoRemove">لابردن</button>
+            </div>
+            <div class="row"><label>قەبارە</label><input type="range" id="logoSize" min="5" max="45" value="18"><output id="logoSizeOut">18%</output></div>
+            <div class="row"><label>شوێن لە چەپ/ڕاست</label><input type="range" id="logoX" min="0" max="100" value="82"><output id="logoXOut">82%</output></div>
+            <div class="row"><label>شوێن لە سەرەوە/خوارەوە</label><input type="range" id="logoY" min="0" max="100" value="12"><output id="logoYOut">12%</output></div>
+            <div class="row"><label>ڕوونی</label><input type="range" id="logoOpacity" min="10" max="100" value="100"><output id="logoOpacityOut">100%</output></div>
+            <p class="hint">لۆگۆکە لە پێشبینین و لە ڤیدیۆی هەناردەکراودا دەردەکەوێت.</p>
+          </div>
           <div class="grp"><h4>کات</h4>
             <div class="row"><label>دەستپێک</label><input type="text" id="estart"><span class="step"><button data-f="s" data-d="-.1">−</button><button data-f="s" data-d=".1">+</button></span></div>
             <div class="row"><label>کۆتایی</label><input type="text" id="eend"><span class="step"><button data-f="e" data-d="-.1">−</button><button data-f="e" data-d=".1">+</button></span></div>
@@ -959,5 +1051,358 @@ $('#btnContact').onclick = async () => {
   }, 1800);
 })();
 </script>
+
+<style>
+#pwaInstallBtn {
+  display:none; position:fixed; right:16px; bottom:16px; z-index:99999;
+  border:0; border-radius:999px; padding:12px 17px; background:#7c3aed;
+  color:#fff; font:700 14px system-ui,sans-serif; box-shadow:0 8px 28px #0004;
+  cursor:pointer
+}
+#pwaInstallBtn:focus-visible { outline:3px solid #fbbf24; outline-offset:3px }
+</style>
+<button id="pwaInstallBtn" type="button">دامەزراندنی ئەپ</button>
+<script>
+(() => {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js').catch(err => console.warn('PWA service worker:', err));
+    });
+  }
+  let installPrompt;
+  const installBtn = document.getElementById('pwaInstallBtn');
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    installPrompt = event;
+    installBtn.style.display = 'block';
+  });
+  installBtn.addEventListener('click', async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+    installPrompt = null;
+    installBtn.style.display = 'none';
+  });
+  window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    installPrompt = null;
+  });
+})();
+</script>
+
+
+<style id="video-logo-overlay-style">
+#videoLogo {
+  position:absolute; z-index:8; width:18%; height:auto; max-width:45%;
+  object-fit:contain; pointer-events:none; user-select:none;
+  filter:drop-shadow(0 2px 6px #0008);
+}
+#logoEditorGrp .row { grid-template-columns:minmax(80px, 1fr) minmax(80px, 2fr) 42px; }
+#logoEditorGrp .hint { padding:6px 0 0; }
+@media(max-width:700px) {
+  #logoEditorGrp .row { grid-template-columns:minmax(75px, 1fr) minmax(65px, 1.5fr) 38px; gap:5px; }
+  #logoEditorGrp .btnrow { display:flex; gap:6px; }
+  #logoEditorGrp .btnrow button { flex:1; min-width:0; font-size:12px; padding:8px 5px; }
+}
+</style>
+
+<script id="anime-studio-logo-hooks">
+window.__animeStudioLogoHooks = true;
+window.saveNow = saveNow;
+window.openProject = openProject;
+window.drawSub = drawSub;
+</script>
+<script id="video-logo-overlay-script">
+(() => {
+  const $id = id => document.getElementById(id);
+  const logoEl = $id('videoLogo');
+  const logoFile = $id('logoFile');
+  const defaults = { data:'', size:18, x:82, y:12, opacity:100 };
+  let logoState = { ...defaults };
+  let logoImg = null;
+
+  function updateLogoPreview() {
+    if (!logoEl) return;
+    logoEl.hidden = !logoState.data;
+    if (logoState.data) {
+      if (logoEl.src !== logoState.data) logoEl.src = logoState.data;
+      logoEl.style.width = logoState.size + '%';
+      logoEl.style.left = logoState.x + '%';
+      logoEl.style.top = logoState.y + '%';
+      logoEl.style.transform = 'translate(-50%, -50%)';
+      logoEl.style.opacity = logoState.opacity / 100;
+    }
+    ['size','x','y','opacity'].forEach(key => {
+      const input = $id('logo' + key[0].toUpperCase() + key.slice(1));
+      const out = $id('logo' + key[0].toUpperCase() + key.slice(1) + 'Out');
+      if (input) input.value = logoState[key];
+      if (out) out.textContent = logoState[key] + '%';
+    });
+  }
+  function loadLogoImage() {
+    if (!logoState.data) { logoImg = null; return Promise.resolve(null); }
+    return new Promise(resolve => {
+      const im = new Image();
+      im.onload = () => { logoImg = im; resolve(im); };
+      im.onerror = () => { logoImg = null; resolve(null); };
+      im.src = logoState.data;
+    });
+  }
+  function saveLogoState() {
+    if (typeof saveNow === 'function') saveNow();
+    else if (typeof scheduleSave === 'function') scheduleSave();
+  }
+  function setLogoData(data) {
+    logoState.data = data || '';
+    loadLogoImage().then(() => {
+      updateLogoPreview();
+      saveLogoState();
+    });
+  }
+
+  $id('logoChoose')?.addEventListener('click', () => logoFile.click());
+  logoFile?.addEventListener('change', () => {
+    const file = logoFile.files && logoFile.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      if (typeof toast === 'function') toast('تکایە وێنەی لۆگۆ هەڵبژێرە');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setLogoData(String(reader.result || ''));
+    reader.readAsDataURL(file);
+    logoFile.value = '';
+  });
+  $id('logoRemove')?.addEventListener('click', () => {
+    logoState = { ...defaults };
+    setLogoData('');
+    updateLogoPreview();
+  });
+  [['logoSize','size'], ['logoX','x'], ['logoY','y'], ['logoOpacity','opacity']].forEach(([id,key]) => {
+    $id(id)?.addEventListener('input', e => {
+      logoState[key] = Number(e.target.value);
+      updateLogoPreview();
+      saveLogoState();
+    });
+  });
+
+  // Persist logo configuration with each project.
+  const originalSaveNow = window.saveNow;
+  // Existing saveNow is a top-level function declaration; wrap it to store logo data.
+  if (typeof saveNow === 'function') {
+    const previousSave = saveNow;
+    window.saveNow = async function() {
+      await previousSave();
+      if (typeof curId !== 'undefined' && curId) {
+        try {
+          const record = await dbGet('projects', curId);
+          if (record) {
+            record.logo = { ...logoState };
+            await dbPut('projects', record);
+          }
+        } catch (e) { console.warn('Logo save failed', e); }
+      }
+    };
+  }
+
+  // Restore logo when opening a project.
+  const originalOpenProject = openProject;
+  if (typeof originalOpenProject === 'function') {
+    window.openProject = async function(id) {
+      await originalOpenProject(id);
+      const record = await dbGet('projects', id);
+      logoState = { ...defaults, ...((record && record.logo) || {}) };
+      await loadLogoImage();
+      updateLogoPreview();
+    };
+  }
+
+  // Add logo to the exported video, keeping its position and opacity.
+  const originalDrawSub = drawSub;
+  if (typeof originalDrawSub === 'function') {
+    window.drawSub = function(cx, W, H, k, t) {
+      originalDrawSub(cx, W, H, k, t);
+      if (!logoImg || !logoState.data || !logoImg.naturalWidth) return;
+      const width = W * logoState.size / 100;
+      const height = width * logoImg.naturalHeight / logoImg.naturalWidth;
+      const x = W * logoState.x / 100 - width / 2;
+      const y = H * logoState.y / 100 - height / 2;
+      cx.save();
+      cx.globalAlpha = logoState.opacity / 100;
+      cx.drawImage(logoImg, x, y, width, height);
+      cx.restore();
+    };
+  }
+
+  // Initialize after the main app's default setup.
+  const boot = () => {
+    const currentId = (typeof curId !== 'undefined') ? curId : null;
+    if (currentId) {
+      dbGet('projects', currentId).then(record => {
+        logoState = { ...defaults, ...((record && record.logo) || {}) };
+        return loadLogoImage();
+      }).then(updateLogoPreview);
+    } else updateLogoPreview();
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else setTimeout(boot, 0);
+})();
+</script>
+
+
+<!-- Automatic Subtitle Studio: separate workspace -->
+<style id="autoSubtitleStudioStyle">
+#asSubLaunch{position:fixed;right:20px;bottom:20px;z-index:99990;border:1px solid #c4b5fd66;border-radius:18px;padding:13px 17px;color:#fff;font:800 14px/1.2 Inter,system-ui,sans-serif;background:linear-gradient(120deg,#7c3aed,#c026d3);box-shadow:0 12px 35px #7c3aed55;cursor:pointer;display:flex;align-items:center;gap:9px}
+#asSubStudio{position:fixed;inset:0;z-index:99991;display:none;background:radial-gradient(ellipse at 20% 0%,#2b1d50,#0b0b13 60%);color:#f7f4ff;font-family:Inter,system-ui,sans-serif;overflow:auto}
+#asSubStudio.open{display:block}#asSubStudio *{box-sizing:border-box}#asSubStudio .as-shell{max-width:1180px;margin:auto;padding:22px}
+#asSubStudio .as-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}#asSubStudio .as-brand{display:flex;gap:12px;align-items:center}#asSubStudio .as-brand-icon{width:45px;height:45px;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:grid;place-items:center;font-size:22px;box-shadow:0 6px 24px #a855f744}
+#asSubStudio h1{font-size:clamp(22px,4vw,32px);margin:0;font-weight:900;letter-spacing:-.5px}#asSubStudio .as-sub{color:#bcb4d4;font-size:13px;margin-top:5px}#asSubStudio .as-close{border:1px solid #ffffff22;background:#ffffff0c;color:white;border-radius:12px;padding:11px 14px;cursor:pointer}
+#asSubStudio .as-hero{border:1px solid #a78bfa33;border-radius:24px;padding:22px;background:linear-gradient(115deg,#7c3aed22,#db27771a 55%,#11111d);margin-bottom:18px}#asSubStudio .as-hero h2{margin:0 0 7px;font-size:21px}#asSubStudio .as-hero p{margin:0;color:#c9c2dc;font-size:14px;line-height:1.7}
+#asSubStudio .as-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:18px}#asSubStudio .as-card{border:1px solid #ffffff17;background:#151421cc;border-radius:20px;padding:18px;min-width:0}#asSubStudio .as-card h3{font-size:15px;margin:0 0 14px}#asSubStudio .as-label{display:block;color:#c8c0dc;font-size:12px;margin:13px 0 7px}#asSubStudio .as-file{width:100%;border:1px dashed #a78bfa77;border-radius:13px;background:#0b0a13;color:#d9d2ea;padding:12px;font-size:13px}
+#asSubStudio .as-preview{position:relative;background:#050508;border-radius:15px;overflow:hidden;min-height:180px;display:grid;place-items:center;margin-bottom:14px}#asSubStudio video{width:100%;max-height:55vh;display:block;background:#050508}#asSubStudio .as-caption{position:absolute;left:5%;right:5%;bottom:8%;text-align:center;font-size:clamp(16px,2.4vw,28px);font-weight:850;line-height:1.35;color:white;text-shadow:0 2px 3px #000,2px 0 #000,-2px 0 #000,0 0 8px #000;pointer-events:none;white-space:pre-wrap;overflow-wrap:anywhere}
+#asSubStudio .as-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}#asSubStudio .as-field{width:100%;border:1px solid #ffffff22;border-radius:11px;background:#0c0b15;color:white;padding:10px;font-size:13px;min-width:0}#asSubStudio .as-btn{border:0;border-radius:12px;padding:12px 14px;color:white;font-weight:800;font-size:13px;cursor:pointer;background:linear-gradient(110deg,#7c3aed,#c026d3)}#asSubStudio .as-btn.secondary{border:1px solid #ffffff24;background:#ffffff0b}#asSubStudio .as-btn:disabled{opacity:.45;cursor:not-allowed}#asSubStudio .as-note{font-size:12px;line-height:1.7;color:#aaa2c5;margin-top:12px}#asSubStudio .as-status{padding:11px 12px;border-radius:11px;background:#8b5cf61a;border:1px solid #a78bfa33;color:#ddd3ff;font-size:12px;line-height:1.6;margin-top:12px;min-height:38px}#asSubStudio .as-timeline{max-height:240px;overflow:auto;margin-top:12px;display:grid;gap:7px}#asSubStudio .as-line{font-size:12px;color:#d7d0e8;background:#ffffff07;border:1px solid #ffffff0c;border-radius:9px;padding:9px 10px;cursor:pointer;text-align:left}#asSubStudio .as-line.active{border-color:#c084fc;background:#a855f71c}#asSubStudio .as-line small{display:block;color:#a99fc2;margin-bottom:4px}#asSubStudio .as-foot{color:#8f86a8;font-size:11px;text-align:center;padding:24px 0 8px}
+@media(max-width:760px){#asSubStudio .as-shell{padding:13px}#asSubStudio .as-grid{grid-template-columns:1fr}#asSubStudio .as-card{padding:14px}#asSubStudio .as-hero{padding:17px}#asSubLaunch{right:12px;bottom:12px;padding:12px 14px}#asSubStudio .as-preview{min-height:150px}}
+</style>
+<button id="asSubLaunch" type="button" aria-label="Open Automatic Subtitles Studio"><span>✦</span> ژێرنووسی خۆکار</button>
+<section id="asSubStudio" aria-label="Automatic Subtitles Studio">
+ <div class="as-shell">
+  <header class="as-top"><div class="as-brand"><div class="as-brand-icon">✦</div><div><h1>Automatic Subtitle Studio</h1><div class="as-sub">ANIME STUDIO · Smart subtitle workspace</div></div></div><button class="as-close" id="asSubClose">✕ داخستن</button></header>
+  <div class="as-hero"><h2>🎬 ژێرنووسەکانت بە شێوەیەکی جوان ڕێک بخە</h2><p>ڤیدیۆ و SRT هەڵبژێرە، پێشبینین بکە، کات و ستایل بگۆڕە و SRT ـی چاککراو دابگرە. هەموو کارە سەرەتاییەکان لە ناو وێبگەڕەکەتدا ئەنجام دەدرێن.</p></div>
+  <div class="as-grid">
+   <div class="as-card"><h3>▶ پێشبینینی ڤیدیۆ و ژێرنووس</h3><div class="as-preview" id="asSubPreview"><div style="padding:22px;text-align:center;color:#8e85a8;font-size:13px">ڤیدیۆکەت هەڵبژێرە بۆ دەستپێکردن</div><video id="asSubVideo" controls playsinline style="display:none"></video><div class="as-caption" id="asSubCaption"></div></div>
+    <label class="as-label" for="asSubVideoFile">١. فایلێکی ڤیدیۆ</label><input class="as-file" id="asSubVideoFile" type="file" accept="video/*">
+    <label class="as-label" for="asSubSrtFile">٢. فایلێکی ژێرنووس (.srt)</label><input class="as-file" id="asSubSrtFile" type="file" accept=".srt,text/plain,application/x-subrip">
+    <div class="as-controls" style="margin-top:13px"><button class="as-btn secondary" id="asSubBack">− 0.5 چرکە</button><button class="as-btn secondary" id="asSubForward">+ 0.5 چرکە</button></div>
+    <div class="as-status" id="asSubStatus" role="status">سەرەتا ڤیدیۆ و SRT هەڵبژێرە.</div><div class="as-timeline" id="asSubTimeline"></div>
+   </div>
+   <div class="as-card"><h3>✧ ستایلی ژێرنووس</h3>
+    <label class="as-label" for="asSubFont">فۆنت</label><select class="as-field" id="asSubFont"><option value="Arial, sans-serif">Arial / گشتی</option><option value="Tahoma, sans-serif">Tahoma</option><option value="Inter, sans-serif">Inter</option><option value="Georgia, serif">Georgia</option></select>
+    <label class="as-label" for="asSubSize">قەبارەی دەق</label><input class="as-field" id="asSubSize" type="range" min="14" max="42" value="26">
+    <div class="as-controls"><div><label class="as-label" for="asSubColor">ڕەنگی دەق</label><input class="as-field" id="asSubColor" type="color" value="#ffffff"></div><div><label class="as-label" for="asSubBg">پاشبنەما</label><select class="as-field" id="asSubBg"><option value="shadow">سێبەری ڕەش</option><option value="box">بۆکسی نیوەڕەش</option><option value="none">بێ پاشبنەما</option></select></div></div>
+    <label class="as-label" for="asSubPosition">شوێنی ژێرنووس</label><select class="as-field" id="asSubPosition"><option value="bottom">خوارەوە</option><option value="middle">ناوەڕاست</option><option value="top">سەرەوە</option></select>
+    <label class="as-label" for="asSubOffset">گۆڕینی کات (چرکە)</label><input class="as-field" id="asSubOffset" type="number" value="0" step="0.1">
+    <div style="display:grid;gap:9px;margin-top:16px"><button class="as-btn" id="asSubDownload">⬇ دابەزاندنی SRT ـی چاککراو</button><button class="as-btn secondary" id="asSubClear">پاککردنەوە و دەستپێکردنەوە</button><button class="as-btn secondary" id="asSubTranscribe">✦ هەوڵدان بۆ ژێرنووس لە دەنگ</button></div>
+    <p class="as-note">تێبینی: ئەم وەشانە پێشبینین، گۆڕینی کات و دابەزاندنی SRT دەکات. دابەزاندنی ڤیدیۆی کۆتایی بە ژێرنووسی سووتێنراو و ناسینەوەی دەنگی فایل بۆ دەقی تەواو، پێویستی بە مۆتۆری export و خزمەتگوزاری ناسینەوەی دەنگ هەیە کە لەم وەشانەدا پەیوەست نەکراوە.</p>
+   </div>
+  </div><div class="as-foot">ANIME STUDIO · SUBTITLE WORKSPACE</div>
+ </div>
+</section>
+<script>
+(()=>{
+ const $=id=>document.getElementById(id), panel=$('asSubStudio'), video=$('asSubVideo'), caption=$('asSubCaption'), status=$('asSubStatus'), timeline=$('asSubTimeline');
+ let cues=[], offset=0, videoUrl='';
+ const stamp=n=>{n=Math.max(0,n);let ms=Math.round(n*1000),h=Math.floor(ms/3600000);ms%=3600000;let m=Math.floor(ms/60000);ms%=60000;let sec=Math.floor(ms/1000);ms%=1000;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')},${String(ms).padStart(3,'0')}`};
+ function parseSrt(txt){return txt.replace(/^\uFEFF/,'').replace(/\r/g,'').trim().split(/\n\s*\n/).map(block=>{let lines=block.split('\n'),ti=lines.findIndex(x=>x.includes('-->'));if(ti<0)return null;let mt=lines[ti].match(/(\d{2}):(\d{2}):(\d{2})[,\.](\d{1,3})\s*-->\s*(\d{2}):(\d{2}):(\d{2})[,\.](\d{1,3})/);if(!mt)return null;let sec=(h,m,s,ms)=>+h*3600+ +m*60+ +s+ +(String(ms).padEnd(3,'0'))/1000;return {start:sec(mt[1],mt[2],mt[3],mt[4]),end:sec(mt[5],mt[6],mt[7],mt[8]),text:lines.slice(ti+1).join('\n').replace(/<[^>]*>/g,'').trim()};}).filter(x=>x&&x.text)}
+ function currentCue(t){return cues.find(c=>t+offset>=c.start&&t+offset<c.end)}
+ function render(){let c=currentCue(video.currentTime||0);caption.textContent=c?c.text:'';timeline.querySelectorAll('.as-line').forEach((el,i)=>el.classList.toggle('active',!!c&&c===cues[i]));}
+ function statusText(t){status.textContent=t}
+ function renderTimeline(){timeline.innerHTML='';cues.forEach((c,i)=>{let b=document.createElement('button');b.type='button';b.className='as-line';let sm=document.createElement('small');sm.textContent=stamp(c.start)+' → '+stamp(c.end);let tx=document.createElement('span');tx.textContent=c.text;b.append(sm,tx);b.addEventListener('click',()=>{if(video.src)video.currentTime=Math.max(0,c.start-offset);render()});timeline.appendChild(b)})}
+ $('asSubLaunch').addEventListener('click',()=>panel.classList.add('open'));$('asSubClose').addEventListener('click',()=>panel.classList.remove('open'));
+ $('asSubVideoFile').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;if(videoUrl)URL.revokeObjectURL(videoUrl);videoUrl=URL.createObjectURL(f);video.src=videoUrl;video.style.display='block';let ph=$('asSubPreview').firstElementChild;if(ph&&ph!==video&&ph!==caption)ph.style.display='none';statusText('ڤیدیۆ ئامادەیە. ئێستا SRT هەڵبژێرە بۆ پێشبینین.');});
+ $('asSubSrtFile').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{cues=parseSrt(await f.text());renderTimeline();render();statusText(cues.length?`✓ ${cues.length} پارچە ژێرنووس بارکرا. کات و ستایل دەتوانیت بگۆڕیت.`:'فایلی SRT خوێندرایەوە، بەڵام پارچەی دروست نەدۆزرایەوە.');}catch(err){statusText('نەتوانرا فایلی SRT بخوێندرێتەوە.');}});
+ video.addEventListener('timeupdate',render);video.addEventListener('seeked',render);
+ $('asSubBack').addEventListener('click',()=>{offset-=.5;$('asSubOffset').value=offset;render()});$('asSubForward').addEventListener('click',()=>{offset+=.5;$('asSubOffset').value=offset;render()});
+ $('asSubOffset').addEventListener('input',e=>{offset=Number(e.target.value)||0;render()});$('asSubFont').addEventListener('change',e=>caption.style.fontFamily=e.target.value);$('asSubSize').addEventListener('input',e=>caption.style.fontSize=e.target.value+'px');$('asSubColor').addEventListener('input',e=>caption.style.color=e.target.value);$('asSubBg').addEventListener('change',e=>{caption.style.background=e.target.value==='box'?'#0009':'transparent';caption.style.padding=e.target.value==='box'?'7px 12px':'0';caption.style.textShadow=e.target.value==='shadow'?'0 2px 3px #000,2px 0 #000,-2px 0 #000,0 0 8px #000':'none'});$('asSubPosition').addEventListener('change',e=>{caption.style.top=e.target.value==='top'?'8%':e.target.value==='middle'?'45%':'auto';caption.style.bottom=e.target.value==='bottom'?'8%':'auto';caption.style.transform=e.target.value==='middle'?'translateY(-50%)':'none'});
+ $('asSubDownload').addEventListener('click',()=>{if(!cues.length){statusText('سەرەتا فایلێکی SRT بار بکە.');return}let text=cues.map((c,i)=>`${i+1}\n${stamp(c.start-offset)} --> ${stamp(c.end-offset)}\n${c.text}`).join('\n\n')+'\n';let blob=new Blob([text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='anime-studio-subtitles-fixed.srt';a.click();URL.revokeObjectURL(url);statusText('✓ SRT ـی چاککراو دابەزێنرا.');});
+ $('asSubClear').addEventListener('click',()=>{cues=[];timeline.innerHTML='';caption.textContent='';$('asSubSrtFile').value='';$('asSubVideoFile').value='';video.pause();video.removeAttribute('src');video.load();video.style.display='none';let ph=$('asSubPreview').firstElementChild;if(ph&&ph!==video&&ph!==caption)ph.style.display='block';offset=0;$('asSubOffset').value='0';statusText('پاککرایەوە. فایلەکانت دووبارە هەڵبژێرە.')});
+ $('asSubTranscribe').addEventListener('click',()=>statusText('بۆ دروستکردنی ژێرنووس لە دەنگی فایلەکە، پێویستە مۆتۆری ناسینەوەی دەنگ (وەک Whisper) بە پەیوەندی سێرڤەر زیاد بکرێت. لەم وەشانەدا ئەم خزمەتگوزارییە پەیوەست نییە.'));
+})();
+</script>
+
+<!-- Anime Studio secure invite-code gate: configure Supabase URL and anon key below -->
+<style id="anime-private-gate-style">
+#animeInviteGate{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at top,#38206b 0%,#151326 48%,#080910 100%);font-family:Inter,Tajawal,sans-serif;color:#fff}
+#animeInviteGate[hidden]{display:none!important}
+#animeInviteGate .gate-card{width:min(430px,100%);padding:28px 24px;border:1px solid #8b5cf688;border-radius:24px;background:#11101eeF;box-shadow:0 24px 80px #0009;text-align:center}
+#animeInviteGate .gate-logo{width:94px;height:94px;object-fit:cover;border-radius:23px;border:1px solid #a78bfa88;box-shadow:0 0 35px #7c3aed55}
+#animeInviteGate h1{font-size:25px;margin:16px 0 6px;letter-spacing:.5px}
+#animeInviteGate p{color:#c4bddb;font-size:14px;line-height:1.8;margin:8px 0 18px}
+#animeInviteGate input{width:100%;box-sizing:border-box;padding:14px 15px;border-radius:12px;border:1px solid #6d5a99;background:#080812;color:white;font-size:16px;text-align:center;outline:none}
+#animeInviteGate input:focus{border-color:#c4b5fd;box-shadow:0 0 0 3px #8b5cf633}
+#animeInviteGate button{width:100%;padding:14px;margin-top:12px;border:0;border-radius:12px;background:linear-gradient(110deg,#7c3aed,#c026d3);color:white;font-weight:800;font-size:15px;cursor:pointer}
+#animeInviteGate button:disabled{opacity:.6;cursor:wait}
+#animeInviteGate .gate-msg{min-height:24px;color:#fda4af;font-size:13px;margin-top:10px}
+#animeInviteGate .gate-foot{font-size:11px;color:#8c83a6;margin-top:14px}
+</style>
+<div id="animeInviteGate" hidden>
+  <div class="gate-card">
+    <img class="gate-logo" src="./icons/icon-192.png" alt="Anime Studio logo">
+    <h1>ANIME STUDIO</h1>
+    <p>ئەم ئەپە تایبەتە. بۆ چوونەژوورەوە کۆدی بانگهێشت بنووسە.</p>
+    <form id="animeInviteForm">
+      <input id="animeInviteCode" type="password" autocomplete="current-password" placeholder="کۆدی بانگهێشت" required>
+      <button id="animeInviteSubmit" type="submit">چوونەژوورەوە</button>
+    </form>
+    <div class="gate-msg" id="animeInviteMessage" role="status" aria-live="polite"></div>
+    <div class="gate-foot">PRIVATE ACCESS · ANIME STUDIO</div>
+  </div>
+</div>
+<script>
+(() => {
+  // REQUIRED: replace these two placeholders with your Supabase project values.
+  const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+  const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+  const FUNCTION_URL = SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/anime-invite";
+  const gate = document.getElementById("animeInviteGate");
+  const form = document.getElementById("animeInviteForm");
+  const input = document.getElementById("animeInviteCode");
+  const button = document.getElementById("animeInviteSubmit");
+  const message = document.getElementById("animeInviteMessage");
+  const SESSION_KEY = "anime_studio_invite_session_v1";
+
+  function lockApp() {
+    gate.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+  }
+  function unlockApp() {
+    gate.hidden = true;
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+  }
+  async function request(action, payload={}) {
+    if (SUPABASE_URL.includes("PASTE_YOUR_") || SUPABASE_ANON_KEY.includes("PASTE_YOUR_")) {
+      throw new Error("پێویستە Supabase URL و anon key زیاد بکرێن.");
+    }
+    const response = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: {"Content-Type":"application/json", "apikey":SUPABASE_ANON_KEY, "Authorization":"Bearer "+SUPABASE_ANON_KEY},
+      body: JSON.stringify({action, ...payload})
+    });
+    const data = await response.json().catch(()=>({}));
+    if (!response.ok || !data.ok) throw new Error(data.message || "کۆد پشتڕاست نەکرایەوە.");
+    return data;
+  }
+  lockApp();
+  // Check whether a previous invite session is still valid.
+  const saved = localStorage.getItem(SESSION_KEY);
+  if (saved) {
+    request("verify", {token:saved}).then(() => unlockApp()).catch(() => {
+      localStorage.removeItem(SESSION_KEY);
+      lockApp();
+    });
+  }
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const code = input.value.trim();
+    if (!code) return;
+    button.disabled = true;
+    button.textContent = "چاوەڕێ بکە...";
+    message.textContent = "";
+    try {
+      const result = await request("invite", {code});
+      localStorage.setItem(SESSION_KEY, result.token);
+      input.value = "";
+      unlockApp();
+    } catch (err) {
+      message.textContent = err.message || "کۆدی بانگهێشت هەڵەیە.";
+    } finally {
+      button.disabled = false;
+      button.textContent = "چوونەژوورەوە";
+    }
+  });
+})();
+</script>
+
 </body>
 </html>

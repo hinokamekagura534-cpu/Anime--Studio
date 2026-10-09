@@ -1,21 +1,19 @@
-Anime Studio — PWA package
+Anime Studio - Automatic Subtitle Studio
 
-Upload ALL files and folders in this package to the root of your GitHub repository:
-- index.html (replace the old one)
-- manifest.json
-- service-worker.js
-- icons/ (all PNG icons)
+1) Open your GitHub repository.
+2) Open index.html and choose Edit (pencil).
+3) Replace the old index.html content with the provided index.html content.
+4) Commit changes and wait for GitHub Pages to publish.
 
-Then commit changes and wait a few minutes for GitHub Pages to update.
+Features included in this file:
+- Separate Automatic Subtitle Studio panel
+- Local video preview
+- SRT upload and subtitle preview
+- Subtitle timing offset adjustment
+- Font, size, color, background, and position controls
+- Download adjusted SRT
 
-Android:
-Open the site in Chrome, then choose Install app (if shown) or browser menu > Install app / Add to Home screen.
-
-iPhone:
-Open the site in Safari > Share > Add to Home Screen.
-
-Desktop:
-Open in Chrome or Edge and use Install app if available.
-
-The app name shown on the home screen is Anime Studio. The anime emblem is used as the app icon.
-The mobile layout is optimized for small screens and touch controls. Some online features still need internet.
+Important:
+- The invite screen still needs your own Supabase project URL and anon key, and the Supabase Edge Function must be deployed.
+- Automatic speech-to-text is not connected yet; the button explains that a transcription service such as Whisper must be connected.
+- This panel previews subtitles and downloads adjusted SRT. It does not permanently burn subtitles into the video file.

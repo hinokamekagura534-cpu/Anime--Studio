@@ -1,0 +1,33 @@
+Anime Studio — Supabase Invite Code Setup
+===========================================
+
+IMPORTANT
+- The invite code is stored as a Supabase Edge Function secret, NOT in index.html.
+- Replace the Supabase URL and anon key placeholders in index.html before deploying.
+- Set your own private invite code in Supabase secrets. Do not share the service-role key.
+- This gates the app UI. Because GitHub Pages serves static files publicly, it cannot hide the HTML/JS source itself. Protect any private videos/data/backend resources separately if you need true content privacy.
+
+1) Create a Supabase project at https://supabase.com/dashboard
+2) In Project Settings > API, copy:
+   - Project URL
+   - anon/public key
+3) In index.html replace:
+   PASTE_YOUR_SUPABASE_PROJECT_URL_HERE
+   PASTE_YOUR_SUPABASE_ANON_KEY_HERE
+4) Install Supabase CLI and sign in, then from the folder containing supabase/ run:
+   supabase login
+   supabase link --project-ref YOUR_PROJECT_REF
+5) Set the private invite code and a long random signing secret:
+   supabase secrets set ANIME_STUDIO_INVITE_CODE="choose-your-own-long-private-code"
+   supabase secrets set ANIME_STUDIO_SIGNING_SECRET="replace-with-a-long-random-secret-at-least-32-characters"
+6) Deploy the function:
+   supabase functions deploy anime-invite
+7) Upload the updated index.html and icons folder to your GitHub repository, commit, and wait for Pages to update.
+8) Open the website. The invite gate should appear. Enter the code you set in step 5.
+
+Invite code behavior:
+- A successful code creates a signed browser session lasting 30 days.
+- A wrong code is rejected by the Edge Function.
+- No code is embedded in the browser source.
+- For production, add rate limiting/WAF protections to reduce guessing attempts.
+- This is an invite-code gate for the static app UI, not a full user account system. Static assets remain public on GitHub Pages.

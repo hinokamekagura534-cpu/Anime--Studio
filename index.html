@@ -2275,7 +2275,7 @@ function onG(u){gUser={uid:u.uid,email:(u.email||'').toLowerCase(),name:u.displa
  setUser(gUser.email,true);$('#uChip').innerHTML=icon('user',16)+' '+gUser.name+(isOwner()?' 👑':'');checkJoinAccess();if($('#pChat').classList.contains('on'))startChat()}
 $('#aGo').insertAdjacentHTML('afterend','<button id="aGoogle" class="nchip"><b style="color:#4da3ff">G</b> Google</button>');
 $('#aGoogle').onclick=async()=>{if(!FB_ON)return msg('بۆ Google پێویستە Firebase ڕێک بخرێت (سەیری chat-config لە فایلەکە بکە)');
- try{const f=await fbInit(),r=await f.Au.signInWithPopup(f.auth,new f.Au.GoogleAuthProvider());onG(r.user)}catch(e){msg('Google: '+(e.code||e.message))}};
+ try{gateMessage('چاوەڕێ بکە، پەیوەندی بە Google دەکرێت...');const f=await fbInit(),r=await f.Au.signInWithPopup(f.auth,new f.Au.GoogleAuthProvider());onG(r.user)}catch(e){const detail='هەڵەی Google Login: '+(e.code||e.message||'هەڵەی نەناسراو');gateMessage(detail);gateButtons({signIn:true});msg(detail)}};
 if(FB_ON)fbInit().then(f=>f.Au.onAuthStateChanged(f.auth,u=>{if(u)onG(u);else{gUser=null;joinApproved=false;checkJoinAccess()}})).catch(e=>{gateShow(true);gateMessage('Firebase: '+(e.code||e.message))});
 $('#jgSignIn').onclick=()=>$('#aGoogle').click();$('#jgRequest').onclick=sendJoinRequest;$('#jgRefresh').onclick=checkJoinAccess;$('#jgSignOut').onclick=async()=>{try{const f=await fbInit();await f.Au.signOut(f.auth)}catch(e){gateMessage(e.message)}};
 const _lo=$('#btnLogout').onclick;$('#btnLogout').onclick=async()=>{gUser=null;joinApproved=false;try{fb&&await fb.Au.signOut(fb.auth)}catch{}gateShow(true);stop();return _lo()};

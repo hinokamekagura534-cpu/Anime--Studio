@@ -588,11 +588,16 @@ img,video,canvas,svg{max-width:100%;}
 <section class="page" id="pLib"><div class="lib">
   <div class="studio"><div class="slogo" id="pLogo" title="Anime Studio"></div><div><h1>Anime Studio</h1><p>پڕۆژەکانت لێرە خۆکارانە هەڵدەگیرێن. کلیک لەسەر Anime Studio بکە بۆ دروستکردنی پڕۆژەی نوێ.</p></div><button class="pri" id="pNew2">+ پڕۆژەی نوێ</button></div>
   <div id="projGrid"></div></div></section>
-<section class="page" id="pChat"><div class="chat">
-  <div class="chead"><h2>چاتی تیم</h2><small id="cMode"></small><div id="gBar"></div></div>
-  <div id="cMsgs"><div id="cNeed" hidden><span id="cNeedT"></span><button class="pri" id="cNeedB"></button></div></div>
-  <div class="cform"><textarea id="cIn" maxlength="500" placeholder="نامەیەک بنووسە... (Enter = ناردن)"></textarea><button class="pri" id="cSend">ناردن</button></div>
-</div></section>
+<section class="page" id="pChat"><div class="chat2">
+  <aside class="cside"><h4>🟢 ئۆنلاین (<b id="cOnN">0</b>)</h4><div id="cOnList"></div></aside>
+  <div class="cmain">
+   <div class="chead"><h2>چاتی تیم</h2><small id="cMode"></small><span style="color:var(--tx2);font-size:12px">🟢 <b id="cOnHead">0</b></span><button id="cSnd" class="gchip" title="دەنگی نامە">🔔</button><div id="gBar"></div></div>
+   <div id="cMsgs"><div id="cNeed" hidden></div></div>
+   <button id="cDown" hidden></button>
+   <div id="cFoot" hidden><div id="cRep" hidden><span></span><button id="cRepX">✕</button></div>
+    <div class="cform"><button class="ib2" id="cEmo" title="ئیمۆجی">😊</button><button class="ib2" id="cImgB" title="وێنە">🖼</button><textarea id="cIn" maxlength="500" placeholder="نامەیەک بنووسە... (Enter = ناردن)"></textarea><button class="pri" id="cSend">ناردن</button></div>
+    <div id="cEmoBox" hidden></div><input type="file" id="cFile" accept="image/*" hidden></div>
+  </div></div></section>
 <section class="page" id="pPoster"><div class="ps">
  <aside class="ps-l">
   <div class="ps-tabs"><button class="on" data-pt="add">زیادکردن</button><button data-pt="bg">پاشبنەما</button><button data-pt="tpl">قاڵب</button><button data-pt="lay">چین</button><button data-pt="out">هەناردە</button></div>
@@ -799,7 +804,7 @@ $('trLogoFile').addEventListener('change',()=>{const f=$('trLogoFile').files[0];
 $('trMusicFile').addEventListener('change',()=>{const f=$('trMusicFile').files[0];if(!f)return;if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(f);music.src=musicUrl;music.load();music.volume=(+$('trMusicVolume').value||0)/100;music.loop=$('trMusicLoop').checked;toast('تراکی دەنگ زیاد کرا ✔')});
 $('trMusicVolume').addEventListener('input',()=>music.volume=(+$('trMusicVolume').value||0)/100);$('trMusicLoop').addEventListener('change',()=>music.loop=$('trMusicLoop').checked);
 v.addEventListener('play',()=>{if(music.src){const st=+$('trMusicStart').value||0;try{music.currentTime=st}catch{}music.play().catch(()=>{})}});v.addEventListener('pause',()=>music.pause());v.addEventListener('timeupdate',()=>{if(music.src&&v.currentTime>0&&Math.abs(music.currentTime-((+$('trMusicStart').value||0)+v.currentTime-(+$('trStart').value||0)))>1.2){try{music.currentTime=Math.max(0,(+$('trMusicStart').value||0)+v.currentTime-(+$('trStart').value||0))}catch{}}applyPreview()});
-$('trGoEditor').addEventListener('click',()=>{const lib=document.querySelector('[data-page="pLib"]');if(lib)lib.click()});applyPreview();updateMaskPreview();})();</script>
+($('trGoEditor')||document.createElement('i')).addEventListener('click',()=>{const lib=document.querySelector('[data-page="pLib"]');if(lib)lib.click()});applyPreview();updateMaskPreview();})();</script>
 <section class="page" id="pOwner"><div class="ow" id="owBody"></div></section>
 
 <section class="page" id="pAbout"><div class="about">
@@ -2480,6 +2485,7 @@ $('#dNew').insertAdjacentHTML('afterbegin',`<div class="dlogo">${LOGO}</div>`);}
 /* ====== chat-config: Firebase console → Project settings → Your apps (Web) → paste the values here ======
    Leave apiKey empty = local test mode (chat works only inside this browser, Google login disabled). */
 window.FB_CONFIG = { apiKey: "", authDomain: "", projectId: "", appId: "" };
+try{if(!FB_CONFIG.apiKey){const o=JSON.parse(localStorage.getItem("aura.fbcfg")||"null");if(o&&o.apiKey)window.FB_CONFIG=o}}catch(e){}
 </script>
 <style id="v7">/* ===== v7: chat ===== */
 .chat{max-width:820px;margin:0 auto;height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:16px;direction:rtl}
@@ -2500,47 +2506,137 @@ window.FB_CONFIG = { apiKey: "", authDomain: "", projectId: "", appId: "" };
 </style>
 <script id="v7">(()=>{
 const OWNER='safenrn53@gmail.com', FB_ON=!!(window.FB_CONFIG&&FB_CONFIG.apiKey);
-let fb=null,gUser=null,unsub=null,cache=[],bc=null,groups=[],gid='',unsubG=null;
+const REACTS=['👍','❤️','😂','😮','🔥'], EMO=['😀','😂','🥹','😍','😎','🤔','😭','😡','👍','👏','🙏','💪','🔥','❤️','💙','💜','✨','🎉','🎌','⚔️','🍥','🌸','👑','💯','✅','❌','👀','🤝','😴','🥳'];
+let fb=null,gUser=null,unsub=null,unsubG=null,unsubP=null,cache=[],bc=null,groups=[],gid='',lim=100,online=[],replyTo=null,editing=null,lastSend=0,unread=0,lastTs=0,newBelow=0;
+let sound=localStorage.getItem('aura.csound')!=='0';
+const nodes=new Map();
 const isOwner=()=>FB_ON?(!!gUser&&gUser.verified&&gUser.email===OWNER):(!!user&&user!=='guest'&&String(user).toLowerCase()===OWNER);
 async function fbInit(){if(fb||!FB_ON)return fb;const B='https://www.gstatic.com/firebasejs/10.12.2/';
  const [A,Au,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
  const app=A.initializeApp(FB_CONFIG);fb={A,Au,F,auth:Au.getAuth(app),db:F.getFirestore(app)};return fb}
-function onG(u){gUser={uid:u.uid,email:(u.email||'').toLowerCase(),name:u.displayName||u.email,photo:u.photoURL||'',verified:!!u.emailVerified};
- setUser(gUser.email,true);$('#uChip').innerHTML=icon('user',16)+' '+gUser.name+(isOwner()?' 👑':'');if($('#pChat').classList.contains('on'))startChat()}
+function onG(u){gUser={uid:u.uid,email:(u.email||'').toLowerCase(),name:u.displayName||(u.email||'').split('@')[0],photo:u.photoURL||'',verified:!!u.emailVerified};
+ setUser(gUser.email,true);$('#uChip').innerHTML=icon('user',16)+' '+gUser.name+(isOwner()?' 👑':'');if(window.__beat)window.__beat();if($('#pChat').classList.contains('on'))startChat()}
 $('#aGo').insertAdjacentHTML('afterend','<button id="aGoogle" class="nchip"><b style="color:#4da3ff">G</b> Google</button>');
-$('#aGoogle').onclick=async()=>{if(!FB_ON)return msg('بۆ Google پێویستە Firebase ڕێک بخرێت (سەیری chat-config لە فایلەکە بکە)');
- try{const f=await fbInit(),r=await f.Au.signInWithPopup(f.auth,new f.Au.GoogleAuthProvider());onG(r.user)}catch(e){msg('Google: '+(e.code||e.message))}};
+const googleLogin=async()=>{if(!FB_ON)return msg('بۆ Google پێویستە Firebase ڕێک بخرێت (لە چات ← ڕێکخستنی Firebase)');
+ try{const f=await fbInit(),r=await f.Au.signInWithPopup(f.auth,new f.Au.GoogleAuthProvider());onG(r.user)}catch(e){toast('Google: '+(e.code||e.message))}};
+$('#aGoogle').onclick=googleLogin;
 if(FB_ON)fbInit().then(f=>f.Au.onAuthStateChanged(f.auth,u=>{if(u)onG(u)}));
 const _lo=$('#btnLogout').onclick;$('#btnLogout').onclick=async()=>{gUser=null;try{fb&&await fb.Au.signOut(fb.auth)}catch{}stop();return _lo()};
 /* nav + page */
 const nb=Object.assign(document.createElement('button'),{className:'nb',textContent:'چات'});nb.dataset.page='pChat';nb.onclick=()=>go('pChat');$('#nsp').before(nb);
-const _go=window.go;window.go=function(id){_go.apply(this,arguments);id==='pChat'?startChat():0};
+const _go=window.go;window.go=function(id){_go.apply(this,arguments);if(id==='pChat'){unread=0;badge();startChat()}};
 const me=()=>FB_ON?gUser:(user&&user!=='guest'?{uid:user,name:user,email:'',photo:''}:null);
+const chatOn=()=>$('#pChat').classList.contains('on')&&!document.hidden;
+function badge(){nb.dataset.n=unread>0?String(Math.min(unread,99)):'';document.title=(unread>0?'('+unread+') ':'')+document.title.replace(/^\(\d+\)\s/,'')}
+function beep(){if(!sound)return;try{const c=new (window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=880;g.gain.value=.05;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.25);o.stop(c.currentTime+.26);setTimeout(()=>c.close(),500)}catch{}}
+document.addEventListener('visibilitychange',()=>{if(chatOn()){unread=0;badge()}});
+
+/* ---- login gate ---- */
+function buildGate(){const need=$('#cNeed');if(need.dataset.b)return;need.dataset.b=1;
+ if(FB_ON)need.innerHTML=`<b style="font-size:17px">بۆ چات دەبێت بچیتە ژوورەوە</b><span id="cNeedT">هەر کەسێک دەتوانێت هەژمار دروست بکات و بەشداری بکات</span>
+  <button class="pri" id="gGoogle"><b>G</b> چوونەژوورەوە بە Google</button><div class="gform"><input id="gEmail" type="email" placeholder="Email" dir="ltr" autocomplete="email"><input id="gPass" type="password" placeholder="Password (٦+ پیت)" dir="ltr" autocomplete="current-password"><input id="gName" placeholder="ناو (بۆ هەژماری نوێ)" dir="auto"><div class="row2"><button class="pri" id="gIn">چوونەژوورەوە</button><button id="gUp">هەژماری نوێ</button></div></div>`;
+ else need.innerHTML=`<b style="font-size:17px">بۆ چات هەژمارێک پێویستە</b><span id="cNeedT">میوان ناتوانێت بنووسێت. هەژمارێک دروست بکە یان بچۆ ژوورەوە.</span>
+  <div class="row2"><button class="pri" id="gLogin">چوونەژوورەوە</button><button id="gReg">هەژماری نوێ</button></div>
+  <small style="max-width:360px">⚠️ دۆخی تاقیکردنەوە: چات تەنها لەسەر ئەم براوزەرەیە. بۆ ئەوەی هەموو کەس بتوانێت بەشداری بکات Firebase چالاک بکە:</small><button class="nchip" id="gSetup">☁ ڕێکخستنی Firebase</button>`;
+ const $$=s=>need.querySelector(s);
+ if(FB_ON){$$('#gGoogle').onclick=googleLogin;
+  $$('#gIn').onclick=async()=>{try{const f=await fbInit(),r=await f.Au.signInWithEmailAndPassword(f.auth,$$('#gEmail').value.trim(),$$('#gPass').value);onG(r.user)}catch(e){toast('چوونەژوورەوە: '+(e.code||e.message))}};
+  $$('#gUp').onclick=async()=>{const nm=$$('#gName').value.trim();if(nm.length<2)return toast('ناوێک بنووسە');try{const f=await fbInit(),r=await f.Au.createUserWithEmailAndPassword(f.auth,$$('#gEmail').value.trim(),$$('#gPass').value);await f.Au.updateProfile(r.user,{displayName:nm});try{await f.Au.sendEmailVerification(r.user)}catch{}onG(f.auth.currentUser);toast('هەژمار دروست بوو ✔')}catch(e){toast('هەژمار: '+(e.code||e.message))}}}
+ else{$$('#gLogin').onclick=()=>{aMode='in';authUI();$('#auth').classList.add('on')};$$('#gReg').onclick=()=>{aMode='up';authUI();$('#auth').classList.add('on')};$$('#gSetup').onclick=()=>openDlg('dFb')}}
+
+/* ---- rendering ---- */
+const linkRe=/(https?:\/\/[^\s<]+|@[\p{L}\p{N}_.]{2,})/gu;
+function rich(el,text,meName){String(text||'').split(linkRe).forEach(p=>{if(!p)return;
+ if(/^https?:\/\//.test(p)){const a=document.createElement('a');a.href=p;a.target='_blank';a.rel='noopener noreferrer nofollow';a.textContent=p;el.appendChild(a)}
+ else if(p[0]==='@'&&p.length>2){const s=document.createElement('span');s.className='mn'+(meName&&p.slice(1).toLowerCase()===meName.toLowerCase()?' me':'');s.textContent=p;el.appendChild(s)}
+ else el.appendChild(document.createTextNode(p))})}
+const tsOf=x=>x.ts&&x.ts.toDate?x.ts.toDate():new Date(x.ts||Date.now());
+const adminOf=x=>!!(window.__isAdmin&&window.__isAdmin(x));
+function sig(x,head,m){return JSON.stringify([x.text,x.edited,x.rx,x.img?x.img.length:0,x.reply&&x.reply.id,adminOf(x),m.uid,head,isOwner(),window.__isAdminMe&&window.__isAdminMe(),x.ts&&x.ts.seconds||x.ts])}
+function mk(x,head,m){
+ const mine=x.uid===m.uid,own=(x.email||'')===OWNER||(!FB_ON&&String(x.uid||'').toLowerCase()===OWNER),d=document.createElement('div');d.className='cm'+(mine?' me':'')+(head?'':' cont');d.dataset.id=x.id;
+ const av=x.photo?Object.assign(document.createElement('img'),{src:x.photo,referrerPolicy:'no-referrer',loading:'lazy',decoding:'async'}):document.createElement('div');av.className='cav';if(!x.photo)av.textContent=(x.name||'?')[0].toUpperCase();
+ if(!head)av.style.visibility='hidden';
+ const b=document.createElement('div');b.className='b';
+ if(head){const h=document.createElement('div');h.className='h';const nm=document.createElement('b');nm.textContent=x.name||'';const bd=document.createElement('span');bd.className='bd'+(own?' ow':'');bd.textContent=own?'👑 ئۆنەر':(adminOf(x)?'🛡 ئەدمین':'ئەندام');const tm=document.createElement('span');tm.textContent=tsOf(x).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});h.append(nm,bd,tm);b.appendChild(h)}
+ if(x.reply){const q=document.createElement('div');q.className='rq';q.innerHTML='<b></b><span></span>';q.firstChild.textContent=x.reply.name||'';q.lastChild.textContent=x.reply.text||'🖼';q.onclick=()=>{const t=document.querySelector('.cm[data-id="'+x.reply.id+'"]');if(t){t.scrollIntoView({block:'center',behavior:'smooth'});t.classList.add('hl');setTimeout(()=>t.classList.remove('hl'),1400)}};b.appendChild(q)}
+ if(x.text){const t=document.createElement('div');t.className='t';rich(t,x.text,m.name);if(x.edited){const e=document.createElement('i');e.className='ed2';e.textContent=' (دەستکاریکراو)';t.appendChild(e)}b.appendChild(t)}
+ if(x.img){const im=document.createElement('img');im.className='cimg';im.src=x.img;im.loading='lazy';im.decoding='async';im.onclick=()=>window.open(x.img,'_blank');b.appendChild(im)}
+ const rx=document.createElement('div');rx.className='rxs';REACTS.forEach((e,i)=>{const arr=(x.rx&&x.rx['r'+i])||[];if(arr.length){const bt=document.createElement('button');bt.className='rx'+(arr.includes(m.uid)?' on':'');bt.textContent=e+' '+arr.length;bt.onclick=()=>react(x,i);rx.appendChild(bt)}});if(rx.children.length)b.appendChild(rx);
+ const ac=document.createElement('div');ac.className='acts';
+ const A=(t,tt,fn)=>{const k=document.createElement('button');k.textContent=t;k.title=tt;k.onclick=e=>{e.stopPropagation();fn(k)};ac.appendChild(k)};
+ A('↩','وەڵام',()=>setReply(x));
+ A('😊','کاردانەوە',k=>{const p=document.createElement('div');p.className='rpick';REACTS.forEach((e,i)=>{const bt=document.createElement('button');bt.textContent=e;bt.onclick=ev=>{ev.stopPropagation();p.remove();react(x,i)};p.appendChild(bt)});k.after(p);setTimeout(()=>document.addEventListener('click',()=>p.remove(),{once:true}),0)});
+ if(x.text)A('⧉','کۆپی',()=>navigator.clipboard&&navigator.clipboard.writeText(x.text).then(()=>toast('کۆپی کرا')));
+ if(mine&&x.text)A('✎','دەستکاری',()=>startEdit(x));
+ if(isOwner()&&!own&&window.__toggleAdmin)A(adminOf(x)?'🛡✕':'🛡','ئەدمین بکە / لایببە',()=>window.__toggleAdmin(x));
+ if(mine||isOwner()||(window.__isAdminMe&&window.__isAdminMe()))A('✕','سڕینەوە',()=>{if(confirm('ئەم نامەیە بسڕدرێتەوە؟'))del(x.id)});
+ b.appendChild(ac);d.append(av,b);return d}
+function dayLabel(d){const n=new Date(),y=new Date(Date.now()-864e5),s=x=>x.toDateString();return s(d)===s(n)?'ئەمڕۆ':s(d)===s(y)?'دوێنێ':d.toLocaleDateString()}
 function paint(){
- renderGroups();const box=$('#cMsgs'),need=$('#cNeed'),m=me(),near=box.scrollHeight-box.scrollTop-box.clientHeight<80;
- [...box.querySelectorAll('.cm')].forEach(e=>e.remove());need.hidden=!!m;
- if(!m){$('#cNeedT').textContent=FB_ON?'بۆ چات دەبێت بە Google بچیتە ژوورەوە':'بۆ چات هەژمارێکی ئاسایی پێویستە (نەک میوان)';$('#cNeedB').textContent=FB_ON?'چوونەژوورەوە بە Google':'چوونەژوورەوە';$('#cNeedB').onclick=()=>{$('#auth').classList.add('on')};return}
- cache.filter(x=>(x.gid||'')===gid).forEach(x=>{const mine=x.uid===m.uid,own=(x.email||'')===OWNER||(!FB_ON&&String(x.uid||'').toLowerCase()===OWNER),d=document.createElement('div');d.className='cm'+(mine?' me':'');
-  const av=x.photo?Object.assign(document.createElement('img'),{src:x.photo,referrerPolicy:'no-referrer'}):document.createElement('div');av.className='cav';if(!x.photo)av.textContent=(x.name||'?')[0].toUpperCase();
-  const t=x.ts&&x.ts.toDate?x.ts.toDate():new Date(x.ts||Date.now()),b=document.createElement('div');b.className='b';
-  b.innerHTML='<div class="h"><b></b><span class="bd"></span><span></span></div><div class="t"></div>';
-  b.querySelector('b').textContent=x.name||'';const bd=b.querySelector('.bd');bd.textContent=own?'👑 ئۆنەر':(window.__isAdmin&&window.__isAdmin(x)?'🛡 ئەدمین':'ستاف');bd.classList.toggle('ow',own);
-  b.querySelectorAll('.h span')[1].textContent=t.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});b.querySelector('.t').textContent=x.text;
-  if(isOwner()&&!own&&window.__toggleAdmin){const a=document.createElement('button');a.className='x';a.textContent=(window.__isAdmin&&window.__isAdmin(x))?'🛡✕':'🛡';a.title='ئەدمین بکە / لایببە';a.onclick=()=>window.__toggleAdmin(x);b.querySelector('.h').appendChild(a)}if(mine||isOwner()||(window.__isAdminMe&&window.__isAdminMe())){const k=document.createElement('button');k.className='x';k.textContent='✕';k.title='سڕینەوە';k.onclick=()=>del(x.id);b.querySelector('.h').appendChild(k)}
-  d.append(av,b);box.appendChild(d)});
- if(near)box.scrollTop=box.scrollHeight}
+ renderGroups();renderOnline();buildGate();const box=$('#cMsgs'),need=$('#cNeed'),m=me(),near=box.scrollHeight-box.scrollTop-box.clientHeight<90;
+ need.hidden=!!m;$('#cFoot').hidden=!m;
+ if(!m){nodes.clear();[...box.children].forEach(e=>{if(e!==need)e.remove()});return}
+ const list=cache.filter(x=>(x.gid||'')===gid),out=[];let prev=null,prevDay='';
+ if(cache.length>=lim){const mb=document.createElement('button');mb.className='more';mb.textContent='نامە کۆنەکان ببینە';mb.onclick=()=>{lim+=100;restart()};out.push(mb)}
+ if(!list.length){const e=document.createElement('div');e.className='cempty';e.textContent='هێشتا هیچ نامەیەک نییە. یەکەم کەس بە 👋';out.push(e)}
+ const live=new Set();
+ list.forEach(x=>{const dt=tsOf(x),dk=dt.toDateString();if(dk!==prevDay){const s=document.createElement('div');s.className='dsep';s.textContent=dayLabel(dt);out.push(s);prevDay=dk;prev=null}
+  const head=!(prev&&prev.uid===x.uid&&Math.abs(tsOf(x)-tsOf(prev))<18e4&&!x.reply);const sg=sig(x,head,m);let n=nodes.get(x.id);
+  if(!n||n.sig!==sg){n={el:mk(x,head,m),sig:sg};nodes.set(x.id,n)}live.add(x.id);out.push(n.el);prev=x});
+ [...nodes.keys()].forEach(k=>{if(!live.has(k))nodes.delete(k)});
+ box.replaceChildren(need,...out);
+ if(near){box.scrollTop=box.scrollHeight;newBelow=0}$('#cDown').hidden=!newBelow;if(newBelow)$('#cDown').textContent='⬇ '+newBelow+' نامەی نوێ'}
+function renderOnline(){const l=$('#cOnList');if(!l)return;const now=Date.now(),m=me();let arr=online.filter(u=>now-(u.ts||0)<90000);if(m&&!arr.some(u=>u.uid===m.uid))arr=[{uid:m.uid,name:m.name,photo:m.photo,ts:now},...arr];
+ $('#cOnN').textContent=arr.length;$('#cOnHead').textContent=arr.length;
+ l.replaceChildren(...arr.slice(0,60).map(u=>{const d=document.createElement('div');d.className='ou';const a=u.photo?Object.assign(document.createElement('img'),{src:u.photo,referrerPolicy:'no-referrer',loading:'lazy'}):document.createElement('i');if(!u.photo)a.textContent=(u.name||'?')[0].toUpperCase();const s=document.createElement('span');s.textContent=u.name||'—';d.append(a,s);return d}))}
+setInterval(()=>{if(chatOn())renderOnline()},20000);
+function pageSnap(docs){const fresh=docs.filter(x=>x.ts&&(x.ts.toMillis?x.ts.toMillis():+x.ts)>lastTs&&x.uid!==(me()||{}).uid);return fresh}
+function onData(arr,first){const m=me();const fresh=m?arr.filter(x=>(+tsOf(x))>lastTs&&x.uid!==m.uid&&(x.gid||'')===gid||false):[];
+ if(!first&&fresh.length){const box=$('#cMsgs'),near=box.scrollHeight-box.scrollTop-box.clientHeight<90;if(!chatOn()){unread+=fresh.length;badge();beep()}else if(!near){newBelow+=fresh.length;beep()}else beep()}
+ lastTs=Math.max(lastTs,...arr.map(x=>+tsOf(x)||0),0);cache=arr;paint()}
 async function startChat(){
- $('#cMode').textContent=FB_ON?(isOwner()?'👑 تۆ ئۆنەریت':'هاوکاتی (Firebase)'):(isOwner()?'👑 تۆ ئۆنەریت · دۆخی تاقیکردنەوە (تەنها ئەم براوزەرە)':'دۆخی تاقیکردنەوە: تەنها لەسەر ئەم براوزەرە');
- if(!me()){paint();return}startGroups();if(unsub)return;
- if(FB_ON){const f=await fbInit(),q=f.F.query(f.F.collection(f.db,'messages'),f.F.orderBy('ts','desc'),f.F.limit(100));
-  unsub=f.F.onSnapshot(q,s=>{cache=s.docs.map(d=>({id:d.id,...d.data()})).reverse();paint()},e=>toast('Firestore: '+e.code))}
- else{const ld=()=>{try{cache=JSON.parse(localStorage.getItem('aura.chat')||'[]')}catch{cache=[]}loadG();paint()};bc=bc||new BroadcastChannel('aura-chat');bc.onmessage=ld;unsub=()=>{bc.onmessage=null};ld()}}
-function stop(){unsub&&unsub();unsub=null;unsubG&&unsubG();unsubG=null;cache=[];groups=[];gid='';paint()}
-async function send(){const el=$('#cIn'),text=el.value.trim(),m=me();if(!text||!m)return;el.value='';
- if(FB_ON){const f=await fbInit();try{await f.F.addDoc(f.F.collection(f.db,'messages'),{text,gid,uid:m.uid,name:m.name,email:m.email,photo:m.photo||'',ts:f.F.serverTimestamp()})}catch(e){toast('نەنێردرا: '+e.code)}}
- else{const a=JSON.parse(localStorage.getItem('aura.chat')||'[]');a.push({id:crypto.randomUUID(),text,gid,uid:m.uid,name:m.name,email:'',photo:'',ts:Date.now()});localStorage.setItem('aura.chat',JSON.stringify(a.slice(-200)));cache=a;paint();bc&&bc.postMessage(1)}}
+ $('#cMode').textContent=FB_ON?(isOwner()?'👑 تۆ ئۆنەریت':'هاوکاتی · هەموو بەکارهێنەرەکان'):(isOwner()?'👑 ئۆنەر · دۆخی تاقیکردنەوە (ئەم براوزەرە)':'دۆخی تاقیکردنەوە · تەنها ئەم براوزەرە');
+ if(!me()){paint();return}startGroups();startPresence();if(unsub){paint();return}
+ if(FB_ON){const f=await fbInit();let first=true;const q=f.F.query(f.F.collection(f.db,'messages'),f.F.orderBy('ts','desc'),f.F.limit(lim));
+  unsub=f.F.onSnapshot(q,s=>{onData(s.docs.map(d=>({id:d.id,...d.data()})).reverse(),first);first=false},e=>toast('Firestore: '+e.code))}
+ else{let first=true;const ld=()=>{let a=[];try{a=JSON.parse(localStorage.getItem('aura.chat')||'[]')}catch{}loadG();onData(a,first);first=false};bc=bc||new BroadcastChannel('aura-chat');bc.onmessage=ld;unsub=()=>{bc.onmessage=null};ld()}}
+function restart(){unsub&&unsub();unsub=null;startChat()}
+function startPresence(){if(unsubP)return;
+ if(FB_ON){fbInit().then(f=>{unsubP=f.F.onSnapshot(f.F.collection(f.db,'presence'),s=>{online=s.docs.map(d=>({uid:d.id,...d.data(),ts:d.data().lastSeen||0}));renderOnline()},()=>{})})}
+ else{const ld=()=>{let p={};try{p=JSON.parse(localStorage.getItem('aura.pres')||'{}')}catch{}online=Object.keys(p).map(n=>({uid:n,name:n,ts:p[n]}));renderOnline()};ld();const t=setInterval(ld,15000);unsubP=()=>clearInterval(t)}}
+function stop(){unsub&&unsub();unsub=null;unsubG&&unsubG();unsubG=null;unsubP&&unsubP();unsubP=null;cache=[];groups=[];gid='';online=[];nodes.clear();paint()}
+
+/* ---- actions ---- */
+function setReply(x){editing=null;replyTo={id:x.id,name:x.name,text:(x.text||'').slice(0,80)};repBar()}
+function startEdit(x){replyTo=null;editing=x;$('#cIn').value=x.text;repBar();$('#cIn').focus()}
+function repBar(){const r=$('#cRep');r.hidden=!(replyTo||editing);r.firstChild.textContent=editing?'✎ دەستکاریکردنی نامە':'↩ وەڵام بۆ '+(replyTo?replyTo.name+': '+replyTo.text:'')}
+$('#cRepX').onclick=()=>{replyTo=null;editing=null;$('#cIn').value='';repBar()};
+function lsSave(a){try{localStorage.setItem('aura.chat',JSON.stringify(a.slice(-200)))}catch{toast('شوێنی هەڵگرتن پڕە')}}
+async function send(img){const el=$('#cIn'),text=el.value.trim(),m=me();if((!text&&!img)||!m)return;
+ if(Date.now()-lastSend<1000)return toast('هێواش‌تر 🙂');lastSend=Date.now();
+ if(editing){const x=editing;editing=null;el.value='';repBar();
+  if(FB_ON){const f=await fbInit();try{await f.F.updateDoc(f.F.doc(f.db,'messages',x.id),{text,edited:true})}catch(e){toast('نەگۆڕدرا: '+e.code)}}
+  else{const a=JSON.parse(localStorage.getItem('aura.chat')||'[]'),k=a.find(y=>y.id===x.id);if(k){k.text=text;k.edited=true;lsSave(a);cache=a;paint();bc&&bc.postMessage(1)}}return}
+ el.value='';const rp=replyTo;replyTo=null;repBar();
+ const doc={text,gid,uid:m.uid,name:m.name,email:m.email||'',photo:m.photo||''};if(rp)doc.reply=rp;if(img)doc.img=img;
+ if(FB_ON){const f=await fbInit();try{await f.F.addDoc(f.F.collection(f.db,'messages'),{...doc,rx:{},ts:f.F.serverTimestamp()})}catch(e){toast('نەنێردرا: '+e.code)}}
+ else{const a=JSON.parse(localStorage.getItem('aura.chat')||'[]');a.push({...doc,id:crypto.randomUUID(),rx:{},ts:Date.now()});lsSave(a);cache=a;lastTs=Date.now();paint();bc&&bc.postMessage(1)}
+ const box=$('#cMsgs');box.scrollTop=box.scrollHeight}
+async function react(x,i){const m=me();if(!m)return;const key='r'+i,arr=(x.rx&&x.rx[key])||[],has=arr.includes(m.uid);
+ if(FB_ON){const f=await fbInit();try{await f.F.updateDoc(f.F.doc(f.db,'messages',x.id),{['rx.'+key]:has?f.F.arrayRemove(m.uid):f.F.arrayUnion(m.uid)})}catch(e){toast('نەگۆڕدرا: '+e.code)}}
+ else{const a=JSON.parse(localStorage.getItem('aura.chat')||'[]'),k=a.find(y=>y.id===x.id);if(!k)return;k.rx=k.rx||{};k.rx[key]=has?arr.filter(u=>u!==m.uid):[...arr,m.uid];lsSave(a);cache=a;paint();bc&&bc.postMessage(1)}}
 async function del(id){if(FB_ON){const f=await fbInit();try{await f.F.deleteDoc(f.F.doc(f.db,'messages',id))}catch(e){toast('نەسڕایەوە: '+e.code)}}
- else{cache=cache.filter(x=>x.id!==id);localStorage.setItem('aura.chat',JSON.stringify(cache));paint();bc&&bc.postMessage(1)}}
+ else{cache=cache.filter(x=>x.id!==id);lsSave(cache);paint();bc&&bc.postMessage(1)}}
+/* images (compressed, sent inside the message) */
+$('#cImgB').onclick=()=>$('#cFile').click();
+$('#cFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f||!/^image\//.test(f.type))return;const fr=new FileReader();fr.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*s);c.height=Math.round(i.height*s);c.getContext('2d').drawImage(i,0,0,c.width,c.height);let q=.75,u=c.toDataURL('image/jpeg',q);while(u.length>260000&&q>.3){q-=.1;u=c.toDataURL('image/jpeg',q)}if(u.length>600000)return toast('وێنەکە زۆر گەورەیە');send(u)};i.src=fr.result};fr.readAsDataURL(f)};
+/* emoji */
+const eb=$('#cEmoBox');EMO.forEach(e=>{const b=document.createElement('button');b.textContent=e;b.onclick=()=>{const t=$('#cIn');t.setRangeText(e,t.selectionStart,t.selectionEnd,'end');t.focus()};eb.appendChild(b)});
+$('#cEmo').onclick=ev=>{ev.stopPropagation();eb.hidden=!eb.hidden};document.addEventListener('click',e=>{if(!eb.contains(e.target))eb.hidden=true});
+$('#cSnd').onclick=()=>{sound=!sound;localStorage.setItem('aura.csound',sound?'1':'0');$('#cSnd').textContent=sound?'🔔':'🔕'};$('#cSnd').textContent=sound?'🔔':'🔕';
+$('#cDown').onclick=()=>{const b=$('#cMsgs');b.scrollTop=b.scrollHeight;newBelow=0;$('#cDown').hidden=true};
+$('#cMsgs').addEventListener('scroll',()=>{const b=$('#cMsgs');if(b.scrollHeight-b.scrollTop-b.clientHeight<90&&newBelow){newBelow=0;$('#cDown').hidden=true}},{passive:true});
 
 /* ---- groups: the owner creates/deletes groups and chooses members ---- */
 const canSee=(g,m)=>isOwner()||!(g.members&&g.members.length)||!!(m&&(g.members.includes((m.name||'').toLowerCase())||g.members.includes((m.email||'').toLowerCase())));
@@ -2553,19 +2649,20 @@ async function startGroups(){if(unsubG)return;
 async function gCreate(){const m=me();if(!isOwner()||!m)return;const name=(prompt('ناوی گرووپی نوێ:')||'').trim();if(!name)return;
  const members=parseMem(prompt('ناوی ئەندامەکان (ناوی بەکارهێنەر یان ئیمەیل، بە کۆما جیایان بکەرەوە).\nبەتاڵ = هەموو کەسێک دەیبینێت:')||'');
  if(FB_ON){const f=await fbInit();try{await f.F.addDoc(f.F.collection(f.db,'groups'),{name,members,by:m.uid,ts:f.F.serverTimestamp()})}catch(e){toast('گرووپ نەدروستبوو: '+e.code)}}
- else{const g={id:crypto.randomUUID(),name,members,by:m.uid};groups.push(g);saveG();gid=g.id;paint()}}
+ else{const g={id:crypto.randomUUID(),name,members,by:m.uid};groups.push(g);saveG();gid=g.id;restartView()}}
 async function gMembers(){const g=groups.find(x=>x.id===gid);if(!g||!isOwner())return;const v=prompt('ئەندامەکانی «'+g.name+'» (بە کۆما؛ بەتاڵ = هەموو کەسێک):',(g.members||[]).join(', '));if(v===null)return;g.members=parseMem(v);
  if(FB_ON){const f=await fbInit();try{await f.F.updateDoc(f.F.doc(f.db,'groups',g.id),{members:g.members})}catch(e){toast('نەگۆڕدرا: '+e.code)}}else{saveG();paint()}}
 async function gDelete(){const g=groups.find(x=>x.id===gid);if(!g||!isOwner()||!confirm('گرووپی «'+g.name+'» بسڕدرێتەوە؟'))return;
  if(FB_ON){const f=await fbInit();try{await f.F.deleteDoc(f.F.doc(f.db,'groups',g.id))}catch(e){toast('نەسڕایەوە: '+e.code)}}
- else{groups=groups.filter(x=>x.id!==g.id);const a=JSON.parse(localStorage.getItem('aura.chat')||'[]').filter(x=>x.gid!==g.id);localStorage.setItem('aura.chat',JSON.stringify(a));cache=a;saveG()}gid='';paint()}
+ else{groups=groups.filter(x=>x.id!==g.id);const a=JSON.parse(localStorage.getItem('aura.chat')||'[]').filter(x=>x.gid!==g.id);lsSave(a);cache=a;saveG()}gid='';restartView()}
+const restartView=()=>{nodes.clear();paint()};
 function renderGroups(){const bar=$('#gBar');if(!bar)return;bar.innerHTML='';const m=me();if(!m)return;
  const vis=groups.filter(g=>canSee(g,m));if(gid&&!vis.some(g=>g.id===gid))gid='';
  const btn=(txt,fn,cls,title)=>{const b=document.createElement('button');b.className='gchip'+(cls?' '+cls:'');b.textContent=txt;if(title)b.title=title;b.onclick=fn;bar.appendChild(b)};
- btn('گشتی',()=>{gid='';paint()},gid===''?'on':'');vis.forEach(g=>btn('# '+g.name,()=>{gid=g.id;paint()},gid===g.id?'on':''));
- if(isOwner()){btn('+ گرووپ',gCreate,'add','دروستکردنی گرووپ');if(gid){btn('👥',gMembers,'','ئەندامەکان');btn('🗑',gDelete,'','سڕینەوەی گرووپ')}}
- else if(false)btn('👑 بوون بە ئۆنەر',()=>{if(!confirm('ئەم هەژمارە دەبێتە ئۆنەر لەسەر ئەم براوزەرە و دەتوانێت گرووپ دروست بکات. بەردەوام؟'))return;localStorage.setItem('aura.owner',m.uid);$('#cMode').textContent='👑 تۆ ئۆنەریت · دۆخی تاقیکردنەوە (تەنها ئەم براوزەرە)';paint()},'add')}
-window.__chat={FB_ON,OWNER,isOwner,me,fbInit,startChat,paint};$('#cSend').onclick=send;$('#cIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+ btn('گشتی',()=>{gid='';restartView()},gid===''?'on':'');vis.forEach(g=>btn('# '+g.name,()=>{gid=g.id;restartView()},gid===g.id?'on':''));
+ if(isOwner()){btn('+ گرووپ',gCreate,'add','دروستکردنی گرووپ');if(gid){btn('👥',gMembers,'','ئەندامەکان');btn('🗑',gDelete,'','سڕینەوەی گرووپ')}}}
+window.__chat={FB_ON,OWNER,isOwner,me,fbInit,startChat,paint};
+$('#cSend').onclick=()=>send();$('#cIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}if(e.key==='Escape'){$('#cRepX').click()}});
 })();
 </script>
 
@@ -3153,10 +3250,10 @@ window.__toggleAdmin=async x=>{const C=chat();if(!C||!C.isOwner())return;const k
  on?ADM.add(k):ADM.delete(k);if(!C.FB_ON)LS.set('aura.admins',[...ADM]);toast(on?'🛡 کرا بە ئەدمین: '+(x.name||k):'ئەدمین لابرا: '+(x.name||k));
  if($('#pOwner').classList.contains('on'))ownerRender();if($('#pChat').classList.contains('on'))try{C.startChat()}catch{}};
 async function beat(){const C=chat();if(!C)return;const m=C.me();if(!m)return;
- if(C.FB_ON){try{const f=await C.fbInit();await f.F.setDoc(f.F.doc(f.db,'presence',m.uid),{name:m.name||'',email:m.email||'',lastSeen:Date.now()});
+ if(C.FB_ON){try{const f=await C.fbInit();await f.F.setDoc(f.F.doc(f.db,'presence',m.uid),{name:m.name||'',email:m.email||'',photo:m.photo||'',lastSeen:Date.now()});
   if(!admUnsub)admUnsub=f.F.onSnapshot(f.F.collection(f.db,'admins'),s=>{ADM=new Set(s.docs.map(d=>d.id))},()=>{})}catch{}}
  else{const p=LS.get('aura.pres',{});p[m.name]=Date.now();LS.set('aura.pres',p);ADM=new Set(LS.get('aura.admins',[]))}}
-setInterval(beat,30000);setTimeout(beat,2500);
+window.__beat=beat;setInterval(beat,25000);setTimeout(beat,2500);
 const ownB=nbAdd('👑 ئۆنەر','pOwner');ownB.hidden=true;
 setInterval(()=>{const C=chat(),o=!!(C&&C.isOwner());if(ownB.hidden===o){ownB.hidden=!o;moveInd()}},1500);
 
@@ -3170,11 +3267,12 @@ service cloud.firestore {
  match /databases/{db}/documents {
   function owner(){return request.auth!=null && request.auth.token.email=='safenrn53@gmail.com' && request.auth.token.email_verified==true}
   function admin(){return request.auth!=null && exists(/databases/$(db)/documents/admins/$(request.auth.token.email))}
-  match /presence/{uid} { allow read: if owner(); allow write: if request.auth!=null && request.auth.uid==uid; }
+  match /presence/{uid} { allow read: if request.auth!=null; allow write: if request.auth!=null && request.auth.uid==uid; }
   match /admins/{e}     { allow read: if request.auth!=null; allow write: if owner(); }
   match /groups/{g}     { allow read: if request.auth!=null; allow write: if owner(); }
   match /messages/{m}   { allow read: if request.auth!=null;
                           allow create: if request.auth!=null && request.resource.data.uid==request.auth.uid;
+                          allow update: if request.auth!=null && (resource.data.uid==request.auth.uid || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rx']));
                           allow delete: if owner() || admin() || resource.data.uid==request.auth.uid; }
  }
 }`;
@@ -3326,6 +3424,166 @@ async function ownerRender(){const body=$('#owBody'),C=chat();
  v?.addEventListener('loadedmetadata',()=>{range.max=100;range.value=0;out.textContent='00:00'});
  v?.addEventListener('timeupdate',()=>{if(v.duration){range.value=v.currentTime/v.duration*100;out.textContent=stamp(v.currentTime)+' / '+stamp(v.duration)}});
  preview.append(timeline);
+})();
+</script>
+
+<style id="v10">
+/* ===== v10: chat v2 + yellow-box killer + perf ===== */
+.chat2{display:grid;grid-template-columns:210px minmax(0,1fr);gap:12px;max-width:1040px;margin:0 auto;height:100%;padding:14px;direction:rtl}
+.cside{background:var(--bg1);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden}
+.cside h4{color:var(--ac);font-size:13px}.cside h4 b{color:#4ade80}
+#cOnList{overflow:auto;display:grid;gap:6px;align-content:start}
+.ou{display:flex;align-items:center;gap:8px;font-size:12px;position:relative}
+.ou::after{content:"";width:8px;height:8px;border-radius:50%;background:#4ade80;margin-inline-start:auto;box-shadow:0 0 6px #4ade80}
+.ou img,.ou i{width:26px;height:26px;border-radius:50%;object-fit:cover;background:#3a3f6b;display:grid;place-items:center;font-style:normal;font-weight:700;flex:none}
+.ou span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cmain{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;min-height:0;position:relative}
+.cmain .chead{flex-wrap:wrap}.cmain .chead h2{font-size:19px}
+#cMsgs{gap:2px!important}
+.cm{position:relative;margin-top:8px}.cm.cont{margin-top:1px}
+.cm .b{position:relative;box-shadow:0 1px 0 #0003}
+.cm.hl .b{outline:2px solid var(--ac);transition:outline .3s}
+.cm .t a{color:#7cc4ff;word-break:break-all}.cm .t .mn{color:var(--ac);font-weight:700}.cm .t .mn.me{background:#ffc93c33;border-radius:4px;padding:0 3px}
+.ed2{color:var(--tx2);font-size:10px}
+.rq{border-inline-start:3px solid var(--ac);background:#0003;border-radius:6px;padding:3px 8px;margin-bottom:4px;font-size:12px;cursor:pointer;display:grid}
+.rq b{color:var(--ac);font-size:11px}.rq span{color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:280px}
+.cimg{display:block;max-width:min(300px,100%);max-height:260px;border-radius:10px;margin-top:4px;cursor:zoom-in;background:#000}
+.rxs{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}.rx{font-size:12px;padding:1px 8px;border-radius:12px;background:#0004;border:1px solid transparent}.rx.on{border-color:var(--ac);background:#ffc93c22}
+.acts{position:absolute;top:-14px;inset-inline-end:8px;display:none;gap:2px;background:var(--bg3,#2a2a2a);border:1px solid var(--line);border-radius:10px;padding:2px 4px;z-index:3}
+.cm:hover .acts,.cm:focus-within .acts{display:flex}
+@media(hover:none){.acts{display:flex;position:static;background:none;border:0;padding:0;margin-top:2px}.acts button{opacity:.6}}
+.acts button{background:none;padding:2px 6px;font-size:13px;color:var(--tx2)}.acts button:hover{color:#fff;background:var(--bg2);border-radius:6px}
+.rpick{position:absolute;top:22px;inset-inline-end:0;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:4px;display:flex;gap:2px;z-index:5}.rpick button{font-size:18px;background:none;padding:2px 5px}
+.dsep{align-self:center;font-size:11px;color:var(--tx2);background:var(--bg2);padding:2px 12px;border-radius:12px;margin:10px 0 4px}
+.cempty{margin:auto;color:var(--tx2);text-align:center;padding:30px}
+.more{align-self:center;background:var(--bg2);border-radius:14px;padding:4px 14px;font-size:12px;color:var(--ac)}
+#cNeed{gap:10px;max-width:380px}#cNeed .row2{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+#cNeed .gform{display:grid;gap:8px;width:100%}#cNeed input{background:var(--bg0);border:1px solid var(--line);border-radius:8px;padding:9px;color:var(--tx);width:100%}
+#cDown{position:absolute;inset-inline-start:50%;transform:translateX(-50%);bottom:84px;background:var(--ac);color:#201700;border-radius:20px;padding:6px 16px;font-weight:700;box-shadow:0 4px 16px #0008;z-index:4}
+#cRep{display:flex;align-items:center;gap:8px;background:var(--bg2);border-inline-start:3px solid var(--ac);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--tx2)}#cRep span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#cRep button{background:none;color:var(--tx2)}
+#cFoot{display:grid;gap:6px;position:relative}
+.cform{display:flex;gap:6px;align-items:flex-end}.cform .ib2{background:var(--bg2);border-radius:12px;height:44px;width:44px;font-size:18px;flex:none}
+.cform textarea{flex:1;resize:none;height:44px;max-height:120px;background:var(--bg1);border:1px solid var(--line);border-radius:12px;padding:10px;color:var(--tx)}
+#cEmoBox{position:absolute;bottom:52px;inset-inline-start:0;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:6px;display:grid;grid-template-columns:repeat(6,1fr);gap:2px;z-index:6;box-shadow:0 8px 30px #000a}
+#cEmoBox[hidden]{display:none}#cEmoBox button{font-size:20px;background:none;padding:4px}#cEmoBox button:hover{background:var(--bg3,#333);border-radius:8px}
+.nb[data-n]:not([data-n=""])::after{content:attr(data-n);background:#ff3c6e;color:#fff;border-radius:10px;font-size:10px;padding:0 5px;margin-inline-start:5px}
+@media(max-width:820px){.chat2{grid-template-columns:1fr;padding:8px}.cside{display:none}}
+[hidden]{display:none!important}
+/* yellow box killer */
+#boxKill{position:absolute;top:8px;inset-inline-start:8px;z-index:30;background:#ff3c6e;color:#fff;border-radius:18px;padding:5px 12px;font-size:12px;font-weight:700;box-shadow:0 4px 14px #0009}
+#boxKill[hidden]{display:none}
+#boxDetect{position:absolute;top:44px;inset-inline-start:8px;z-index:30;background:#2d8cff;color:#fff;border-radius:18px;padding:5px 12px;font-size:12px;font-weight:700;box-shadow:0 4px 14px #0009}
+#boxDetect[hidden]{display:none}
+/* perf: no infinite animations outside the home page or while the tab is hidden */
+.brand{animation:none!important}
+body[data-pg]:not([data-pg="pHome"]) .orb,body[data-pg]:not([data-pg="pHome"]) .title,body[data-pg]:not([data-pg="pHome"]) .herologo{animation:none!important}
+.orb{filter:none!important;background-image:radial-gradient(circle,currentColor,transparent 70%)!important;background-color:transparent!important}
+.o1{color:#ffc93c}.o2{color:#2d8cff}.o3{color:#9b5cff}
+html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!important}
+</style>
+
+<div id="v10dlg" hidden>
+<div class="dlg wide" id="dFb"><h3>☁ چالاککردنی چاتی هەموو کەس (Firebase)</h3>
+ <small class="n">١) <b>console.firebase.google.com</b> ← Add project (بێ بەهاـیە).<br>
+ ٢) Build ← Authentication ← Get started ← چالاک بکە: <b>Google</b> و <b>Email/Password</b>.<br>
+ ٣) Build ← Firestore Database ← Create (production mode) ← بەشی Rules: ئەو Rules ەی لە «پانێڵی ئۆنەر» دەیبینیت دایبنێ.<br>
+ ٤) Project settings ← Your apps ← Web (&lt;/&gt;) ← config ی ئەپەکە کۆپی بکە.<br>
+ ٥) Authentication ← Settings ← Authorized domains ← دۆمەینی سایتەکەت زیاد بکە.<br>
+ ٦) لێرە دایبنێ و پاشەکەوت بکە. <b>سایتەکە دەبێت لەسەر https هۆست بکرێت</b> (Netlify / Vercel / Cloudflare Pages / GitHub Pages)، نەک وەک فایلی ناو کۆمپیوتەر.</small>
+ <textarea id="fbCfg" dir="ltr" style="min-height:130px;font-family:monospace;font-size:12px" placeholder='{ "apiKey":"...", "authDomain":"...", "projectId":"...", "appId":"..." }'></textarea>
+ <div class="act"><button id="fbOff">بێکارکردن</button><button id="fbCancel">داخستن</button><button class="pri" id="fbSave">پاشەکەوت و ڕیفرێش</button></div></div>
+</div>
+
+<script id="v10js">
+(()=>{
+const $=s=>document.querySelector(s);
+$('#v10dlg').querySelectorAll('.dlg').forEach(d=>$('#mdl').appendChild(d));$('#v10dlg').remove();
+/* Firebase config from the UI (no file editing needed) */
+$('#fbCfg').value=localStorage.getItem('aura.fbcfg')||'';
+$('#fbCancel').onclick=()=>closeDlg();
+$('#fbOff').onclick=()=>{localStorage.removeItem('aura.fbcfg');location.reload()};
+$('#fbSave').onclick=()=>{let t=$('#fbCfg').value.trim();if(!t)return toast('config بنووسە');
+ try{if(!t.startsWith('{')){const m=t.match(/\{[\s\S]*\}/);t=m?m[0]:t}
+  const o=Function('"use strict";return ('+t+')')();if(!o||!o.apiKey||!o.projectId)throw 0;localStorage.setItem('aura.fbcfg',JSON.stringify(o));location.reload()}catch{toast('config دروست نییە — پێویستە apiKey و projectId هەبێت')}};
+
+/* ---- remove the yellow / any subtitle-cover box ---- */
+const stage=$('#stageWrap')||$('#stage').parentElement;if(getComputedStyle(stage).position==='static')stage.style.position='relative';
+const kill=Object.assign(document.createElement('button'),{id:'boxKill',hidden:true,textContent:'✕ لابردنی بۆکس'});stage.appendChild(kill);
+const has=()=>!!(st&&(st.cvOn||st.bgA>0));
+const sync=()=>{kill.hidden=!has()};
+kill.onclick=()=>{st.cvOn=0;st.bgA=0;st.cvAuto=1;try{syncCtl()}catch{}try{applyStyle()}catch{}try{scheduleSave()}catch{}sync();toast('بۆکس لابرا ✔')};
+const _as=window.applyStyle;if(typeof _as==='function')window.applyStyle=function(){const r=_as.apply(this,arguments);sync();return r};
+setInterval(sync,800);
+/* theme dialog: explicit remove buttons */
+const th=$('#dTheme');if(th){const row=document.createElement('div');row.className='act';row.innerHTML='<button id="thKill">✕ لابردنی بۆکسی زەرد / داپۆشین</button>';th.querySelector('.act').before(row);$('#thKill').onclick=()=>kill.onclick()}
+
+
+/* ---- find the yellow bar that is BAKED INTO the video and cover it ---- */
+const det=Object.assign(document.createElement('button'),{id:'boxDetect',hidden:true,textContent:'🪄 داپۆشینی بارە زەردەکە'});stage.appendChild(det);
+function findBar(v){v=v||document.getElementById('vid');if(!v||!v.videoWidth)return null;
+ const W=320,H=Math.max(8,Math.round(W*v.videoHeight/v.videoWidth)),c=document.createElement('canvas');c.width=W;c.height=H;
+ const x=c.getContext('2d',{willReadFrequently:true});try{x.drawImage(v,0,0,W,H)}catch{return null}let d;try{d=x.getImageData(0,0,W,H).data}catch{return 'tainted'}
+ const isY=i=>{const r=d[i],g=d[i+1],b=d[i+2];return r>205&&g>150&&g<228&&b<120&&r-b>105&&r-g>12&&r-g<95};
+ const rows=new Array(H).fill(0),x0=new Array(H).fill(W),x1=new Array(H).fill(-1);
+ for(let y=0;y<H;y++)for(let xx=0;xx<W;xx++)if(isY(4*(y*W+xx))){rows[y]++;if(xx<x0[y])x0[y]=xx;if(xx>x1[y])x1[y]=xx}
+ const gs=[];let cur=null,gap=0;
+ for(let y=0;y<H;y++){if(rows[y]>W*.12){if(!cur)cur={a:y,b:y,n:0};cur.b=y;cur.n+=rows[y];gap=0}else if(cur&&++gap>3){gs.push(cur);cur=null;gap=0}}
+ if(cur)gs.push(cur);const g=gs.filter(q=>q.b-q.a+1>=H*.02).sort((p,q)=>q.n-p.n)[0];if(!g)return null;
+ let mn=W,mx=0;for(let y=g.a;y<=g.b;y++){if(x1[y]>=0){mn=Math.min(mn,x0[y]);mx=Math.max(mx,x1[y])}}
+ let r=0,gg=0,b=0,n=0;const ya=Math.max(0,g.a-4),yb=Math.max(0,g.a-1);
+ for(let y=ya;y<=yb;y++)for(let xx=mn;xx<=mx;xx++){const i=4*(y*W+xx);r+=d[i];gg+=d[i+1];b+=d[i+2];n++}
+ const hex=n?'#'+[r,gg,b].map(q=>Math.round(q/n).toString(16).padStart(2,'0')).join(''):'#000000',pad=.8;
+ const X=Math.max(0,mn/W*100-pad),Y=Math.max(0,g.a/H*100-pad),Wd=Math.min(100-X,(mx-mn+1)/W*100+pad*2),Ht=Math.min(100-Y,(g.b-g.a+1)/H*100+pad*2);
+ return{x:X,y:Y,w:Wd,h:Ht,c:hex}}
+function applyBar(b,auto){
+ Object.assign(st,{cvOn:1,cvOnly:1,cvFit:1,cvX:+b.x.toFixed(1),cvY:+b.y.toFixed(1),cvW:+b.w.toFixed(1),cvH:+b.h.toFixed(1),cvC:b.c,cvA:96,cvB:20,cvAuto:1});
+ try{syncCtl()}catch{}try{applyStyle()}catch{}try{scheduleSave()}catch{}sync();
+ toast(auto?'بارە زەردەکە خۆکارانە داپۆشرا ✔ (بۆ لابردنی بۆکسەکە: ✕)':'بارە زەردەکە داپۆشرا ✔ — لە لایەنی «داپۆشین» دەتوانیت دەستکاری بکەیت')}
+det.onclick=()=>{const b=findBar();
+ if(b==='tainted')return toast('ئەم ڤیدیۆیە ناتوانرێت شیکار بکرێت');
+ if(!b)return toast('لەم کاتەدا بارە زەردەکە نەدۆزرایەوە. تایم‌لاین بخەرە شوێنێک کە ژێرنووسە زەردەکە دیارە، پاشان دووبارە کلیک بکە.');
+ applyBar(b,false)};
+/* AUTOMATIC: scan the video in the background as soon as it is loaded */
+let scanning=false;
+const seekTo=(h,t)=>new Promise(ok=>{const d=()=>{h.removeEventListener('seeked',d);ok()};h.addEventListener('seeked',d);setTimeout(d,3000);try{h.currentTime=Math.max(0,Math.min(t,(h.duration||t)-.05))}catch{ok()}});
+async function scan(){
+ const m=document.getElementById('vid');if(scanning||st.cvAuto||!m||!m.videoWidth)return;const src=m.currentSrc||m.src;if(!src)return;scanning=true;
+ const h=document.createElement('video');h.muted=true;h.preload='auto';h.src=src;
+ try{await new Promise((ok,no)=>{h.onloadedmetadata=ok;h.onerror=no;setTimeout(no,8000)});
+  const dur=h.duration||0,ts=[];
+  try{(subs||[]).filter(c=>typeof c.s==='number'&&typeof c.e==='number').slice(0,60).forEach((c,i)=>{if(i%5===0&&ts.length<10)ts.push((c.s+c.e)/2)})}catch{}
+  for(let t=3;t<Math.min(dur||150,200)&&ts.length<22;t+=9)ts.push(t);
+  for(const t of ts){if(st.cvAuto||(m.currentSrc||m.src)!==src)break;await seekTo(h,t);const b=findBar(h);if(b==='tainted')break;if(b){applyBar(b,true);break}}
+ }catch{}finally{try{h.removeAttribute('src');h.load()}catch{}scanning=false}}
+const vEl=document.getElementById('vid');
+vEl.addEventListener('loadedmetadata',()=>setTimeout(scan,600));
+let lastAuto=0;const quick=()=>{if(st.cvAuto||Date.now()-lastAuto<700)return;lastAuto=Date.now();const b=findBar();if(b&&b!=='tainted')applyBar(b,true)};
+vEl.addEventListener('seeked',quick);vEl.addEventListener('timeupdate',quick);
+setTimeout(scan,1200);
+setInterval(()=>{const v=document.getElementById('vid');det.hidden=!(v&&v.videoWidth)},800);
+if(th){const r2=document.createElement('div');r2.className='act';r2.innerHTML='<button id="thDet">🪄 دۆزینەوە و داپۆشینی بارە زەردەکەی ناو ڤیدیۆ</button>';th.querySelector('.act').before(r2);$('#thDet').onclick=()=>{closeDlg();det.onclick()}}
+
+
+/* ---- PURGE: no yellow box/background is ever allowed on the video stage ---- */
+const yel=c=>{const m=/rgba?\(\s*(\d+)[ ,]+(\d+)[ ,]+(\d+)(?:[ ,/]+([\d.]+))?/.exec(c||'');if(!m)return false;const r=+m[1]/255,g=+m[2]/255,b=+m[3]/255,a=m[4]===undefined?1:+m[4];if(a<.15)return false;
+ const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;if(d<.25||mx<.55)return false;let h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;if(h<0)h+=360;return h>=32&&h<=62};
+const yHex=h=>{const n=/^#([0-9a-f]{6})$/i.exec(h||'');if(!n)return false;const v=parseInt(n[1],16);return yel(`rgb(${v>>16},${v>>8&255},${v&255})`)};
+function purge(){
+ if(typeof st==='undefined')return;
+ if(yHex(st.bg)){st.bg='#000000';st.bgA=0}
+ if(!st.cvAuto&&st.cvOn&&yHex(st.cvC)){st.cvOn=0;st.cvC='#000000';try{syncCtl()}catch{}try{scheduleSave()}catch{}}
+ const root=document.getElementById('stage');if(!root)return;
+ root.querySelectorAll('#overlay,#overlay *,#coverBox,#lyBox *,#crBox,#crBox *').forEach(e=>{
+  if(e.id==='coverBox'&&st.cvAuto)return;
+  const cs=getComputedStyle(e);if(yel(cs.backgroundColor)){e.style.setProperty('background','transparent','important');e.style.setProperty('background-color','transparent','important')}
+  if(cs.backgroundImage&&/gradient/.test(cs.backgroundImage)&&/255,\s*(1[6-9]\d|2[0-1]\d),\s*\d{1,2}\b/.test(cs.backgroundImage)){e.style.setProperty('background-image','none','important')}})}
+purge();setInterval(purge,400);
+const _as2=window.applyStyle;if(typeof _as2==='function')window.applyStyle=function(){const r=_as2.apply(this,arguments);purge();return r};
+
+/* ---- perf ---- */
+const root=document.documentElement;document.addEventListener('visibilitychange',()=>root.classList.toggle('hid',document.hidden));
+const _go=window.go;window.go=function(id){const r=_go.apply(this,arguments);document.body.dataset.pg=id;return r};document.body.dataset.pg='pHome';
+document.querySelectorAll('img').forEach(i=>{i.decoding='async';if(!i.closest('#pHome'))i.loading='lazy'});
 })();
 </script>
 

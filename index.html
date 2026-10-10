@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ckb">
 <head>
+<script>(()=>{const si=window.setInterval;window.setInterval=(f,ms)=>si(()=>{if(!document.hidden)f()},ms)})();</script>
 <script>(()=>{const RO=window.ResizeObserver;window.__szDirty=true;window.ResizeObserver=class extends RO{constructor(cb){super((e,o)=>{window.__szDirty=true;cb(e,o)})}};
 const T={};window.__skip=(k,ms)=>{const n=performance.now();if(T[k]&&n-T[k]<ms)return true;T[k]=n;return false}})();
 </script>
@@ -208,7 +209,7 @@ input[type=range],#tl,#clock,#transport,#estart,#eend,#projName.ltr{direction:lt
 .vbar{height:100%;border:2px solid var(--ac);border-radius:6px;background:#000;color:#fff;font-size:11px;padding:4px 6px;display:flex;align-items:flex-end}
 #ruler{height:30px;border:0}.tick{height:30px;border-left:1px solid #4a4d55;padding:10px 0 0 4px}
 #head{width:1px;box-shadow:0 0 0 .5px #fff8}#head::before{display:none}
-.blk{padding:0;background:#6f5200;border-color:#8c6a00;border-radius:5px;cursor:grab;touch-action:none;user-select:none}
+.blk{padding:0;background:rgba(20,65,110,.55);border:1px solid #2878bd;border-radius:5px;cursor:grab;touch-action:none;user-select:none;color:#e8f5ff}.blk.sel{background:rgba(20,105,175,.72);border-color:#35baff}.blk.sel .hd::after{background:#d9f2ff}
 .blk span{display:block;overflow:hidden;text-overflow:ellipsis;padding:10px 12px;pointer-events:none}
 .hd{position:absolute;top:0;bottom:0;width:10px;cursor:ew-resize;z-index:2}.hd.l{left:0}.hd.r{right:0}
 .blk.sel .hd::after{content:"";position:absolute;top:28%;bottom:28%;left:3px;width:3px;border-radius:2px;background:#201700}
@@ -321,11 +322,154 @@ img, video, canvas { max-width: 100%; }
 }
 </style>
 
+
+<style id="aura-vn-trailer-skin">
+/* AURA ANIME — neon VN-inspired skin, scoped to Trailer Studio only */
+#pTrailer{background:radial-gradient(ellipse at 48% 0%,#073d78 0%,#03152f 42%,#020916 100%);color:#edf7ff;overflow:auto!important;}
+#pTrailer .trailerStudio{max-width:1800px;padding:18px 20px 26px;color:#edf7ff;background:transparent;}
+#pTrailer .trailerStudio>header{position:relative;margin:0 0 16px;padding:14px 18px;border:1px solid #087df2;border-radius:16px;background:linear-gradient(105deg,#03122ceF,#061b3bed 62%,#041127f2);box-shadow:0 0 24px #008cff18,inset 0 0 22px #087df20c;}
+#pTrailer .trailerStudio>header:after{content:"A U R A   A N I M E   •   TRAILER STUDIO";display:block;margin-top:7px;color:#54d9ff;font:600 10px/1.4 Arial,sans-serif;letter-spacing:2.2px;}
+#pTrailer .trailerStudio h2{color:#eaf7ff;font-size:clamp(22px,2vw,30px);text-shadow:0 0 15px #159cff55;margin:0;}
+#pTrailer .trailerStudio p{color:#9bb9d8;line-height:1.7;}
+#pTrailer .trailerGrid{direction:ltr;grid-template-columns:minmax(0,1.65fr) minmax(310px,.82fr);align-items:start;gap:14px;}
+#pTrailer .trailerPreview,#pTrailer .trailerTools{direction:rtl;min-width:0;border:1px solid #087ff0;border-radius:17px;padding:14px;background:linear-gradient(145deg,#06152df5,#041027f7 70%,#071b39f5);box-shadow:0 0 24px #007bff13,inset 0 1px 0 #9edfff0c;gap:13px;}
+#pTrailer .trailerPreview{grid-column:1;}
+#pTrailer .trailerTools{grid-column:2;position:relative;}
+#pTrailer .trailerTools h3,#pTrailer .trSubEditor h3,#pTrailer .trAudioBox h3{color:#e8f7ff;font-size:15px;margin:0 0 8px;padding-bottom:8px;border-bottom:1px solid #0c64b7;}
+#pTrailer .trVidWrap{aspect-ratio:16/9;min-height:260px;max-height:65vh;border:1px solid #08a9ff;border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at center,#0a2b57,#010712 75%);box-shadow:0 0 0 1px #6bdfff12,0 0 26px #008dff22;}
+#pTrailer .trVidWrap video{width:100%;height:100%;max-height:65vh;object-fit:contain;background:#010611;}
+#pTrailer #trOverlay{max-width:94%;text-shadow:0 2px 4px #000,0 0 14px #08aaff75;font-weight:800;}
+#pTrailer .trLogoPreview{filter:drop-shadow(0 0 8px #05aaff70);}
+#pTrailer input:not([type=checkbox]):not([type=range]):not([type=file]),#pTrailer select,#pTrailer textarea{background:#06152c!important;color:#eaf7ff!important;border:1px solid #174c83!important;border-radius:9px!important;min-height:38px;}
+#pTrailer input[type=file]{width:100%;box-sizing:border-box;padding:10px;background:#06152c;color:#cce7ff;border:1px solid #174c83;border-radius:10px;}
+#pTrailer input[type=range]{accent-color:#08baff;}
+#pTrailer input[type=color]{border:1px solid #087df2;border-radius:8px;background:#06152c;padding:3px;min-height:34px;}
+#pTrailer label{color:#a9c9e9;font-size:13px;}
+#pTrailer .trTimes{gap:10px;}
+#pTrailer .trSubEditor,#pTrailer .trAudioBox,#pTrailer .trEditControls{padding:13px;border:1px solid #12518a;border-radius:12px;background:linear-gradient(135deg,#071a35,#041127);}
+#pTrailer .trEditControls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+#pTrailer .trEditControls label{display:grid;gap:6px;align-content:start;}
+#pTrailer .trActionRow{display:flex;flex-wrap:wrap;gap:8px;}
+#pTrailer button{border:1px solid #155b9c;border-radius:9px;background:linear-gradient(180deg,#0b2850,#071932);color:#e7f6ff;padding:10px 12px;transition:transform .16s,border-color .16s,box-shadow .16s,background .16s;}
+#pTrailer button:hover{border-color:#14baff;box-shadow:0 0 15px #009dff26;transform:translateY(-1px);}
+#pTrailer button.pri,#pTrailer #trExport{background:linear-gradient(100deg,#087bff,#05b9ed 65%,#8b35ff);border:0;color:white;font-weight:800;box-shadow:0 0 18px #087bff32;}
+#pTrailer .trailerTools .trTemplates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:260px;overflow:auto;padding:2px 2px 8px;}
+#pTrailer .trailerTools .trTemplates button{min-height:60px;font-size:12px;position:relative;overflow:hidden;background:linear-gradient(145deg,#0a3671,#07152f 70%,#30135a);border-color:#1768ae;text-shadow:0 1px 2px #000;}
+#pTrailer .trailerTools .trTemplates button:before{content:"✦";display:block;color:#40d7ff;font-size:17px;margin-bottom:3px;text-shadow:0 0 9px #00aaff;}
+#pTrailer .trailerTools .trTemplates button.active,#pTrailer .trailerTools .trTemplates button[aria-pressed=true]{border-color:#31dcff;box-shadow:0 0 15px #00bfff38;background:linear-gradient(145deg,#0757a5,#111c4a);}
+#pTrailer .trToolGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;}
+#pTrailer .trToolGrid button{min-width:0;min-height:43px;font-size:12px;padding:8px 5px;}
+#pTrailer .trToolGrid button.active{background:linear-gradient(110deg,#087bff,#6a32d9);border-color:#5ce3ff;box-shadow:0 0 13px #008dff35;}
+#pTrailer #trToolInfo,#pTrailer #trNote{border:1px solid #164b7a;border-radius:10px;padding:11px;background:#041128;color:#8fb4d9;}
+#pTrailer .trSubtitleItem{border:1px solid #164b7a!important;border-radius:9px;background:#071a34!important;color:#d9efff!important;padding:8px;}
+#pTrailer audio{width:100%;accent-color:#05baff;}
+#pTrailer .trailerPreview #trExport{min-height:44px;}
+@media(max-width:1050px){#pTrailer .trailerGrid{grid-template-columns:minmax(0,1fr)}#pTrailer .trailerPreview,#pTrailer .trailerTools{grid-column:1}#pTrailer .trailerTools .trTemplates{grid-template-columns:repeat(4,minmax(0,1fr));}}
+@media(max-width:650px){#pTrailer .trailerStudio{padding:10px}#pTrailer .trailerPreview,#pTrailer .trailerTools{padding:10px}#pTrailer .trEditControls{grid-template-columns:1fr}#pTrailer .trailerTools .trTemplates{grid-template-columns:repeat(2,minmax(0,1fr))}#pTrailer .trToolGrid{grid-template-columns:repeat(2,minmax(0,1fr))}#pTrailer .trVidWrap{min-height:190px}}
+</style>
+
+<style id="aura-mobile-responsive-fix">
+/* Mobile-first repair: keep every studio section inside the phone viewport. */
+html,body{max-width:100%;}
+img,video,canvas,svg{max-width:100%;}
+@media (max-width:760px){
+  html,body{width:100%;max-width:100vw;overflow-x:hidden!important;}
+  body{margin:0;}
+  #app{width:100%;max-width:100vw;min-width:0;grid-template-rows:44px minmax(0,1fr) 3px minmax(145px,27dvh);overflow:hidden;}
+  #top{width:100%;min-width:0;max-width:100vw;box-sizing:border-box;gap:5px;padding:0 7px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;}
+  #top::-webkit-scrollbar,#nav::-webkit-scrollbar{display:none;}
+  #top>*{flex:0 0 auto;}
+  #top .logo{font-size:12px;max-width:38vw;overflow:hidden;text-overflow:ellipsis;}
+  #projName{width:105px;max-width:25vw;}
+  #main{width:100%;min-width:0;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr);overflow:hidden;}
+  #pages{width:100%;min-width:0;max-width:100vw;overflow:hidden;}
+  .page{width:100%;min-width:0;max-width:100%;box-sizing:border-box;overflow-x:hidden!important;}
+  #nav{width:100%;min-width:0;max-width:100vw;box-sizing:border-box;gap:3px;padding:0 8px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;}
+  #nav>*{flex:0 0 auto;}
+  #nav button{padding:9px 10px;white-space:nowrap;font-size:12px;}
+  #left,#splitter,#vsplit,#hsplit{display:none!important;}
+  #previewCol{width:100%;min-width:0;min-height:0;}
+  #stageWrap{min-width:0;width:100%;padding:5px;box-sizing:border-box;}
+  #stage{width:100%;max-width:100%;height:auto;max-height:100%;}
+  #side{width:100%;min-width:0;max-width:100%;}
+  #editor{min-width:0;max-width:100%;grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #editor>*{min-width:0;max-width:100%;}
+  .studio,.trailerStudio,.lib{min-width:0;max-width:100%;box-sizing:border-box;}
+  /* Trailer Studio: one-column phone layout, no clipped right-hand controls. */
+  #pTrailer{width:100%;max-width:100vw;overflow-x:hidden!important;overflow-y:auto!important;}
+  #pTrailer .trailerStudio{height:auto;min-height:100%;width:100%;max-width:100%;padding:10px;display:flex;flex-direction:column;overflow:visible;box-sizing:border-box;}
+  #pTrailer .trailerStudio>header{width:100%;box-sizing:border-box;margin:0 0 10px;padding:12px;}
+  #pTrailer .trailerStudio>header h2{font-size:clamp(18px,5vw,24px);overflow-wrap:anywhere;}
+  #pTrailer .trailerStudio>header p{font-size:12px;overflow-wrap:anywhere;}
+  #pTrailer .trailerGrid{width:100%;min-width:0;display:grid;grid-template-columns:minmax(0,1fr)!important;gap:10px;overflow:visible;}
+  #pTrailer .trailerPreview,#pTrailer .trailerTools{grid-column:1!important;width:100%;min-width:0;max-width:100%;min-height:0;height:auto;box-sizing:border-box;padding:10px;overflow:visible;}
+  #pTrailer .trVidWrap{width:100%;min-width:0;min-height:0;height:auto;aspect-ratio:16/9;max-height:none;flex:none;}
+  #pTrailer .trVidWrap video{width:100%;height:100%;max-height:none;object-fit:contain;}
+  #pTrailer #trFile{width:100%;max-width:100%;box-sizing:border-box;max-height:none;}
+  #pTrailer .trailerPreview>.trTimes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  #pTrailer .trailerPreview>.trTimes>*{min-width:0;max-width:100%;}
+  #pTrailer .trailerPreview>.trActionRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+  #pTrailer .trailerPreview>.trActionRow button{min-width:0;white-space:normal;overflow-wrap:anywhere;}
+  #pTrailer .trailerTools>.trailerTabBar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;}
+  #pTrailer .trailerTabBar button{min-width:0;padding:9px 2px;font-size:11px;white-space:normal;overflow-wrap:anywhere;}
+  #pTrailer .trailerTabPanel{min-width:0;width:100%;max-width:100%;overflow:visible;}
+  #pTrailer .trailerTabPanel .trEditControls{grid-template-columns:repeat(2,minmax(0,1fr));}
+  #pTrailer .trailerTabPanel .trTemplates{grid-template-columns:repeat(2,minmax(0,1fr));max-height:none;overflow:visible;}
+  #pTrailer .trailerTabPanel .trToolGrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  #pTrailer input,#pTrailer select,#pTrailer textarea,#pTrailer button{max-width:100%;min-width:0;box-sizing:border-box;}
+  #pTrailer input[type=file]{font-size:12px;}
+  /* Make general cards and multi-column tool panels shrink gracefully. */
+  .trailerGrid>* , .grid>* , .cards>* , .tools>*{min-width:0;}
+  input,select,textarea,button{max-width:100%;}
+}
+@media(max-width:420px){
+  #app{grid-template-rows:42px minmax(0,1fr) 3px minmax(130px,25dvh);}
+  #top .logo{font-size:11px;}
+  #nav button{padding:8px 8px;font-size:11px;}
+  #pTrailer .trailerStudio{padding:7px;}
+  #pTrailer .trailerPreview,#pTrailer .trailerTools{padding:8px;}
+  #pTrailer .trailerTabBar button{font-size:10px;}
+  #pTrailer .trailerTabPanel .trEditControls{grid-template-columns:minmax(0,1fr);}
+}
+</style>
+
+
+<style id="aura-trailer-left-tools-fix">
+/* Put the full trailer tool sections on the LEFT, with the video preview on the RIGHT. */
+@media (min-width: 901px) {
+  #pTrailer .trailerGrid {
+    grid-template-columns: minmax(300px, .86fr) minmax(0, 1.5fr) !important;
+    grid-template-areas: "tools preview";
+    direction: ltr;
+  }
+  #pTrailer .trailerTools { grid-area: tools; min-width: 0; }
+  #pTrailer .trailerPreview { grid-area: preview; min-width: 0; }
+  #pTrailer .trailerTabPanel { scrollbar-gutter: stable; }
+}
+/* On phones, keep every section within the screen width and stack them cleanly. */
+@media (max-width: 900px) {
+  #pTrailer { overflow: auto !important; }
+  #pTrailer .trailerStudio { height: auto !important; min-height: 100%; overflow: visible !important; padding: 10px; }
+  #pTrailer .trailerGrid { display: flex !important; flex-direction: column; gap: 10px; overflow: visible !important; }
+  #pTrailer .trailerTools { order: 1; width: 100%; min-height: 0 !important; overflow: visible !important; }
+  #pTrailer .trailerPreview { order: 2; width: 100%; min-height: 0 !important; overflow: visible !important; }
+  #pTrailer .trailerTabPanel { overflow: visible !important; }
+  #pTrailer .trailerTabPanel .trTemplates { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #pTrailer .trailerTabPanel .trToolGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #pTrailer .trVidWrap { flex: 0 0 auto; min-height: 180px; aspect-ratio: 16/9; }
+}
+@media (max-width: 420px) {
+  #pTrailer .trailerStudio > header { padding: 10px; }
+  #pTrailer .trailerStudio > header h2 { font-size: 18px; }
+  #pTrailer .trailerTabBar button { font-size: 10px !important; padding: 8px 2px !important; }
+}
+</style>
+
 </head>
 <body>
 <div id="shell">
 <nav id="nav"><span class="brand">ستۆدیۆی ژێرنووس</span>
-  <button class="nb on" data-page="pHome">سەرەکی</button><button class="nb" data-page="pLib">پڕۆژەکان</button><button class="nb" data-page="pAbout">دەربارە</button><span id="ind"></span></nav>
+  <button class="nb on" data-page="pHome">سەرەکی</button><button class="nb" data-page="pLib">پڕۆژەکان</button><button class="nb" data-page="pAbout">دەربارە</button><button class="nb" data-page="pTrailer">تریلەر</button><span id="ind"></span></nav>
 <div id="pages">
 <section class="page on" id="pHome">
   <div class="hero"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span>
@@ -527,6 +671,136 @@ img, video, canvas { max-width: 100%; }
  <aside class="ps-r" id="psProps"></aside>
 </div></section>
 
+<section class="page" id="pTrailer"><div class="trailerStudio" dir="rtl">
+ <header><h2>ستۆدیۆی تریلەر — Aura Anime</h2><p>وەک VN ڤیدیۆ، دەق، لۆگۆ، ژێرنووس و تراکی دەنگ ڕێکبخە. قاڵبێک هەڵبژێرە و دەستکارییەکانت لە پێشبینین ببینە.</p></header>
+ <div class="trailerGrid"><section class="trailerPreview">
+ <div class="trVidWrap"><video id="trVideo" controls playsinline></video><canvas id="trBarMaskPreview" aria-hidden="true"></canvas><div id="trOverlay" class="trOverlay"></div><img id="trLogoPreview" class="trLogoPreview" alt="Logo" hidden></div>
+ <input id="trFile" type="file" accept="video/*">
+ <div class="trTimes"><label>دەستپێک (چرکە)<input id="trStart" type="number" min="0" value="0" step=".1"></label><label>کۆتایی (چرکە)<input id="trEnd" type="number" min="0" value="30" step=".1"></label></div>
+ <div class="trSubEditor trMaskEditor"><h3>🪄 لابردنی پاشبنەمای زەرد لە ڤیدیۆ</h3><p style="font-size:12px;opacity:.8;margin:0">ئەگەر ڕەنگە زەردەکە لە خودی ڤیدیۆکەدا تۆمار کرابێت، ئەم ماسکە بەشەکە دادەپۆشێت و لە پێشبینین و هەناردەدا جێبەجێ دەبێت. شوێن و قەبارەکە ڕێکبخە.</p><label class="trCheck"><input id="trBarMaskEnabled" type="checkbox"> چالاککردنی لابردنی باندی زەرد</label><div class="trTimes"><label>شوێنی ئاسۆیی <input id="trBarMaskX" type="range" min="0" max="90" value="9"></label><label>شوێنی ستوونی <input id="trBarMaskY" type="range" min="0" max="95" value="82"></label></div><div class="trTimes"><label>پانی <input id="trBarMaskW" type="range" min="10" max="100" value="82"></label><label>بەرزی <input id="trBarMaskH" type="range" min="1" max="15" value="5"></label></div><small id="trBarMaskStatus" style="color:#69d8ff">ئامادەیە — باندەکە چالاک بکە بۆ بینینی ئەنجام.</small></div>
+ <div class="trSubEditor"><h3>دەقی سەر ڤیدیۆ / ژێرنووس</h3>
+  <label>دەق<input id="trTitle" type="text" placeholder="دەقی سەر ڤیدیۆ بنووسە"></label>
+  <div class="trTimes"><label>لە چرکەی<input id="trTextStart" type="number" min="0" step=".1" value="0"></label><label>تا چرکەی<input id="trTextEnd" type="number" min="0" step=".1" value="9999"></label></div>
+  <div class="trActionRow"><button id="trAddSubtitle">+ زیادکردنی ژێرنووسی تر</button><button id="trClearSubtitles">پاککردنەوەی ژێرنووسەکان</button></div><p class="trSubtitleHelp" style="font-size:12px;opacity:.8;margin:0">دەقی هەر ژێرنووسێک لە خانەی خۆی بگۆڕە؛ گۆڕانکارییەکە ڕاستەوخۆ لە پێشبینین دەردەکەوێت.</p><div id="trSubtitleList" class="trSubtitleList"></div>
+ </div>
+ <div class="trSubEditor"><h3>لۆگۆ و ستایلی دەق</h3><label>فایلی لۆگۆ (PNG/JPG)<input id="trLogoFile" type="file" accept="image/*"></label>
+  <div class="trTimes"><label>قەبارەی لۆگۆ (px)<input id="trLogoSize" type="range" min="20" max="240" value="100"></label><label>شوێنی لۆگۆ<select id="trLogoPos"><option value="top-left">سەرەوە چەپ</option><option value="top-right">سەرەوە ڕاست</option><option value="bottom-left">خوارەوە چەپ</option><option value="bottom-right">خوارەوە ڕاست</option></select></label></div>
+  <div class="trTimes"><label>فۆنت<select id="trFont"><option value="Arial, sans-serif">Arial</option><option value="Impact, sans-serif">Impact</option><option value="Georgia, serif">Georgia</option><option value="Trebuchet MS, sans-serif">Trebuchet MS</option><option value="sans-serif">Sans Serif</option></select></label><label>قەبارەی دەقی کۆتایی<input id="trOutroSize" type="range" min="16" max="120" value="60"></label></div>
+  <label>دەقی کۆتایی<input id="trOutroText" type="text" value="AURA ANIME" placeholder="دەقی کۆتایی"></label>
+ </div>
+ <div class="trEditControls">
+  <label>ڕەنگی دەق <input id="trTextColor" type="color" value="#ffffff"></label>
+  <label>قەبارەی دەق <input id="trTextSize" type="range" min="16" max="80" value="36"></label>
+  <label>شوێنی دەق <select id="trTextPos"><option value="bottom">خوارەوە</option><option value="top">سەرەوە</option><option value="center">ناوەڕاست</option></select></label>
+  <label>ڕووناکی <input id="trBrightness" type="range" min="40" max="180" value="100"></label>
+  <label>کۆنتراست <input id="trContrast" type="range" min="40" max="180" value="100"></label>
+  <label>تێری ڕەنگ <input id="trSaturation" type="range" min="0" max="200" value="100"></label>
+  <label>Blur <input id="trBlur" type="range" min="0" max="10" value="0"></label>
+  <label>ڤۆڵیومی ڤیدیۆ <input id="trVolume" type="range" min="0" max="100" value="100"></label>
+  <label>خێرایی <select id="trSpeed"><option value="0.5">0.5×</option><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label>
+  <label>ڕێژەی وێنە <select id="trRatio"><option value="auto">خۆکار</option><option value="16/9">16:9</option><option value="9/16">9:16</option><option value="1/1">1:1</option></select></label>
+ </div>
+ <div class="trActionRow"><button id="trPreviewFrom" class="pri">پێشبینین لە دەستپێک</button><button id="trThumb">هەڵگرتنی Thumbnail</button><button id="trExport" class="pri">هەناردەی تریلەر (WebM)</button><button id="trReset">ڕیسێت</button></div>
+ <div class="trAudioBox"><h3>دەنگ و مۆسیقا</h3><label>زیادکردنی تراکی مۆسیقا / دەنگ<input id="trMusicFile" type="file" accept="audio/*"></label><div class="trTimes"><label>ڤۆڵیومی مۆسیقا<input id="trMusicVolume" type="range" min="0" max="100" value="70"></label><label>دەستپێکی مۆسیقا (چرکە)<input id="trMusicStart" type="number" min="0" step=".1" value="0"></label></div><audio id="trMusic" controls></audio><label class="trCheck"><input id="trMusicLoop" type="checkbox"> مۆسیقا تا کۆتایی لووپ بکە</label></div>
+ <p id="trNote">دەستکارییەکانی پێشبینین و هەناردەی WebM لە براوزەرەکەتدا جێبەجێ دەبن. MP4 لە ڕێگەی ئەم فایلە بە تەنها بەردەست نییە.</p>
+ </section>
+ <section class="trailerTools"><h3>قاڵبەکانی تریلەر (40+)</h3><p>قاڵبێک هەڵبژێرە، پاشان دەق، ڕەنگ و شوێنی بگۆڕە.</p><div id="trTemplates" class="trTemplates"></div><h3>ئامرازەکانی تریلەر (47)</h3><div class="trToolGrid">
+ <button data-trtool="trim">بڕینی کات</button> <button data-trtool="title">ناونیشان</button> <button data-trtool="ratio">ڕێژەی وێنە</button> <button data-trtool="audio">دەنگ</button> <button data-trtool="fade">Fade in/out</button> <button data-trtool="speed">خێرایی</button> <button data-trtool="filter">فلتەر</button> <button data-trtool="contrast">کۆنتراست</button> <button data-trtool="brightness">ڕووناکی</button> <button data-trtool="saturation">تێری ڕەنگ</button> <button data-trtool="blur">Blur</button> <button data-trtool="vignette">Vignette</button> <button data-trtool="text">دەقی سەر وێنە</button> <button data-trtool="subtitles">ژێرنووس</button> <button data-trtool="music">مۆسیقا</button> <button data-trtool="sfx">کاریگەری دەنگ</button> <button data-trtool="transition">گواستنەوە</button> <button data-trtool="zoom">Zoom</button> <button data-trtool="crop">Crop</button> <button data-trtool="mirror">Mirror</button> <button data-trtool="freeze">Freeze frame</button> <button data-trtool="thumbnail">Thumbnail</button> <button data-trtool="export">هەناردە</button> <button data-trtool="reset">پاککردنەوە</button> <button data-trtool="volume">ڤۆڵیوم</button> <button data-trtool="mute">بێدەنگ</button> <button data-trtool="loop">دووبارەکردنەوە</button> <button data-trtool="seek">گواستنەوەی کات</button> <button data-trtool="poster">وێنەی کاڤەر</button> <button data-trtool="resolution">ڕوونی</button> <button data-trtool="frame">فریم ڕەیت</button> <button data-trtool="stabilize">جێگیری</button> <button data-trtool="denoise">کەمکردنەوەی ژاوەژاو</button> <button data-trtool="equalizer">Equalizer</button> <button data-trtool="voice">دەنگی قسەکەر</button> <button data-trtool="intro">Intro</button> <button data-trtool="outro">Outro</button> <button data-trtool="watermark">واتەرمارک</button> <button data-trtool="logo">لۆگۆ</button> <button data-trtool="color">ڕەنگ</button> <button data-trtool="sharpen">تیژکردنەوە</button> <button data-trtool="rotate">سوڕاندن</button> <button data-trtool="split">دابەشکردن</button> <button data-trtool="duplicate">لەبەرگرتنەوە</button> <button data-trtool="delete">سڕینەوەی کلیپ</button> <button data-trtool="save">پاشەکەوت</button> <button data-trtool="help">یارمەتی</button>
+ </div><p id="trToolInfo">ئامرازێک هەڵبژێرە؛ ئامرازە پشتگیریکراوەکان پێشبینین و دەرئەنجام دەگۆڕن.</p></section></div></div></section>
+<style>
+
+.trailerStudio{height:100%;overflow:auto;padding:20px;max-width:1250px;margin:auto}.trailerStudio header{margin-bottom:16px}.trailerStudio h2{color:var(--ac);font-size:24px}.trailerStudio p{color:var(--tx2);margin-top:5px}.trailerGrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:16px}.trailerPreview,.trailerTools{background:var(--bg1);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:12px;align-content:start;min-width:0}.trVidWrap{position:relative;width:100%;background:#000;border-radius:8px;overflow:hidden;aspect-ratio:16/9}.trVidWrap video{width:100%;height:100%;max-height:52vh;object-fit:contain;background:#000}.trOverlay{pointer-events:none;position:absolute;left:4%;right:4%;bottom:9%;text-align:center;color:#fff;font-size:36px;font-weight:900;text-shadow:0 2px 8px #000,2px 2px 2px #000;white-space:pre-wrap;overflow-wrap:anywhere}.trOverlay.top{top:8%;bottom:auto}.trOverlay.center{top:45%;bottom:auto;transform:translateY(-50%)}.trPreview input[type=file],.trailerPreview input[type=text],.trailerPreview input[type=number],.trailerPreview select{width:100%;background:var(--bg0);border:1px solid var(--line);padding:8px;border-radius:6px;color:var(--tx)}.trTimes,.trEditControls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.trTimes label,.trailerPreview>label,.trEditControls label{display:grid;gap:5px}.trEditControls{padding:10px;background:var(--bg0);border-radius:8px}.trEditControls input[type=range]{width:100%}.trEditControls input[type=color]{width:100%;height:32px}.trActionRow{display:flex;flex-wrap:wrap;gap:8px}.trActionRow button{flex:1;min-width:130px}.trToolGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.trToolGrid button{min-height:42px}.trToolGrid button:focus,.trToolGrid button.active{outline:1px solid var(--ac);color:var(--ac)}#trToolInfo{padding:10px;background:var(--bg0);border-radius:8px;min-height:55px;line-height:1.7}@media(max-width:760px){.trailerGrid{grid-template-columns:1fr}.trToolGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.trTimes,.trEditControls{grid-template-columns:1fr}}
+
+.trailerStudio{max-width:1600px;padding:18px 22px}.trailerGrid{grid-template-columns:minmax(0,1.45fr) minmax(300px,.72fr);gap:18px}.trailerPreview{min-width:0}.trailerTools{min-width:0}.trVidWrap{aspect-ratio:16/9;min-height:240px;box-shadow:0 0 0 1px #ffffff10,0 12px 40px #0005}.trVidWrap video{max-height:64vh}.trOverlay{z-index:2;pointer-events:auto;touch-action:none;cursor:move;user-select:none;font-family:Arial,sans-serif}.trLogoPreview{position:absolute;z-index:3;max-width:32%;max-height:35%;object-fit:contain;pointer-events:none}.trSubEditor,.trAudioBox{display:grid;gap:10px;background:var(--bg0);border:1px solid var(--line);border-radius:10px;padding:12px}.trSubEditor h3,.trAudioBox h3{margin:0;color:var(--ac);font-size:15px}.trSubtitleList{display:grid;gap:6px;max-height:180px;overflow:auto}.trSubtitleItem{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg1)}.trSubtitleItem button{padding:5px 9px}.trTemplates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;max-height:320px;overflow:auto;padding:2px}.trTemplates button{min-height:55px;border:1px solid #3b4c68;background:linear-gradient(135deg,#101d3b,#202b49);color:#fff;border-radius:9px;padding:8px;font-weight:800;cursor:pointer}.trTemplates button:hover,.trTemplates button.active{border-color:#35baff;box-shadow:0 0 12px #168dff55;color:#7be2ff}.trAudioBox audio{width:100%;height:38px}.trCheck{display:flex;align-items:center;gap:8px}.trToolGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.trailerTools h3{margin:4px 0}.trailerTools p{margin:0 0 8px}.trTimes label,.trEditControls label{min-width:0}.trEditControls input,.trEditControls select{min-width:0}.trActionRow button{min-height:38px}@media(max-width:1000px){.trailerGrid{grid-template-columns:minmax(0,1.15fr) minmax(270px,.85fr)}}@media(max-width:760px){.trailerGrid{grid-template-columns:1fr}.trTemplates{grid-template-columns:repeat(2,minmax(0,1fr))}.trToolGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.trVidWrap{min-height:180px}}
+</style>
+<script>(()=>{const $=id=>document.getElementById(id);let url='',muted=false,looping=false,exporting=false;const v=$('trVideo'),overlay=$('trOverlay');
+const logo=$('trLogoPreview'),music=$('trMusic');let logoUrl='',musicUrl='',subtitles=[],subtitleId=0;
+const maskCanvas=$('trBarMaskPreview'),maskCtx=maskCanvas.getContext('2d');
+function maskRect(w,h){return {x:w*(+$('trBarMaskX').value||0)/100,y:h*(+$('trBarMaskY').value||0)/100,w:w*(+$('trBarMaskW').value||0)/100,h:h*(+$('trBarMaskH').value||0)/100};}
+function paintMask(ctx,source,w,h){if(!$('trBarMaskEnabled').checked||!source||!w||!h)return;const r=maskRect(w,h);if(r.w<1||r.h<1)return;const sy=Math.max(0,r.y-r.h*1.15);const sh=Math.max(1,Math.min(r.h*1.15,r.y-sy));try{ctx.drawImage(source,r.x,sy,r.w,sh,r.x,r.y,r.w,r.h)}catch{}}
+function updateMaskPreview(){if(!maskCanvas||!v.videoWidth||!v.videoHeight)return;const w=v.videoWidth,h=v.videoHeight;if(maskCanvas.width!==w||maskCanvas.height!==h){maskCanvas.width=w;maskCanvas.height=h}maskCtx.clearRect(0,0,w,h);paintMask(maskCtx,v,w,h);$('trBarMaskStatus').textContent=$('trBarMaskEnabled').checked?'ماسک چالاکە؛ شوێن و قەبارەی باندەکە ڕێکبخە.':'ئامادەیە — باندەکە چالاک بکە بۆ بینینی ئەنجام.'}
+['trBarMaskEnabled','trBarMaskX','trBarMaskY','trBarMaskW','trBarMaskH'].forEach(id=>$(id).addEventListener('input',updateMaskPreview));
+v.addEventListener('timeupdate',updateMaskPreview);v.addEventListener('seeked',updateMaskPreview);v.addEventListener('loadeddata',updateMaskPreview);v.addEventListener('play',()=>{const tick=()=>{if(v.paused||v.ended)return;updateMaskPreview();requestAnimationFrame(tick)};requestAnimationFrame(tick)});
+const templateNames=['Aura Anime','Neon Blue','Purple Storm','Dragon Fire','Cinematic Gold','Dark Shadow','VHS Retro','Cyber Glitch','Soft Glow','Action Impact','Romance Pink','Horror Night','Fantasy Light','Speed Lines','Electric Aura','Black & White','Sepia Film','Dream Fade','Anime Intro','Epic Finale','Manga Ink','Sky Blue','Crimson Edge','Moonlight','Star Burst','Lightning','Flame Cut','Ice Crystal','Galaxy','Minimal Clean','Trailer Pro','VN Classic','Motion Blur','Color Pop','Night City','Sunset Gold','Deep Ocean','Magic Circle','Hero Reveal','Final Chapter','Aura Signature','Studio Mark'];
+const templateStyles=[['#ffffff',60,'center','Arial, sans-serif'],['#56dfff',54,'center','Impact, sans-serif'],['#d8a7ff',58,'bottom','Georgia, serif'],['#ffb34a',62,'center','Impact, sans-serif'],['#ffd76b',60,'bottom','Georgia, serif'],['#ffffff',48,'bottom','Impact, sans-serif'],['#e8f2ff',44,'center','Trebuchet MS, sans-serif'],['#77f7ff',58,'center','Arial, sans-serif']];
+const templateBox=$('trTemplates');templateNames.forEach((name,i)=>{const b=document.createElement('button');b.type='button';b.textContent=name;b.dataset.template=i;templateBox.appendChild(b)});
+function renderSubtitles(){
+ const box=$('trSubtitleList');box.replaceChildren();
+ subtitles.forEach((item,i)=>{
+  const row=document.createElement('div');row.className='trSubtitleItem';
+  row.style.gridTemplateColumns='minmax(0,1fr) auto';
+  const editor=document.createElement('div');editor.style.cssText='display:grid;gap:6px;min-width:0';
+  const timing=document.createElement('button');timing.type='button';timing.textContent=`${item.start.toFixed(1)}s – ${item.end.toFixed(1)}s · دەستکاری ژێرنووس`;
+  timing.style.cssText='text-align:right;white-space:normal';
+  timing.onclick=()=>{ $('trTitle').value=item.text;$('trTextStart').value=item.start;$('trTextEnd').value=item.end;applyPreview();if(v.src)v.currentTime=item.start;$('trTitle').focus()};
+  const textInput=document.createElement('textarea');textInput.value=item.text;textInput.rows=2;textInput.setAttribute('aria-label',`دەستکاری دەقی ژێرنووسی ${i+1}`);textInput.placeholder='دەقی ژێرنووس لێرە بگۆڕە';textInput.style.cssText='width:100%;box-sizing:border-box;resize:vertical;min-height:42px;background:var(--bg0);color:var(--fg,#fff);border:1px solid var(--line);border-radius:7px;padding:8px;font:inherit';
+  textInput.addEventListener('input',()=>{item.text=textInput.value;if(subtitles.includes(item)){if(activeSubtitle()===item||(!activeSubtitle()&&v.currentTime>=item.start&&v.currentTime<=item.end))$('trTitle').value=item.text;applyPreview()}});
+  const del=document.createElement('button');del.type='button';del.textContent='×';del.title='سڕینەوەی ژێرنووس';del.setAttribute('aria-label','سڕینەوەی ژێرنووس');del.onclick=()=>{subtitles.splice(i,1);renderSubtitles();applyPreview()};
+  editor.append(timing,textInput);row.append(editor,del);box.appendChild(row)
+ })
+}
+function activeSubtitle(){const t=v.currentTime||0;return subtitles.find(q=>t>=q.start&&t<=q.end)}
+let draggingText=false,dragX=0,dragY=0,baseLeft=0,baseTop=0;
+overlay.addEventListener('pointerdown',e=>{draggingText=true;const r=overlay.getBoundingClientRect(),wrap=document.querySelector('.trVidWrap').getBoundingClientRect();dragX=e.clientX;dragY=e.clientY;baseLeft=((r.left-wrap.left)/wrap.width)*100;baseTop=((r.top-wrap.top)/wrap.height)*100;overlay.setPointerCapture?.(e.pointerId);e.preventDefault()});
+overlay.addEventListener('pointermove',e=>{if(!draggingText)return;const wrap=document.querySelector('.trVidWrap').getBoundingClientRect();const left=Math.max(0,Math.min(90,baseLeft+(e.clientX-dragX)/wrap.width*100));const top=Math.max(0,Math.min(90,baseTop+(e.clientY-dragY)/wrap.height*100));overlay.style.left=left+'%';overlay.style.right='auto';overlay.style.top=top+'%';overlay.style.bottom='auto';overlay.style.transform='none';overlay.style.textAlign='center'});
+['pointerup','pointercancel','lostpointercapture'].forEach(n=>overlay.addEventListener(n,()=>draggingText=false));
+
+
+const info={'trim':'کاتی دەستپێک و کۆتایی دیاری بکە و پێشبینین لەو کاتەوە دەستپێبکە.','title':'ناونیشان لەسەر ڤیدیۆ دەردەکەوێت؛ دەقەکە لە خانەکە بگۆڕە.','ratio':'ڕێژەی پێشبینین بگۆڕە.','audio':'دەنگ لە ڤیدیۆی سەرچاوەوە دێت؛ ڤۆڵیوم بەکاربهێنە.','fade':'Fade-in/out لە هەناردەی سادەدا بەردەست نییە.','speed':'خێرایی پێشبینین بگۆڕە.','filter':'فلتەرەکان لە پێشبینین و هەناردەدا جێبەجێ دەبن.','contrast':'کۆنتراستی پێشبینین بگۆڕە.','brightness':'ڕووناکی پێشبینین بگۆڕە.','saturation':'تێری ڕەنگ بگۆڕە.','blur':'Blur لە پێشبینین و هەناردەدا جێبەجێ دەبێت.','vignette':'Vignette لە هەناردەی بنەڕەتدا بەردەست نییە.','text':'دەقی سەر ڤیدیۆ بنووسە و ڕەنگ/قەبارەی بگۆڕە.','subtitles':'ژێرنووسی سەرچاوە لە ڤیدیۆی دەرەکیەوە زیاد بکە؛ SRT لە هەناردەی ئەم بەشەدا پشتیوانی ناکرێت.','music':'زیادکردنی تراکی مۆسیقا لەم وەشانەدا نییە.','sfx':'زیادکردنی کاریگەری دەنگ لەم وەشانەدا نییە.','transition':'گواستنەوەی کلیپ لەم وەشانەدا نییە.','zoom':'ڕێژەی وێنە و قەبارەی پێشبینین بەکاربهێنە.','crop':'ڕێژەی وێنە بگۆڕە.','mirror':'پێشبینین ئاسۆیی دەگێڕێتەوە.','freeze':'فریمی وەستاو لە هەناردەی سادەدا بەردەست نییە.','thumbnail':'فریمی ئێستا وەک PNG دابەزێنە.','export':'هەناردەی WebM بە MediaRecorder ئەنجام دەدرێت.','reset':'ڕێکخستنەکانی پێشبینین بگەڕێنەوە بۆ بنەڕەت.','volume':'ڤۆڵیوم ڕێکبخە.','mute':'دەنگ بکوژێنەوە یان چالاکی بکە.','loop':'پێشبینین لووپ بکە.','seek':'بە ٥ چرکە بڕۆ پێشەوە.','poster':'Thumbnail لە فریمی ئێستا دروست بکە.','resolution':'ڕوونیی هەناردەکە پەیوەندی بە ڤیدیۆی سەرچاوەوە هەیە.','frame':'خێرایی پەخشکردن بگۆڕە.','stabilize':'جێگیری لەم وەشانەدا بەردەست نییە.','denoise':'پاککردنەوەی ژاوەژاوی دەنگ لەم وەشانەدا نییە.','equalizer':'Equalizer لەم وەشانەدا بەردەست نییە.','voice':'جیاکردنەوەی دەنگی قسەکەر لەم وەشانەدا نییە.','intro':'بەشی سەرەتایی بە کاتی دەستپێک ڕێکبخە.','outro':'بەشی کۆتایی بە کاتی کۆتایی ڕێکبخە.','watermark':'ناونیشان دەتوانێت وەک واتەرمارک بەکاربهێنرێت.','logo':'لۆگۆ لەم وەشانەدا زیاد ناکرێت؛ دەق بەکاربهێنە.','color':'ڕەنگ و فلتەرەکان لە پێشبینین ڕێکبخە.','sharpen':'Sharpen لەم وەشانەدا بەردەست نییە.','rotate':'سوڕاندن لەم وەشانەدا بەردەست نییە.','split':'کاتی دەستپێک و کۆتایی بەکاربهێنە بۆ دیاریکردنی بەش.','duplicate':'دووبارەکردنەوەی کلیپ لەم وەشانەدا نییە.','delete':'فایلی هەڵبژێردراو پاک بکەوە و نوێی هەڵبژێرە.','save':'هەناردە بکە بۆ پاشەکەوتکردنی فایل.','help':'هەناردەی MP4 و کاریگەرییە پێشکەوتووەکان پێویستیان بە دەستکاریکەری تایبەت هەیە.'};
+function applyPreview(){const timed=activeSubtitle();overlay.textContent=timed?timed.text:$('trTitle').value;overlay.style.color=$('trTextColor').value;overlay.style.fontSize=$('trTextSize').value+'px';overlay.style.fontFamily=$('trFont').value;overlay.className='trOverlay '+$('trTextPos').value;v.volume=(+$('trVolume').value||0)/100;logo.hidden=!logo.src;logo.style.width=(+$('trLogoSize').value||100)+'px';logo.style.left=$('trLogoPos').value.endsWith('left')?'3%':'auto';logo.style.right=$('trLogoPos').value.endsWith('right')?'3%':'auto';logo.style.top=$('trLogoPos').value.startsWith('top')?'3%':'auto';logo.style.bottom=$('trLogoPos').value.startsWith('bottom')?'3%':'auto';
+v.style.filter=`brightness(${$('trBrightness').value/100}) contrast(${$('trContrast').value/100}) saturate(${$('trSaturation').value/100}) blur(${$('trBlur').value}px)`;
+const r=$('trRatio').value;document.querySelector('.trVidWrap').style.aspectRatio=r==='auto'?(v.videoWidth&&v.videoHeight?v.videoWidth+'/'+v.videoHeight:'16/9'):r;v.playbackRate=+$('trSpeed').value||1}
+['trTitle','trTextColor','trTextSize','trTextPos','trBrightness','trContrast','trSaturation','trBlur','trSpeed','trRatio','trVolume','trLogoSize','trLogoPos','trFont','trOutroSize','trOutroText'].forEach(id=>$(id).addEventListener('input',applyPreview));
+$('trFile').addEventListener('change',()=>{const f=$('trFile').files[0];if(!f)return;if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(f);v.src=url;v.load();$('trEnd').value=30;overlay.textContent=$('trTitle').value});
+v.addEventListener('loadedmetadata',()=>{updateMaskPreview();$('trEnd').max=v.duration;$('trEnd').value=Math.min(30,v.duration||30);$('trStart').max=v.duration;applyPreview()});
+$('trStart').addEventListener('change',()=>{v.currentTime=Math.max(0,Math.min(+$('trStart').value||0,v.duration||0))});
+$('trEnd').addEventListener('change',()=>{if(+$('trEnd').value<+$('trStart').value)$('trEnd').value=$('trStart').value});
+v.addEventListener('timeupdate',()=>{if(!exporting&&v.duration&&v.currentTime>=(+$('trEnd').value||v.duration)){v.pause();v.currentTime=Math.max(0,+$('trStart').value||0)}});
+$('trPreviewFrom').onclick=()=>{if(!v.src)return toast('سەرەتا ڤیدیۆ هەڵبژێرە');v.currentTime=Math.max(0,+$('trStart').value||0);v.play().catch(()=>{})};
+$('trReset').onclick=()=>{$('trBarMaskEnabled').checked=false;$('trBarMaskX').value=9;$('trBarMaskY').value=82;$('trBarMaskW').value=82;$('trBarMaskH').value=5;updateMaskPreview();$('trBrightness').value=100;$('trContrast').value=100;$('trSaturation').value=100;$('trBlur').value=0;$('trSpeed').value=1;$('trRatio').value='auto';$('trTextColor').value='#ffffff';$('trTextSize').value=36;$('trTextPos').value='bottom';overlay.style.left='';overlay.style.right='';overlay.style.top='';overlay.style.bottom='';overlay.style.transform='';v.style.transform='';v.volume=1;v.muted=false;v.loop=false;muted=false;looping=false;applyPreview()};
+async function thumbnail(){if(!v.videoWidth)return toast('سەرەتا ڤیدیۆکە پەخش/باربکە');const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;const x=c.getContext('2d');x.filter=v.style.filter||'none';x.drawImage(v,0,0,c.width,c.height);if(overlay.textContent){x.filter='none';x.font=`bold ${Math.max(20,+$('trTextSize').value)}px sans-serif`;x.textAlign='center';x.lineWidth=4;x.strokeStyle='#000';x.fillStyle=$('trTextColor').value;const y=$('trTextPos').value==='top'?60:$('trTextPos').value==='center'?c.height/2:c.height-60;x.strokeText(overlay.textContent,c.width/2,y,c.width*.9);x.fillText(overlay.textContent,c.width/2,y,c.width*.9)}c.toBlob(b=>{if(!b)return;const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aura-anime-thumbnail.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)})}
+$('trThumb').onclick=thumbnail;
+$('trExport').onclick=async()=>{if(!v.src||!v.videoWidth)return toast('سەرەتا ڤیدیۆ هەڵبژێرە');if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream)return toast('براوزەرەکەت هەناردەی WebM پشتگیری ناکات');
+const start=Math.max(0,+$('trStart').value||0),end=Math.min(v.duration||Infinity,+$('trEnd').value||v.duration||Infinity);if(end<=start)return toast('کاتی کۆتایی دەبێت لە کاتی دەستپێک زیاتر بێت');
+const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;const x=c.getContext('2d');const cs=c.captureStream(30);let stream=cs;
+try{const vs=v.captureStream?v.captureStream():null;if(vs){vs.getAudioTracks().forEach(t=>cs.addTrack(t))}}catch{}
+try{if(music.src&&music.captureStream){const ms=music.captureStream();ms.getAudioTracks().forEach(t=>cs.addTrack(t));music.volume=(+$('trMusicVolume').value||0)/100;music.currentTime=Math.max(0,+$('trMusicStart').value||0);music.play().catch(()=>{})}}catch{}
+let mime='video/webm;codecs=vp9,opus';if(!MediaRecorder.isTypeSupported(mime))mime='video/webm';let rec;try{rec=new MediaRecorder(stream,{mimeType:mime})}catch(e){return toast('هەناردەی ڤیدیۆ ناکرێت: '+e.message)}
+const chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};rec.onstop=()=>{const blob=new Blob(chunks,{type:mime});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(($('trTitle').value||'aura-anime-trailer').replace(/[\\/:*?"<>|]/g,'_'))+'.webm';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);cs.getTracks().forEach(t=>t.stop());exporting=false;$('trExport').disabled=false;$('trExport').textContent='هەناردەی تریلەر (WebM)';toast('تریلەر هەناردە کرا ✔')};
+exporting=true;$('trExport').disabled=true;$('trExport').textContent='هەناردەکردن...';v.pause();v.currentTime=start;await new Promise(resolve=>{if(Math.abs(v.currentTime-start)<.05)resolve();else v.addEventListener('seeked',resolve,{once:true})});
+function frame(){if(v.readyState>=2){x.clearRect(0,0,c.width,c.height);x.save();x.filter=v.style.filter||'none';if(v.style.transform.includes('scaleX')){x.translate(c.width,0);x.scale(-1,1)}x.drawImage(v,0,0,c.width,c.height);paintMask(x,v,c.width,c.height);x.restore();if(overlay.textContent){x.font=`bold ${Math.max(16,+$('trTextSize').value)}px ${$('trFont').value}`;x.textAlign='center';x.lineWidth=5;x.strokeStyle='#000';x.fillStyle=$('trTextColor').value;const leftPct=parseFloat(overlay.style.left),topPct=parseFloat(overlay.style.top);const px=Number.isFinite(leftPct)?c.width*leftPct/100:c.width/2;const y=Number.isFinite(topPct)?c.height*topPct/100:($('trTextPos').value==='top'?c.height*.1:$('trTextPos').value==='center'?c.height*.5:c.height*.9);x.strokeText(overlay.textContent,px,y,c.width*.9);x.fillText(overlay.textContent,px,y,c.width*.9)}}if(logo.complete&&logo.naturalWidth&&!logo.hidden){const lw=Math.min(c.width*.28,(+$('trLogoSize').value||100)*c.width/Math.max(1,v.clientWidth));const lh=lw*logo.naturalHeight/logo.naturalWidth;const lx=$('trLogoPos').value.endsWith('left')?c.width*.03:c.width*.97-lw;const ly=$('trLogoPos').value.startsWith('top')?c.height*.03:c.height*.97-lh;x.drawImage(logo,lx,ly,lw,lh)}if(v.currentTime>=end||v.ended){v.pause();music.pause();const outro=$('trOutroText').value.trim();if(outro){x.fillStyle=$('trTextColor').value;x.strokeStyle='#000';x.lineWidth=5;x.textAlign='center';x.font=`bold ${Math.max(16,+$('trOutroSize').value)}px ${$('trFont').value}`;x.strokeText(outro,c.width/2,c.height*.88,c.width*.9);x.fillText(outro,c.width/2,c.height*.88,c.width*.9)}rec.stop();return}requestAnimationFrame(frame)}
+rec.start(200);v.play().then(frame).catch(()=>{rec.stop();exporting=false;$('trExport').disabled=false;toast('پەخشکردنی ڤیدیۆ دەست پێنەکرد')})};
+document.querySelectorAll('[data-trtool]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-trtool]').forEach(x=>x.classList.remove('active'));b.classList.add('active');const k=b.dataset.trtool;$('trToolInfo').textContent=info[k]||'';
+if(k==='speed'){$('trSpeed').value=+$('trSpeed').value===1?1.5:+$('trSpeed').value===1.5?2:1;applyPreview()}
+if(k==='volume'){v.volume=v.volume>.5?.35:1;$('trToolInfo').textContent=info[k]+' ڤۆڵیوم: '+Math.round(v.volume*100)+'%'}
+if(k==='mute'){muted=!muted;v.muted=muted;$('trToolInfo').textContent=info[k]}
+if(k==='loop'){looping=!looping;v.loop=looping;$('trToolInfo').textContent=info[k]}
+if(k==='brightness'){$('trBrightness').value=Math.min(180,+$('trBrightness').value+20);applyPreview()}
+if(k==='contrast'){$('trContrast').value=Math.min(180,+$('trContrast').value+20);applyPreview()}
+if(k==='saturation'){$('trSaturation').value=Math.min(200,+$('trSaturation').value+25);applyPreview()}
+if(k==='blur'){$('trBlur').value=(+$('trBlur').value+1)%6;applyPreview()}
+if(k==='mirror')v.style.transform=v.style.transform?'':'scaleX(-1)';
+if(k==='ratio'){$('trRatio').value=$('trRatio').value==='16/9'?'9/16':'16/9';applyPreview()}
+if(k==='title'||k==='text'){$('trTitle').focus();$('trToolInfo').textContent=info[k]}
+if(k==='trim'){$('trStart').focus()}
+if(k==='reset')$('trReset').click();
+if(k==='seek')v.currentTime=Math.min(v.duration||0,(v.currentTime||0)+5);
+if(k==='thumbnail'||k==='poster')thumbnail();
+if(k==='export')$('trExport').click();
+if(k==='delete'){$('trFile').value='';v.pause();v.removeAttribute('src');v.load();if(url)URL.revokeObjectURL(url);url='';overlay.textContent=''}
+if(k==='save')$('trExport').click();
+if(k==='split'){$('trEnd').value=Math.max(+$('trStart').value+.1,v.currentTime||0);$('trToolInfo').textContent='کاتی کۆتایی بە کاتی ئێستا دانرا.'}
+if(k==='watermark'){$('trTitle').value=$('trTitle').value||'AURA ANIME';applyPreview()}
+}));
+
+$('trAddSubtitle').onclick=()=>{const text=$('trTitle').value.trim();if(!text)return toast('سەرەتا دەق بنووسە');const start=Math.max(0,+$('trTextStart').value||0),end=Math.max(start+.1,+$('trTextEnd').value||((v.duration||start+5)));subtitles.push({id:++subtitleId,text,start,end});subtitles.sort((a,b)=>a.start-b.start);renderSubtitles();applyPreview();toast('ژێرنووس زیاد کرا ✔')};
+$('trClearSubtitles').onclick=()=>{subtitles=[];renderSubtitles();applyPreview()};
+$('trTemplates').addEventListener('click',e=>{const b=e.target.closest('[data-template]');if(!b)return;document.querySelectorAll('#trTemplates button').forEach(x=>x.classList.toggle('active',x===b));const st=templateStyles[+b.dataset.template%templateStyles.length];$('trTextColor').value=st[0];$('trTextSize').value=st[1];$('trTextPos').value=st[2];$('trFont').value=st[3];$('trTitle').value=b.textContent.toUpperCase();$('trOutroText').value=b.textContent.toUpperCase();applyPreview();$('trToolInfo').textContent='قاڵبی '+b.textContent+' جێبەجێ کرا؛ دەق و ڕەنگەکان دەتوانیت بگۆڕیت.'});
+$('trLogoFile').addEventListener('change',()=>{const f=$('trLogoFile').files[0];if(!f)return;if(logoUrl)URL.revokeObjectURL(logoUrl);logoUrl=URL.createObjectURL(f);logo.src=logoUrl;logo.hidden=false;applyPreview()});
+$('trMusicFile').addEventListener('change',()=>{const f=$('trMusicFile').files[0];if(!f)return;if(musicUrl)URL.revokeObjectURL(musicUrl);musicUrl=URL.createObjectURL(f);music.src=musicUrl;music.load();music.volume=(+$('trMusicVolume').value||0)/100;music.loop=$('trMusicLoop').checked;toast('تراکی دەنگ زیاد کرا ✔')});
+$('trMusicVolume').addEventListener('input',()=>music.volume=(+$('trMusicVolume').value||0)/100);$('trMusicLoop').addEventListener('change',()=>music.loop=$('trMusicLoop').checked);
+v.addEventListener('play',()=>{if(music.src){const st=+$('trMusicStart').value||0;try{music.currentTime=st}catch{}music.play().catch(()=>{})}});v.addEventListener('pause',()=>music.pause());v.addEventListener('timeupdate',()=>{if(music.src&&v.currentTime>0&&Math.abs(music.currentTime-((+$('trMusicStart').value||0)+v.currentTime-(+$('trStart').value||0)))>1.2){try{music.currentTime=Math.max(0,(+$('trMusicStart').value||0)+v.currentTime-(+$('trStart').value||0))}catch{}}applyPreview()});
+$('trGoEditor').addEventListener('click',()=>{const lib=document.querySelector('[data-page="pLib"]');if(lib)lib.click()});applyPreview();updateMaskPreview();})();</script>
 <section class="page" id="pOwner"><div class="ow" id="owBody"></div></section>
 
 <section class="page" id="pAbout"><div class="about">
@@ -558,15 +832,6 @@ img, video, canvas { max-width: 100%; }
    <label class="rem"><input type="checkbox" id="aRem" checked> لەسەر ئەم ئامێرە بمهێڵەرەوە</label><button class="pri" id="aGo">چوونەژوورەوە</button><div id="aMsg"></div></div>
   <small>هەژمارەکان تەنها لەسەر ئەم ئامێرە هەڵدەگیرێن.</small></div></div>
 
-<div id="joinGate" role="dialog" aria-modal="true" aria-labelledby="jgTitle"><div class="jg-card">
-  <h2 id="jgTitle">Anime Studio — داواکاری بەشداری</h2>
-  <p>بۆ بەکارهێنانی ستۆدیۆ، بە هەژماری Google بچۆ ژوورەوە و داواکاری بنێرە. ئۆنەر پێویستە داواکارییەکەت پەسەند بکات.</p>
-  <div class="jg-status" id="jgStatus">پەیوەندی بە Firebase...</div>
-  <button class="jg-primary" id="jgSignIn">چوونەژوورەوە بە Google</button>
-  <button class="jg-primary" id="jgRequest" hidden>ناردنی داواکاری بەشداری</button>
-  <button class="jg-secondary" id="jgRefresh" hidden>پشکنینەوەی دۆخ</button>
-  <button class="jg-secondary" id="jgSignOut" hidden>چوونەدەرەوە</button>
-</div></div>
 <div id="toast"></div>
 
 <script>
@@ -744,7 +1009,7 @@ const nowT = () => vid.src ? vid.currentTime : vimeLessTime;
 
 /* ---------- Overlay + style ---------- */
 const DEF = { font: 'Speda', size: 44, bold: true, color: '#ffffff', pos: 8, bg: '#000000', bgA: 0, out: '#000000', outW: 3, sh: '#000000', shB: 6, shO: 2, anim: 'fadeIn', animD: 0.6 };
-let st = { ...DEF };
+let st = { ...DEF, bgA: 0 }; // no subtitle box by default
 const stage = $('#stage'), ov = $('#overlay'), ovSpan = ov.firstElementChild;
 function hexA(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${n >> 8 & 255},${n & 255},${a})`; }
 function applyStyle() {
@@ -754,7 +1019,7 @@ function applyStyle() {
   ov.style.fontWeight = st.bold ? 700 : 400;
   ov.style.color = st.color;
   ov.style.bottom = st.pos + '%';
-  ovSpan.style.background = hexA(st.bg, st.bgA / 100);
+  ovSpan.style.background = 'transparent'; // subtitle background disabled: text only
   ovSpan.style.webkitTextStroke = (st.outW * 2 * k) + 'px ' + st.out;   // doubled: half is hidden by paint-order
   ovSpan.style.paintOrder = 'stroke fill';
   ovSpan.style.textShadow = st.shB || st.shO ? `${st.shO * k}px ${st.shO * k}px ${st.shB * k}px ${st.sh}` : 'none';
@@ -780,7 +1045,7 @@ const bindStyle = (id, key, isNum = true) => $('#' + id).addEventListener('input
 [['sFont', 'font', 0], ['sSize', 'size'], ['sBold', 'bold'], ['sColor', 'color', 0], ['sPos', 'pos'], ['sBg', 'bg', 0], ['sBgA', 'bgA'],
  ['sOut', 'out', 0], ['sOutW', 'outW'], ['sSh', 'sh', 0], ['sShB', 'shB'], ['sShO', 'shO']].forEach(a => bindStyle(a[0], a[1], a[2] !== 0));
 $('#sBold').addEventListener('change', e => { st.bold = e.target.checked; applyStyle(); });
-$('#btnReset').onclick = () => { st = { ...DEF }; applyStyle(); };
+$('#btnReset').onclick = () => { st = { ...DEF, bgA: 0 }; applyStyle(); };
 
 /* ---------- Playback ---------- */
 function onTime() {
@@ -1002,7 +1267,7 @@ function makeThumb(url) {
 $('#fVideo').addEventListener('change', async e => { const f = e.target.files[0]; if (!f || !curId) return; await dbPut('videos', f, curId); curThumb = await makeThumb(vid.src); saveNow(); });
 async function openProject(id) {
   const r = await dbGet('projects', id); if (!r) return; await saveNow();
-  curId = id; curThumb = r.thumb || ''; subs = r.subs || []; st = { ...DEF, ...(r.st || {}) }; sel = -1; undoS.length = redoS.length = 0; last = JSON.stringify(subs); syncBtns();
+  curId = id; curThumb = r.thumb || ''; subs = r.subs || []; st = { ...DEF, ...(r.st || {}), bgA: 0 }; sel = -1; undoS.length = redoS.length = 0; last = JSON.stringify(subs); syncBtns();
   $('#projName').value = r.name; vimeLessTime = 0; $('#mediaGrid').innerHTML = ''; $('#saveInd').textContent = '';
   const v = await dbGet('videos', id);
   if (v) { vid.src = URL.createObjectURL(v); addMedia(); $('#empty').style.display = 'none'; } else { vid.removeAttribute('src'); vid.load(); $('#empty').style.display = ''; }
@@ -1056,7 +1321,7 @@ function drawSub(cx, W, H, k, t) {
   cx.save(); cx.globalAlpha = fx.a; cx.translate(W / 2 + fx.tx * k, top + h / 2 + fx.ty * k); cx.rotate(fx.r); cx.scale(fx.s, fx.s); cx.translate(0, -h / 2);
   lines.forEach((ln, i) => {
     const y = i * lh + fs, w = cx.measureText(ln).width;
-    if (st.bgA > 0) { cx.fillStyle = hexA(st.bg, st.bgA / 100); cx.fillRect(-w / 2 - .45 * fs, y - fs, w + .9 * fs, lh * .95); }
+    // Subtitle background intentionally omitted; render text directly over the video.
     cx.shadowColor = st.sh; cx.shadowBlur = st.shB * k; cx.shadowOffsetX = cx.shadowOffsetY = st.shO * k;
     if (st.outW > 0) { cx.lineJoin = 'round'; cx.lineWidth = st.outW * 2 * k; cx.strokeStyle = st.out; cx.strokeText(ln, 0, y); }
     cx.fillStyle = st.color; cx.fillText(ln, 0, y); cx.shadowColor = 'transparent';
@@ -1432,7 +1697,7 @@ window.drawSub = drawSub;
    <div class="as-card"><h3>✧ ستایلی ژێرنووس</h3>
     <label class="as-label" for="asSubFont">فۆنت</label><select class="as-field" id="asSubFont"><option value="Arial, sans-serif">Arial / گشتی</option><option value="Tahoma, sans-serif">Tahoma</option><option value="Inter, sans-serif">Inter</option><option value="Georgia, serif">Georgia</option></select>
     <label class="as-label" for="asSubSize">قەبارەی دەق</label><input class="as-field" id="asSubSize" type="range" min="14" max="42" value="26">
-    <div class="as-controls"><div><label class="as-label" for="asSubColor">ڕەنگی دەق</label><input class="as-field" id="asSubColor" type="color" value="#ffffff"></div><div><label class="as-label" for="asSubBg">پاشبنەما</label><select class="as-field" id="asSubBg"><option value="shadow">سێبەری ڕەش</option><option value="box">بۆکسی نیوەڕەش</option><option value="none">بێ پاشبنەما</option></select></div></div>
+    <div class="as-controls"><div><label class="as-label" for="asSubColor">ڕەنگی دەق</label><input class="as-field" id="asSubColor" type="color" value="#ffffff"></div><div><label class="as-label" for="asSubBg">پاشبنەما</label><select class="as-field" id="asSubBg"><option value="none" selected>بێ پاشبنەما</option><option value="shadow">سێبەری ڕەش</option><option value="box">بۆکسی نیوەڕەش</option></select></div></div>
     <label class="as-label" for="asSubPosition">شوێنی ژێرنووس</label><select class="as-field" id="asSubPosition"><option value="bottom">خوارەوە</option><option value="middle">ناوەڕاست</option><option value="top">سەرەوە</option></select>
     <label class="as-label" for="asSubOffset">گۆڕینی کات (چرکە)</label><input class="as-field" id="asSubOffset" type="number" value="0" step="0.1">
     <div style="display:grid;gap:9px;margin-top:16px"><button class="as-btn" id="asSubDownload">⬇ دابەزاندنی SRT ـی چاککراو</button><button class="as-btn secondary" id="asSubClear">پاککردنەوە و دەستپێکردنەوە</button><button class="as-btn secondary" id="asSubTranscribe">✦ هەوڵدان بۆ ژێرنووس لە دەنگ</button></div>
@@ -2221,8 +2486,7 @@ window.FB_CONFIG = {
   projectId: "anime-studio-4bc14",
   storageBucket: "anime-studio-4bc14.firebasestorage.app",
   messagingSenderId: "448382738636",
-  appId: "1:448382738636:web:fb7fc302f31aac1b146269",
-  measurementId: "G-J7MD874E4N"
+  appId: "1:448382738636:web:fb7fc302f31aac1b146269"
 };
 </script>
 <style id="v7">/* ===== v7: chat ===== */
@@ -2241,48 +2505,26 @@ window.FB_CONFIG = {
 #aGoogle{width:100%;justify-content:center;border:1px solid var(--line);color:#fff;padding:9px}
 #gBar{display:flex;gap:6px;flex-wrap:wrap;margin-inline-start:auto}.chead{flex-wrap:wrap}
 .gchip{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:4px 12px;font-size:12px;color:var(--tx2);transition:.2s}.gchip:hover{color:#fff;transform:translateY(-2px)}.gchip.on{background:var(--ac);color:#201700;border-color:var(--ac);font-weight:700}.gchip.add{border-style:dashed;color:var(--ac)}
-
-/* Firebase membership approval gate */
-#joinGate{position:fixed;inset:0;z-index:100000;display:none;place-items:center;padding:18px;background:rgba(5,7,18,.96);backdrop-filter:blur(14px);direction:rtl;color:#fff}
-#joinGate.show{display:grid}#joinGate .jg-card{width:min(100%,460px);padding:26px;border:1px solid #343b62;border-radius:22px;background:linear-gradient(145deg,#171a31,#0c1020);box-shadow:0 24px 90px #0009;text-align:center}
-#joinGate h2{margin:0 0 10px;font-size:25px}#joinGate p{color:#c5cbe2;line-height:1.9}#joinGate .jg-status{padding:12px;border-radius:12px;background:#222742;margin:14px 0;overflow-wrap:anywhere}
-#joinGate button{width:100%;margin-top:9px;padding:12px;border-radius:12px;font-weight:700;cursor:pointer}#joinGate .jg-primary{background:#ffc93c;color:#211a05;border:0}#joinGate .jg-secondary{background:transparent;color:#fff;border:1px solid #454c70}
 </style>
+<script>window.dnOf=(k,f)=>{try{return (JSON.parse(localStorage.getItem('aura.profiles')||'{}')[k]||{}).name||f||k}catch(e){return f||k}}</script>
 <script id="v7">(()=>{
-const OWNER='zenenyuta@gmail.com', FB_ON=!!(window.FB_CONFIG&&FB_CONFIG.apiKey);
-let joinApproved=false,joinStatus='unknown';
+const OWNER='safenrn53@gmail.com', FB_ON=!!(window.FB_CONFIG&&FB_CONFIG.apiKey);
 let fb=null,gUser=null,unsub=null,cache=[],bc=null,groups=[],gid='',unsubG=null;
 const isOwner=()=>FB_ON?(!!gUser&&gUser.verified&&gUser.email===OWNER):(!!user&&user!=='guest'&&String(user).toLowerCase()===OWNER);
 async function fbInit(){if(fb||!FB_ON)return fb;const B='https://www.gstatic.com/firebasejs/10.12.2/';
  const [A,Au,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
  const app=A.initializeApp(FB_CONFIG);fb={A,Au,F,auth:Au.getAuth(app),db:F.getFirestore(app)};return fb}
-function gateShow(show){const el=$('#joinGate');if(el)el.classList.toggle('show',!!show);document.documentElement.style.overflow=show?'hidden':'';}
-function gateMessage(t){const el=$('#jgStatus');if(el)el.textContent=t;}
-function gateButtons({signIn=false,request=false,refresh=false,signOut=false}={}){[['jgSignIn',signIn],['jgRequest',request],['jgRefresh',refresh],['jgSignOut',signOut]].forEach(([id,on])=>{const e=$('#'+id);if(e)e.hidden=!on})}
-async function checkJoinAccess(){
- if(!FB_ON){gateShow(true);gateMessage('Firebase ڕێک نەخراوە.');gateButtons({signIn:false});return false}
- if(!gUser){joinApproved=false;joinStatus='signedout';gateShow(true);gateMessage('بۆ داواکاری بەشداری، بە Google بچۆ ژوورەوە.');gateButtons({signIn:true});return false}
- if(!gUser.verified){gateShow(true);gateMessage('ئیمەیڵەکەت پشتڕاست بکەرەوە، پاشان دووبارە بچۆ ژوورەوە.');gateButtons({signIn:false,signOut:true});return false}
- if(gUser.email===OWNER){joinApproved=true;joinStatus='approved';gateShow(false);return true}
- try{const f=await fbInit(),r=f.F.doc(f.db,'joinRequests',gUser.uid),snap=await f.F.getDoc(r);if(!snap.exists()){joinApproved=false;joinStatus='none';gateShow(true);gateMessage('هێشتا داواکارییەکت نەناردووە.');gateButtons({request:true,signOut:true});return false}
- const d=snap.data();joinStatus=d.status||'pending';joinApproved=joinStatus==='approved';gateShow(!joinApproved);
- if(joinApproved){gateShow(false);return true}
- gateMessage(joinStatus==='rejected'?'داواکارییەکەت ڕەتکرایەوە. دەتوانیت پەیوەندی بە ئۆنەر بکەیت.':'داواکارییەکەت نێردراوە و چاوەڕێی پەسەندکردنی ئۆنەرە.');gateButtons({refresh:true,signOut:true});return false;
- }catch(e){gateShow(true);gateMessage('هەڵە لە پشکنینی داواکاری: '+(e.code||e.message));gateButtons({refresh:true,signOut:true});return false}
-}
-async function sendJoinRequest(){if(!gUser)return;const b=$('#jgRequest');b.disabled=true;gateMessage('داواکارییەکە دەنێردرێت...');try{const f=await fbInit();await f.F.setDoc(f.F.doc(f.db,'joinRequests',gUser.uid),{uid:gUser.uid,email:gUser.email,name:gUser.name||'',photo:gUser.photo||'',status:'pending',createdAt:f.F.serverTimestamp(),updatedAt:f.F.serverTimestamp()});await checkJoinAccess()}catch(e){gateMessage('نەتوانرا داواکاری بنێردرێت: '+(e.code||e.message))}finally{b.disabled=false}}
-function onG(u){gUser={uid:u.uid,email:(u.email||'').toLowerCase(),name:u.displayName||u.email,photo:u.photoURL||'',verified:!!u.emailVerified};
- setUser(gUser.email,true);$('#uChip').innerHTML=icon('user',16)+' '+gUser.name+(isOwner()?' 👑':'');checkJoinAccess();if($('#pChat').classList.contains('on'))startChat()}
+function onG(u){gUser={uid:u.uid,email:(u.email||'').toLowerCase(),name:dnOf((u.email||'').toLowerCase(),u.displayName||u.email),photo:u.photoURL||'',verified:!!u.emailVerified};
+ setUser(gUser.email,true);$('#uChip').innerHTML=icon('user',16)+' '+gUser.name+(isOwner()?' 👑':'');if($('#pChat').classList.contains('on'))startChat()}
 $('#aGo').insertAdjacentHTML('afterend','<button id="aGoogle" class="nchip"><b style="color:#4da3ff">G</b> Google</button>');
 $('#aGoogle').onclick=async()=>{if(!FB_ON)return msg('بۆ Google پێویستە Firebase ڕێک بخرێت (سەیری chat-config لە فایلەکە بکە)');
- try{gateMessage('چاوەڕێ بکە، پەیوەندی بە Google دەکرێت...');const f=await fbInit(),r=await f.Au.signInWithPopup(f.auth,new f.Au.GoogleAuthProvider());onG(r.user)}catch(e){const detail='هەڵەی Google Login: '+(e.code||e.message||'هەڵەی نەناسراو');gateMessage(detail);gateButtons({signIn:true});msg(detail)}};
-if(FB_ON)fbInit().then(f=>f.Au.onAuthStateChanged(f.auth,u=>{if(u)onG(u);else{gUser=null;joinApproved=false;checkJoinAccess()}})).catch(e=>{gateShow(true);gateMessage('Firebase: '+(e.code||e.message))});
-$('#jgSignIn').onclick=()=>$('#aGoogle').click();$('#jgRequest').onclick=sendJoinRequest;$('#jgRefresh').onclick=checkJoinAccess;$('#jgSignOut').onclick=async()=>{try{const f=await fbInit();await f.Au.signOut(f.auth)}catch(e){gateMessage(e.message)}};
-const _lo=$('#btnLogout').onclick;$('#btnLogout').onclick=async()=>{gUser=null;joinApproved=false;try{fb&&await fb.Au.signOut(fb.auth)}catch{}gateShow(true);stop();return _lo()};
+ try{const f=await fbInit(),r=await f.Au.signInWithPopup(f.auth,new f.Au.GoogleAuthProvider());onG(r.user)}catch(e){msg('Google: '+(e.code||e.message))}};
+if(FB_ON)fbInit().then(f=>f.Au.onAuthStateChanged(f.auth,u=>{if(u)onG(u)}));
+const _lo=$('#btnLogout').onclick;$('#btnLogout').onclick=async()=>{gUser=null;try{fb&&await fb.Au.signOut(fb.auth)}catch{}stop();return _lo()};
 /* nav + page */
 const nb=Object.assign(document.createElement('button'),{className:'nb',textContent:'چات'});nb.dataset.page='pChat';nb.onclick=()=>go('pChat');$('#nsp').before(nb);
 const _go=window.go;window.go=function(id){_go.apply(this,arguments);id==='pChat'?startChat():0};
-const me=()=>FB_ON?gUser:(user&&user!=='guest'?{uid:user,name:user,email:'',photo:''}:null);
+const me=()=>FB_ON?(gUser&&{...gUser,name:dnOf(gUser.email,gUser.name)}):(user&&user!=='guest'?{uid:user,name:dnOf(user),email:'',photo:''}:null);
 function paint(){
  renderGroups();const box=$('#cMsgs'),need=$('#cNeed'),m=me(),near=box.scrollHeight-box.scrollTop-box.clientHeight<80;
  [...box.querySelectorAll('.cm')].forEach(e=>e.remove());need.hidden=!!m;
@@ -2844,6 +3086,24 @@ function layersUI(){const box=$('#psLayers');if(!box)return;box.innerHTML='';
 const T=(txt,o)=>S.layers.push(mkText(txt,o)),Rc=o=>S.layers.push(mkRect(o));
 function logoL(o){const lg=LS.get('aura.poster.logo','');if(!lg)return;return regImg(lg).then(iid=>{if(iid){const l=mkImg(iid,o);l.w=o.w;l.h=o.w*l.ar;S.layers.push(l)}})}
 const TPL=[
+ {n:'Aura Anime',w:1080,h:1350,f:()=>{S.bg={...S.bg,vig:24};if(S.bg.t!=='image')Object.assign(S.bg,{t:'gradient',c1:'#06132f',c2:'#102d65',ang:145,vig:24});
+  Rc({w:S.W*.92,h:S.H*.94,x:S.W/2,y:S.H/2,rad:32,c1:'#06132f',a1:22,sw:4,sc:'#91b7d9'});
+  T('AURA ANIME',{size:88,col:'#f4fbff',sw:2,sc:'#087fbd',shB:16,shC:'#00aaff',y:S.H*.075,ls:5});
+  T('ئەنیمێی نوێ · ژانەرەکان',{size:34,col:'#ffc93c',y:S.H*.135,bold:0});
+  ['ئاکشن','فانتازی','دراما'].forEach((n,i)=>{Rc({w:270,h:74,rad:28,x:S.W*(.19+i*.31),y:S.H*.205,c1:'#13294b',a1:95,sw:3,sc:'#c4d8ef'});T(n,{size:34,col:'#f5f7ff',w:250,x:S.W*(.19+i*.31),y:S.H*.205,pad:0})});
+  Rc({w:S.W*.42,h:S.H*.49,x:S.W*.265,y:S.H*.52,rad:28,c1:'#0b2041',a1:100,sw:4,sc:'#9bbbd8'});
+  T('وێنەی ئەنیمێ',{size:48,col:'#9beaff',w:S.W*.36,x:S.W*.265,y:S.H*.52,pad:8,bold:0});
+  Rc({w:S.W*.43,h:S.H*.49,x:S.W*.735,y:S.H*.52,rad:28,c1:'#0a1834',a1:92,sw:4,sc:'#9bbbd8'});
+  T('ناوی ئەنیمێ',{size:65,col:'#57d8ff',w:S.W*.39,x:S.W*.735,y:S.H*.34,pad:8,sw:2,sc:'#07162f'});
+  Rc({w:S.W*.32,h:5,rad:3,x:S.W*.735,y:S.H*.385,c1:'#dcecff'});
+  T('پوختەی ئەنیمێ',{size:38,col:'#ffffff',w:S.W*.37,x:S.W*.735,y:S.H*.425,pad:8,bold:1});
+  T('لێرە پوختەی چیرۆک بنووسە. دەتوانیت ئەم دەقە و هەموو ناونیشانەکان بگۆڕیت.',{size:30,col:'#dcecff',w:S.W*.36,h:250,x:S.W*.735,y:S.H*.52,pad:12,bold:0,lh:1.5});
+  T('وەرزی ١ · ئەڵقەی ٠١',{size:34,col:'#ffc93c',w:S.W*.36,x:S.W*.735,y:S.H*.69,pad:8,bold:0});
+  T('وەرگێڕان: کوردی سۆرانی',{size:30,col:'#a9c8e9',w:S.W*.36,x:S.W*.735,y:S.H*.735,pad:8,bold:0});
+  Rc({w:S.W*.84,h:5,rad:3,x:S.W/2,y:S.H*.84,c1:'#24c8ff'});
+  T('AURA ANIME',{size:48,col:'#f4fbff',sw:1,sc:'#087fbd',y:S.H*.89,ls:3});
+  T('پوستەرەکەت ڕێکبخە و دەقەکان دەستکاری بکە',{size:26,col:'#9beaff',y:S.H*.93,bold:0});
+ }},
  {n:'ئەلقەی نوێ',w:1080,h:1350,f:()=>{S.bg={...S.bg,vig:S.bg.t==='image'?45:0};if(S.bg.t!=='image')Object.assign(S.bg,{t:'gradient',c1:'#0f0a1f',c2:'#4c1d95',ang:160,vig:35});
   Rc({w:S.W,h:560,x:S.W/2,y:S.H-280,rad:0,c1:'#000000',a1:0,c2:'#000000',a2:92,g:1,ga:90});
   Rc({w:360,h:100,rad:50,x:S.W-230,y:120,c1:'#ffc93c'});T('ئەلقەی ٠١',{size:54,col:'#1b1300',w:340,x:S.W-230,y:120,pad:0});
@@ -2861,6 +3121,9 @@ const TPL=[
  {n:'تێلێگرام ١٦:٩',w:1280,h:720,f:()=>{if(S.bg.t!=='image')Object.assign(S.bg,{t:'gradient',c1:'#082f49',c2:'#0ea5e9',ang:135});S.bg.vig=30;
   Rc({w:S.W*.9,h:S.H*.8,x:S.W/2,y:S.H/2,rad:40,c1:'#000000',a1:55,sw:4,sc:'#ffffff'});T('ناوی ئەنیمێ',{size:110,sw:4,shB:16,y:S.H*.42});T('ئەڵقەی ٠١ · ژێرنووسی کوردی',{size:50,col:'#ffc93c',y:S.H*.62,bold:0})}}
 ];
+/* Extra poster presets: 24 additional ready-to-edit layouts, using the existing poster renderer. */
+(()=>{const base=TPL.slice();const names=['مانگا','ئاکشن','ڕۆمانسی','فانتازی','ترسناک','کۆمیدی','سایفای','دراما','شۆنەن','شۆجۆ','ئۆڤا','فیلم','تریلەر','پێشبینین','ئەلڤان','شەو','ڕۆژ','مینیمال','نێۆن','کلاسیک','تاریک','ڕەنگاوڕەنگ','ستۆری','کاڤەر'];
+names.forEach((n,i)=>{const src=base[i%base.length];TPL.push({n:'قاڵبی '+n,w:src.w,h:src.h,f:src.f})});})();
 TPL.forEach((t,i)=>{const b=document.createElement('button');b.className='tb';b.innerHTML=`<b>▦</b>${esc(t.n)}<small style="color:var(--tx2)">${t.w}×${t.h}</small>`;
  b.onclick=async()=>{snap();selId=null;S.layers=[];S.fr={...FR0};setSize(t.w,t.h,false);await t.f();buildProps();layersUI();bgUI();needFonts();draw();snap();toast('قاڵب جێبەجێ کرا — دەقەکان دەستکاری بکە')};$('#psTpl').appendChild(b)});
 
@@ -2914,21 +3177,14 @@ async function ownerData(){const C=chat(),d={fb:!!C.FB_ON,users:[],msgs:0},now=D
 const RULES=`rules_version = '2';
 service cloud.firestore {
  match /databases/{db}/documents {
-  function owner(){return request.auth!=null && request.auth.token.email=='zenenyuta@gmail.com' && request.auth.token.email_verified==true}
+  function owner(){return request.auth!=null && request.auth.token.email=='safenrn53@gmail.com' && request.auth.token.email_verified==true}
   function admin(){return request.auth!=null && exists(/databases/$(db)/documents/admins/$(request.auth.token.email))}
-  function member(){return owner() || (request.auth!=null && exists(/databases/$(db)/documents/joinRequests/$(request.auth.uid)) && get(/databases/$(db)/documents/joinRequests/$(request.auth.uid)).data.status=='approved')}
-  match /joinRequests/{uid} {
-    allow create: if request.auth!=null && request.auth.uid==uid && request.resource.data.uid==uid && request.resource.data.email==request.auth.token.email && request.resource.data.status=='pending';
-    allow read: if owner() || (request.auth!=null && request.auth.uid==uid);
-    allow update: if owner() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt']) && request.resource.data.status in ['approved','rejected'];
-    allow delete: if owner();
-  }
   match /presence/{uid} { allow read: if owner(); allow write: if request.auth!=null && request.auth.uid==uid; }
   match /admins/{e}     { allow read: if request.auth!=null; allow write: if owner(); }
-  match /groups/{g}     { allow read: if member(); allow write: if owner(); }
-  match /messages/{m}   { allow read: if member();
-                          allow create: if member() && request.resource.data.uid==request.auth.uid;
-                          allow delete: if member() && (owner() || admin() || resource.data.uid==request.auth.uid); }
+  match /groups/{g}     { allow read: if request.auth!=null; allow write: if owner(); }
+  match /messages/{m}   { allow read: if request.auth!=null;
+                          allow create: if request.auth!=null && request.resource.data.uid==request.auth.uid;
+                          allow delete: if owner() || admin() || resource.data.uid==request.auth.uid; }
  }
 }`;
 let owTimer=0;
@@ -2949,19 +3205,169 @@ async function ownerRender(){const body=$('#owBody'),C=chat();
  $('#owTgCfg').onclick=()=>openTg(null);
  $('#owTgSend').onclick=async()=>{if(!TG.ready())return openTg(null);try{await TG.text(`📊 Anime Studio\n👥 بەکارهێنەر: ${d.users.length}\n🟢 ئۆنلاین: ${d.online}\n🛡 ئەدمین: ${ADM.size}\n💬 نامە: ${d.msgs}\n${d.fb?'':'(دۆخی تاقیکردنەوە)'}`);toast('ڕاپۆرت نێردرا ✔')}catch(e){toast(e.message)}};
  $('#owCopy').onclick=()=>navigator.clipboard.writeText(RULES).then(()=>toast('کۆپی کرا'),()=>toast('کۆپی نەکرا'));
- if(d.fb) renderJoinRequests(body,C);
  clearTimeout(owTimer);owTimer=setTimeout(()=>{if($('#pOwner').classList.contains('on'))ownerRender()},15000)}
-async function renderJoinRequests(body,C){
- try{const f=await C.fbInit(),snap=await f.F.getDocs(f.F.collection(f.db,'joinRequests'));const docs=snap.docs.map(x=>({id:x.id,...x.data()})).sort((a,b)=>String(a.status).localeCompare(String(b.status)));
- const box=document.createElement('div');box.className='box';box.innerHTML='<h4>📨 داواکارییەکانی بەشداری</h4><div style="overflow:auto"><table><tr><th>ناو</th><th>ئیمەیڵ</th><th>دۆخ</th><th>کردار</th></tr></table></div>';
- const table=box.querySelector('table');for(const d of docs){const tr=document.createElement('tr');const vals=[d.name||'—',d.email||'',d.status||'pending'];vals.forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});const td=document.createElement('td');if(d.status!=='approved'){const b=document.createElement('button');b.textContent='✓ پەسەندکردن';b.onclick=()=>updateJoinStatus(d.id,'approved');td.appendChild(b)}if(d.status!=='rejected'){const b=document.createElement('button');b.style.marginInlineStart='6px';b.textContent='✕ ڕەتکردنەوە';b.onclick=()=>updateJoinStatus(d.id,'rejected');td.appendChild(b)}tr.appendChild(td);table.appendChild(tr)}
- if(!docs.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='هێشتا هیچ داواکارییەک نییە';tr.appendChild(td);table.appendChild(tr)}
- const rules=body.querySelector('#owRules')?.parentElement;if(rules)body.insertBefore(box,rules);else body.appendChild(box);
- }catch(e){const box=document.createElement('div');box.className='box';box.textContent='نەتوانرا داواکارییەکان بخوێندرێنەوە: '+(e.code||e.message);body.appendChild(box)}
-}
-async function updateJoinStatus(uid,status){try{const C=chat(),f=await C.fbInit();await f.F.updateDoc(f.F.doc(f.db,'joinRequests',uid),{status,updatedAt:f.F.serverTimestamp()});toast(status==='approved'?'داواکاری پەسەندکرا':'داواکاری ڕەتکرایەوە');ownerRender()}catch(e){toast('هەڵە: '+(e.code||e.message))}}
 })();
 
 </script>
+
+<style id="aura-trailer-fit-layout">
+/* Compact four-tab Trailer Studio: keep the whole workspace inside the viewport. */
+#pTrailer{overflow:hidden!important;overscroll-behavior:none}
+#pTrailer .trailerStudio{height:100%;max-width:none;box-sizing:border-box;padding:8px 12px 10px;display:flex;flex-direction:column;overflow:hidden;gap:8px}
+#pTrailer .trailerStudio>header{flex:0 0 auto;margin:0;padding:8px 14px;border-radius:12px}
+#pTrailer .trailerStudio>header h2{font-size:clamp(17px,1.5vw,24px)}
+#pTrailer .trailerStudio>header p{margin:3px 0 0;font-size:12px;line-height:1.45}
+#pTrailer .trailerStudio>header:after{margin-top:3px;font-size:9px}
+#pTrailer .trailerGrid{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,.86fr);gap:10px;align-items:stretch;overflow:hidden}
+#pTrailer .trailerPreview,#pTrailer .trailerTools{min-height:0;overflow:hidden;padding:10px;gap:8px;border-radius:13px}
+#pTrailer .trailerPreview{display:flex;flex-direction:column}
+#pTrailer .trVidWrap{flex:1 1 auto;min-height:130px;max-height:none;aspect-ratio:16/9;width:100%}
+#pTrailer .trVidWrap video{max-height:none}
+#pTrailer #trFile{flex:0 0 auto;padding:5px;font-size:12px;max-height:36px}
+#pTrailer .trailerPreview>.trTimes{flex:0 0 auto;gap:7px}
+#pTrailer .trailerPreview>.trTimes label{font-size:11px}
+#pTrailer .trailerPreview>.trTimes input{min-height:30px!important}
+#pTrailer .trailerPreview>.trActionRow{flex:0 0 auto;gap:6px}
+#pTrailer .trailerPreview>.trActionRow button{min-width:0;min-height:34px;padding:7px 8px;font-size:11px}
+#pTrailer .trailerPreview>#trNote{flex:0 0 auto;padding:6px 8px;font-size:10px;line-height:1.4;max-height:40px;overflow:hidden}
+#pTrailer .trailerTools{display:flex;flex-direction:column;gap:8px}
+#pTrailer .trailerTools>.trailerTabBar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;flex:0 0 auto}
+#pTrailer .trailerTabBar button{min-width:0;padding:8px 3px;font-size:12px;font-weight:800;white-space:nowrap}
+#pTrailer .trailerTabBar button.active{background:linear-gradient(110deg,#087bff,#6a32d9);border-color:#4de0ff;box-shadow:0 0 12px #008dff35}
+#pTrailer .trailerTabPanel{display:none;min-height:0;flex:1 1 auto;overflow:auto;overscroll-behavior:contain;align-content:start;gap:8px;padding:1px 2px 3px}
+#pTrailer .trailerTabPanel.active{display:flex;flex-direction:column}
+#pTrailer .trailerTabPanel h3{font-size:13px;margin:0;padding-bottom:5px}
+#pTrailer .trailerTabPanel p{font-size:11px;margin:0;line-height:1.4}
+#pTrailer .trailerTabPanel .trSubEditor,#pTrailer .trailerTabPanel .trAudioBox{padding:8px;gap:7px}
+#pTrailer .trailerTabPanel .trEditControls{padding:7px;gap:7px;grid-template-columns:repeat(2,minmax(0,1fr))}
+#pTrailer .trailerTabPanel label{font-size:11px;gap:4px;min-width:0}
+#pTrailer .trailerTabPanel input:not([type=range]):not([type=file]),#pTrailer .trailerTabPanel select{min-height:30px!important;padding:5px 7px!important;font-size:12px}
+#pTrailer .trailerTabPanel input[type=range]{min-width:0;width:100%}
+#pTrailer .trailerTabPanel .trTemplates{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;max-height:none;overflow:visible}
+#pTrailer .trailerTabPanel .trTemplates button{min-height:42px;padding:5px 3px;font-size:10px}
+#pTrailer .trailerTabPanel .trTemplates button:before{font-size:12px;margin-bottom:0}
+#pTrailer .trailerTabPanel .trToolGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+#pTrailer .trailerTabPanel .trToolGrid button{min-height:34px;padding:5px 3px;font-size:10px}
+#pTrailer .trailerTabPanel .trSubtitleList{max-height:90px}
+#pTrailer .trailerTabPanel #trToolInfo{min-height:0;padding:7px;font-size:11px}
+#pTrailer .trailerTabPanel .trActionRow button{min-width:0;padding:7px;font-size:11px}
+@media(max-height:760px) and (min-width:761px){#pTrailer .trailerStudio>header{padding:5px 12px}#pTrailer .trailerStudio>header:after{display:none}#pTrailer .trailerPreview,#pTrailer .trailerTools{padding:7px}#pTrailer .trVidWrap{min-height:100px}#pTrailer .trailerTabPanel{gap:5px}#pTrailer .trailerTabPanel .trTemplates button{min-height:34px}}
+@media(max-width:900px){#pTrailer{overflow:auto!important}#pTrailer .trailerStudio{height:auto;min-height:100%;overflow:visible}#pTrailer .trailerGrid{display:grid;grid-template-columns:1fr;overflow:visible}#pTrailer .trailerPreview{min-height:520px}#pTrailer .trailerTools{min-height:500px}#pTrailer .trailerTabPanel{overflow:visible}}
+
+/* Aura Anime polish + adjustable baked-in subtitle-band cover */
+.trMaskEditor{border-color:#176ba4;background:linear-gradient(145deg,#07182d,#111a2d 70%,#17152c);box-shadow:inset 0 1px #38bdf822,0 8px 24px #0003}
+.trMaskEditor h3{color:#7be2ff!important}.trMaskEditor input[type=range]{accent-color:#19bfff}
+#trBarMaskPreview{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:block}
+.trVidWrap #trOverlay{z-index:3}.trVidWrap .trLogoPreview{z-index:4}
+.trMaskEditor small{line-height:1.6}
+/* FIX: subtitles must have no filled background; keep only the text and its outline/shadow. */
+#pTrailer #trOverlay,.trOverlay,#asSubStudio .as-caption{background:transparent!important;background-color:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important;padding-left:0!important;padding-right:0!important;}
+#pTrailer #trOverlay{display:block;}
+</style>
+<script id="aura-trailer-four-tabs">
+(()=>{
+ const studio=document.querySelector('#pTrailer .trailerStudio');
+ const preview=studio?.querySelector('.trailerPreview');
+ const tools=studio?.querySelector('.trailerTools');
+ if(!studio||!preview||!tools||document.getElementById('trailerTabVideo'))return;
+ const children=[...preview.children];
+ const videoWrap=preview.querySelector('.trVidWrap');
+ const file=preview.querySelector('#trFile');
+ const times=preview.querySelector(':scope > .trTimes');
+ const subEditors=[...preview.querySelectorAll('.trSubEditor')];
+ const controls=preview.querySelector('.trEditControls');
+ const actions=preview.querySelector(':scope > .trActionRow');
+ const audio=preview.querySelector('.trAudioBox');
+ const note=preview.querySelector('#trNote');
+ const templatesHeading=tools.querySelector('h3');
+ const templatesDesc=tools.querySelector('p');
+ const templates=tools.querySelector('#trTemplates');
+ const toolHeading=[...tools.querySelectorAll('h3')].find(h=>h.textContent.includes('ئامراز'));
+ const toolGrid=tools.querySelector('.trToolGrid');
+ const toolInfo=tools.querySelector('#trToolInfo');
+ const tabBar=document.createElement('div');tabBar.className='trailerTabBar';tabBar.setAttribute('role','tablist');
+ const panel=(id)=>{const el=document.createElement('div');el.className='trailerTabPanel';el.id=id;return el};
+ const panels={video:panel('trailerTabVideo'),text:panel('trailerTabText'),audio:panel('trailerTabAudio'),effects:panel('trailerTabEffects')};
+ const defs=[['video','▣ ڤیدیۆ'],['text','T دەق'],['audio','♫ دەنگ'],['effects','✦ کاریگەری']];
+ defs.forEach(([key,label],i)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('role','tab');b.setAttribute('aria-selected',i===0?'true':'false');b.classList.toggle('active',i===0);b.onclick=()=>{Object.entries(panels).forEach(([k,p])=>p.classList.toggle('active',k===key));[...tabBar.children].forEach((x,j)=>{x.classList.toggle('active',defs[j][0]===key);x.setAttribute('aria-selected',defs[j][0]===key?'true':'false')})};tabBar.appendChild(b)});
+ Object.values(panels).forEach((p,i)=>p.classList.toggle('active',i===0));
+ // Rebuild only the layout; existing element IDs and their editing logic stay intact.
+ tools.replaceChildren(tabBar,...Object.values(panels));
+ if(templatesHeading)panels.video.append(templatesHeading);
+ if(templatesDesc)panels.video.append(templatesDesc);
+ if(templates)panels.video.append(templates);
+ if(file)panels.video.append(file);
+ if(times)panels.video.append(times);
+ const speed=controls?.querySelector('label:has(#trSpeed)');
+ const ratio=controls?.querySelector('label:has(#trRatio)');
+ const videoLabels=[]; const textLabels=[]; const effectLabels=[]; const audioLabels=[];
+ if(controls){
+   [...controls.querySelectorAll('label')].forEach(l=>{
+     const input=l.querySelector('input,select'); const id=input?.id||'';
+     if(['trTextColor','trTextSize','trTextPos'].includes(id))textLabels.push(l);
+     else if(['trVolume'].includes(id))audioLabels.push(l);
+     else if(['trSpeed','trRatio'].includes(id))videoLabels.push(l);
+     else effectLabels.push(l);
+   });
+ }
+ const wrapLabels=(arr)=>{const box=document.createElement('div');box.className='trEditControls';arr.forEach(l=>box.append(l));return box};
+ if(speed||ratio)panels.video.append(wrapLabels(videoLabels));
+ subEditors.forEach((e,i)=>{if(i===0)panels.text.append(e);else panels.text.append(e)});
+ if(textLabels.length)panels.text.append(wrapLabels(textLabels));
+ if(audio){panels.audio.append(audio)}
+ if(audioLabels.length)panels.audio.append(wrapLabels(audioLabels));
+ if(toolHeading)panels.effects.append(toolHeading);
+ if(toolGrid)panels.effects.append(toolGrid);
+ if(toolInfo)panels.effects.append(toolInfo);
+ if(effectLabels.length)panels.effects.append(wrapLabels(effectLabels));
+ if(controls)controls.remove();
+ // Keep preview and export controls in the large left preview area.
+ if(videoWrap)preview.prepend(videoWrap);
+ if(actions)preview.append(actions);
+ if(note)preview.append(note);
+ // Add a compact playback timeline under the preview.
+ const timeline=document.createElement('label');timeline.className='trTrailerTimeline';timeline.innerHTML='<span>Timeline</span><input type="range" min="0" max="100" value="0" step="0.1" aria-label="Video timeline"><output>00:00</output>';
+ const range=timeline.querySelector('input'),out=timeline.querySelector('output'),v=preview.querySelector('#trVideo');
+ timeline.style.cssText='display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;padding:4px 8px;border:1px solid #12518a;border-radius:9px;background:#041127;color:#9bc9ee;font-size:11px;flex:0 0 auto';
+ range.style.cssText='width:100%;min-width:0;accent-color:#08baff';out.style.cssText='font-variant-numeric:tabular-nums;color:#eaf7ff';
+ const stamp=n=>{n=Math.max(0,Math.floor(n||0));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')};
+ range.addEventListener('input',()=>{if(v?.duration)v.currentTime=v.duration*(+range.value/100)});
+ v?.addEventListener('loadedmetadata',()=>{range.max=100;range.value=0;out.textContent='00:00'});
+ v?.addEventListener('timeupdate',()=>{if(v.duration){range.value=v.currentTime/v.duration*100;out.textContent=stamp(v.currentTime)+' / '+stamp(v.duration)}});
+ preview.append(timeline);
+})();
+</script>
+
+<style id="v8">.item{content-visibility:auto;contain-intrinsic-size:auto 52px}.pcard{content-visibility:auto;contain-intrinsic-size:auto 220px}.pt{will-change:auto}
+#uChip:hover{color:var(--ac)}@media (max-width:760px){.pt,.bgfx{display:none}.acard{backdrop-filter:none}}</style>
+<script id="v8">(()=>{
+/* single login: first sign-in creates the account */
+aMode='in';$('.atabs').style.display='none';authUI();
+$('.acard small').textContent='ناوی بەکارهێنەر و وشەی نهێنی بنووسە؛ ئەگەر هەژمارت نەبێت خۆکارانە دروست دەبێت. دواتر لە سەر ناوەکەت (سەرەوە) ناوی پیشاندان بگۆڕە.';
+$('#aGo').onclick=async()=>{
+  const n=$('#aUser').value.trim().toLowerCase(),p=$('#aPass').value,rem=$('#aRem').checked,us=getUsers();
+  if(n.length<3)return msg('ناوی بەکارهێنەر لانی کەم ٣ پیت بێت');if(p.length<4)return msg('وشەی نهێنی لانی کەم ٤ پیت بێت');
+  if(!us[n]){const salt=crypto.randomUUID();us[n]={salt,hash:await hashPw(p,salt)};localStorage.setItem('aura.users',JSON.stringify(us));toast('هەژماری نوێ دروست کرا')}
+  else if(us[n].hash!==await hashPw(p,us[n].salt))return msg('وشەی نهێنی هەڵەیە');
+  setUser(n,rem)};
+/* profile: display name shown in chat */
+const prof=()=>{try{return JSON.parse(localStorage.getItem('aura.profiles')||'{}')}catch{return{}}};
+function refreshChip(){if(!user)return;let o=false;try{o=!!(typeof chat==='function'&&chat()&&chat().isOwner())}catch{}
+  const c=$('#uChip');c.innerHTML=icon('user',16)+' ';c.append(document.createTextNode(dnOf(user)+(o?' 👑':'')));c.style.cursor='pointer';c.title='ناوی پیشاندان'}
+const _su=window.setUser;window.setUser=function(){_su.apply(this,arguments);refreshChip()};
+$('#mdl').insertAdjacentHTML('beforeend','<div class="dlg" id="dProf"><h3>هەژمارەکەم</h3><small id="pAcc" style="color:var(--tx2)"></small><label>ناوی پیشاندان (لە چات دەردەکەوێت)</label><input type="text" id="pName" maxlength="24"><div class="act"><button id="pCancel">داخستن</button><button class="pri" id="pSave">هەڵگرتن</button></div></div>');
+$('#uChip').onclick=()=>{if(!user)return;$('#pAcc').textContent=user;$('#pName').value=(prof()[user]||{}).name||'';openDlg('dProf');$('#pName').focus()};
+$('#pCancel').onclick=closeDlg;
+$('#pSave').onclick=()=>{const p=prof(),v=$('#pName').value.trim();v?p[user]={name:v}:delete p[user];localStorage.setItem('aura.profiles',JSON.stringify(p));closeDlg();refreshChip();toast('ناو هەڵگیرا — لە نامە نوێیەکانی چات دەردەکەوێت')};
+$('#pName').addEventListener('keydown',e=>e.key==='Enter'&&$('#pSave').click());
+if(user)refreshChip();
+/* lighter animations on weak devices */
+if((navigator.hardwareConcurrency||8)<=4)$$('.pt').forEach((e,i)=>i%2&&e.remove());
+})();
+</script>
 </body>
 </html>
+
+<style id="aura-final-polish">
+:root{color-scheme:dark} .trailerStudio>header{border:1px solid #164b7a;border-radius:18px;padding:18px 22px;background:radial-gradient(ellipse at 8% 0%,#0b3970 0,transparent 45%),linear-gradient(135deg,#061329,#0a1730 55%,#160d2c);box-shadow:0 12px 35px #0004}.trailerStudio>header h2{letter-spacing:.2px}.trVidWrap{border:1px solid #1789d7!important;border-radius:14px!important;overflow:hidden}.trailerPreview,.trailerTools{border-color:#164b7a!important}.trailerTools{background:linear-gradient(180deg,#07162d,#101326)!important;border-radius:16px;padding:14px}.trailerTools h3{color:#8ce8ff}.trSubEditor,.trAudioBox{border-radius:14px!important}.trailerStudio button{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}.trailerStudio button:hover{transform:translateY(-1px)}#trOverlay{background:transparent!important;background-color:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important;padding:0!important}#trOverlay span,.trOverlay span,#asSubStudio .as-caption{background:transparent!important;background-color:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important}@media(max-width:760px){.trailerStudio{padding:10px!important}.trailerStudio>header{padding:14px}.trMaskEditor .trTimes{grid-template-columns:1fr 1fr;gap:8px}}
+</style>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ckb">
 <head>
-<script>(()=>{const si=window.setInterval;window.setInterval=(f,ms)=>si(()=>{if(!document.hidden)f()},ms)})();</script>
 <script>(()=>{const RO=window.ResizeObserver;window.__szDirty=true;window.ResizeObserver=class extends RO{constructor(cb){super((e,o)=>{window.__szDirty=true;cb(e,o)})}};
 const T={};window.__skip=(k,ms)=>{const n=performance.now();if(T[k]&&n-T[k]<ms)return true;T[k]=n;return false}})();
 </script>
@@ -2480,14 +2479,7 @@ $('#dNew').insertAdjacentHTML('afterbegin',`<div class="dlogo">${LOGO}</div>`);}
 <script id="chat-config">
 /* ====== chat-config: Firebase console → Project settings → Your apps (Web) → paste the values here ======
    Leave apiKey empty = local test mode (chat works only inside this browser, Google login disabled). */
-window.FB_CONFIG = {
-  apiKey: "AIzaSyCGdOgcTwkqSZxYe3LgyJUEjllT9rJm268",
-  authDomain: "anime-studio-4bc14.firebaseapp.com",
-  projectId: "anime-studio-4bc14",
-  storageBucket: "anime-studio-4bc14.firebasestorage.app",
-  messagingSenderId: "448382738636",
-  appId: "1:448382738636:web:fb7fc302f31aac1b146269"
-};
+window.FB_CONFIG = { apiKey: "", authDomain: "", projectId: "", appId: "" };
 </script>
 <style id="v7">/* ===== v7: chat ===== */
 .chat{max-width:820px;margin:0 auto;height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:16px;direction:rtl}
@@ -2506,7 +2498,6 @@ window.FB_CONFIG = {
 #gBar{display:flex;gap:6px;flex-wrap:wrap;margin-inline-start:auto}.chead{flex-wrap:wrap}
 .gchip{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:4px 12px;font-size:12px;color:var(--tx2);transition:.2s}.gchip:hover{color:#fff;transform:translateY(-2px)}.gchip.on{background:var(--ac);color:#201700;border-color:var(--ac);font-weight:700}.gchip.add{border-style:dashed;color:var(--ac)}
 </style>
-<script>window.dnOf=(k,f)=>{try{return (JSON.parse(localStorage.getItem('aura.profiles')||'{}')[k]||{}).name||f||k}catch(e){return f||k}}</script>
 <script id="v7">(()=>{
 const OWNER='safenrn53@gmail.com', FB_ON=!!(window.FB_CONFIG&&FB_CONFIG.apiKey);
 let fb=null,gUser=null,unsub=null,cache=[],bc=null,groups=[],gid='',unsubG=null;
@@ -2514,7 +2505,7 @@ const isOwner=()=>FB_ON?(!!gUser&&gUser.verified&&gUser.email===OWNER):(!!user&&
 async function fbInit(){if(fb||!FB_ON)return fb;const B='https://www.gstatic.com/firebasejs/10.12.2/';
  const [A,Au,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
  const app=A.initializeApp(FB_CONFIG);fb={A,Au,F,auth:Au.getAuth(app),db:F.getFirestore(app)};return fb}
-function onG(u){gUser={uid:u.uid,email:(u.email||'').toLowerCase(),name:dnOf((u.email||'').toLowerCase(),u.displayName||u.email),photo:u.photoURL||'',verified:!!u.emailVerified};
+function onG(u){gUser={uid:u.uid,email:(u.email||'').toLowerCase(),name:u.displayName||u.email,photo:u.photoURL||'',verified:!!u.emailVerified};
  setUser(gUser.email,true);$('#uChip').innerHTML=icon('user',16)+' '+gUser.name+(isOwner()?' 👑':'');if($('#pChat').classList.contains('on'))startChat()}
 $('#aGo').insertAdjacentHTML('afterend','<button id="aGoogle" class="nchip"><b style="color:#4da3ff">G</b> Google</button>');
 $('#aGoogle').onclick=async()=>{if(!FB_ON)return msg('بۆ Google پێویستە Firebase ڕێک بخرێت (سەیری chat-config لە فایلەکە بکە)');
@@ -2524,7 +2515,7 @@ const _lo=$('#btnLogout').onclick;$('#btnLogout').onclick=async()=>{gUser=null;t
 /* nav + page */
 const nb=Object.assign(document.createElement('button'),{className:'nb',textContent:'چات'});nb.dataset.page='pChat';nb.onclick=()=>go('pChat');$('#nsp').before(nb);
 const _go=window.go;window.go=function(id){_go.apply(this,arguments);id==='pChat'?startChat():0};
-const me=()=>FB_ON?(gUser&&{...gUser,name:dnOf(gUser.email,gUser.name)}):(user&&user!=='guest'?{uid:user,name:dnOf(user),email:'',photo:''}:null);
+const me=()=>FB_ON?gUser:(user&&user!=='guest'?{uid:user,name:user,email:'',photo:''}:null);
 function paint(){
  renderGroups();const box=$('#cMsgs'),need=$('#cNeed'),m=me(),near=box.scrollHeight-box.scrollTop-box.clientHeight<80;
  [...box.querySelectorAll('.cm')].forEach(e=>e.remove());need.hidden=!!m;
@@ -3338,33 +3329,6 @@ async function ownerRender(){const body=$('#owBody'),C=chat();
 })();
 </script>
 
-<style id="v8">.item{content-visibility:auto;contain-intrinsic-size:auto 52px}.pcard{content-visibility:auto;contain-intrinsic-size:auto 220px}.pt{will-change:auto}
-#uChip:hover{color:var(--ac)}@media (max-width:760px){.pt,.bgfx{display:none}.acard{backdrop-filter:none}}</style>
-<script id="v8">(()=>{
-/* single login: first sign-in creates the account */
-aMode='in';$('.atabs').style.display='none';authUI();
-$('.acard small').textContent='ناوی بەکارهێنەر و وشەی نهێنی بنووسە؛ ئەگەر هەژمارت نەبێت خۆکارانە دروست دەبێت. دواتر لە سەر ناوەکەت (سەرەوە) ناوی پیشاندان بگۆڕە.';
-$('#aGo').onclick=async()=>{
-  const n=$('#aUser').value.trim().toLowerCase(),p=$('#aPass').value,rem=$('#aRem').checked,us=getUsers();
-  if(n.length<3)return msg('ناوی بەکارهێنەر لانی کەم ٣ پیت بێت');if(p.length<4)return msg('وشەی نهێنی لانی کەم ٤ پیت بێت');
-  if(!us[n]){const salt=crypto.randomUUID();us[n]={salt,hash:await hashPw(p,salt)};localStorage.setItem('aura.users',JSON.stringify(us));toast('هەژماری نوێ دروست کرا')}
-  else if(us[n].hash!==await hashPw(p,us[n].salt))return msg('وشەی نهێنی هەڵەیە');
-  setUser(n,rem)};
-/* profile: display name shown in chat */
-const prof=()=>{try{return JSON.parse(localStorage.getItem('aura.profiles')||'{}')}catch{return{}}};
-function refreshChip(){if(!user)return;let o=false;try{o=!!(typeof chat==='function'&&chat()&&chat().isOwner())}catch{}
-  const c=$('#uChip');c.innerHTML=icon('user',16)+' ';c.append(document.createTextNode(dnOf(user)+(o?' 👑':'')));c.style.cursor='pointer';c.title='ناوی پیشاندان'}
-const _su=window.setUser;window.setUser=function(){_su.apply(this,arguments);refreshChip()};
-$('#mdl').insertAdjacentHTML('beforeend','<div class="dlg" id="dProf"><h3>هەژمارەکەم</h3><small id="pAcc" style="color:var(--tx2)"></small><label>ناوی پیشاندان (لە چات دەردەکەوێت)</label><input type="text" id="pName" maxlength="24"><div class="act"><button id="pCancel">داخستن</button><button class="pri" id="pSave">هەڵگرتن</button></div></div>');
-$('#uChip').onclick=()=>{if(!user)return;$('#pAcc').textContent=user;$('#pName').value=(prof()[user]||{}).name||'';openDlg('dProf');$('#pName').focus()};
-$('#pCancel').onclick=closeDlg;
-$('#pSave').onclick=()=>{const p=prof(),v=$('#pName').value.trim();v?p[user]={name:v}:delete p[user];localStorage.setItem('aura.profiles',JSON.stringify(p));closeDlg();refreshChip();toast('ناو هەڵگیرا — لە نامە نوێیەکانی چات دەردەکەوێت')};
-$('#pName').addEventListener('keydown',e=>e.key==='Enter'&&$('#pSave').click());
-if(user)refreshChip();
-/* lighter animations on weak devices */
-if((navigator.hardwareConcurrency||8)<=4)$$('.pt').forEach((e,i)=>i%2&&e.remove());
-})();
-</script>
 </body>
 </html>
 
